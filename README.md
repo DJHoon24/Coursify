@@ -4,9 +4,9 @@
 Create an efficient digital solution (desktop app) to allow students to take notes and track them on a per-course basis integrated with general course information such as course ratings, assignment grades, and general comments.
 
 ## Team Members
-DongHoon Jeong - dh2jeong1@uwaterloo.ca
-Imaan Gill - i29gill@uwaterloo.ca
-Paul Oh - pg2oh@uwaterloo.ca
+DongHoon Jeong - dh2jeong1@uwaterloo.ca\
+Imaan Gill - i29gill@uwaterloo.ca\
+Paul Oh - pg2oh@uwaterloo.ca\
 Sky Ouyang - s3ouyang@uwaterloo.ca
 
 ## Screenshots/Videos
