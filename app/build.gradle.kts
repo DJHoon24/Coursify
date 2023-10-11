@@ -57,11 +57,11 @@ tasks.named<Test>("test") {
 
 compose.desktop {
     application {
-        mainClass = "cs.AppKt"
+        mainClass = "cs346.AppKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "cs"
+            packageName = "cs346"
             packageVersion = "1.0.0"
         }
     }
