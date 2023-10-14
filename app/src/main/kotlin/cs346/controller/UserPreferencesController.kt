@@ -1,0 +1,38 @@
+package cs346.controller
+
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.WindowPlacement
+import cs346.model.*
+import java.io.File
+
+interface UserPreferencesController {
+    fun loadPreferences(): UserPreferences
+    fun savePreferences(preferences: UserPreferences)
+}
+
+// TODO: save the user preferences in db instead of local file
+class FileUserPreferencesController(private val filePath: String) : UserPreferencesController {
+    override fun loadPreferences(): UserPreferences {
+        return if (File(filePath).exists()) {
+            File(filePath).readText().let {
+                val parts = it.split(",")
+                UserPreferences(
+                    windowWidth = parts[0].toFloat().dp,
+                    windowHeight = parts[1].toFloat().dp,
+                    placement = WindowPlacement.valueOf(parts[2]),
+                    isMinimized = parts[3].toBoolean(),
+                    positionX = parts[4].toFloat().dp,
+                    positionY = parts[5].toFloat().dp,
+                    timeFormat24H = parts[6].toBoolean(),
+                    theme = Theme.valueOf(parts[7])
+                )
+            }
+        } else {
+            UserPreferences()
+        }
+    }
+
+    override fun savePreferences(preferences: UserPreferences) {
+        File(filePath).writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.theme.name}")
+    }
+}

@@ -89,7 +89,6 @@ https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 /.idea/*
 
 # Exclude non-user-specific stuff
-!.idea/.name
 !.idea/codeInsightSettings.xml
 !.idea/codeStyles/
 !.idea/copyright/
@@ -103,7 +102,6 @@ https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 !.idea/inspectionProfiles/
 !.idea/runConfigurations/
 !.idea/scopes/
-!.idea/vcs.xml
 
 ### Kotlin template
 # Compiled class file
@@ -138,3 +136,5 @@ hs_err_pid*
 # Cache of project
 .gradletasknamecache
 
+config.toml
+.runner_system_id
