@@ -1,6 +1,7 @@
 package cs346.model
 
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 
 data class UserPreferences(
@@ -11,5 +12,5 @@ data class UserPreferences(
     var positionX: Dp = 100.dp,
     var positionY: Dp = 100.dp,
     var timeFormat24H: Boolean = false,
-    var theme: Theme = Theme.Light,
+    var userTheme: UserTheme = UserTheme.Light,
 )

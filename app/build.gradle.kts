@@ -14,8 +14,7 @@ plugins {
     // Compose
     id("org.jetbrains.compose") version "1.5.3"
 
-//    // Apply the application plugin to add support for building a CLI application in Java.
-//    application
+    // Apply the application plugin to add support for building a CLI application in Java.
 }
 
 repositories {
@@ -34,8 +33,9 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // This dependency is used by the application.
+    // These dependencies are used by the application.
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -45,10 +45,6 @@ java {
     }
 }
 
-//application {
-//    // Define the main class for the application.
-//    mainClass.set("cs.AppKt")
-//}
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.

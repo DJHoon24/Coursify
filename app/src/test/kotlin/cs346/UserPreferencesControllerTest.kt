@@ -3,12 +3,15 @@ package cs346
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 import cs346.controller.FileUserPreferencesController
-import cs346.model.Theme
 import cs346.model.UserPreferences
+import cs346.model.UserTheme
 import kotlin.io.path.Path
 import kotlin.io.path.createTempDirectory
 import kotlin.random.Random
-import kotlin.test.*
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class UserPreferencesControllerTest {
 
@@ -53,7 +56,7 @@ class UserPreferencesControllerTest {
             positionX = randomPositionX,
             positionY = randomPositionY,
             timeFormat24H = true,
-            theme = Theme.Dark,
+            userTheme = UserTheme.Dark,
         )
 
         controller.savePreferences(modifiedPreferences)
