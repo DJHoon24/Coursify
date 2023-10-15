@@ -2,7 +2,8 @@ package cs346.controller
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
-import cs346.model.*
+import cs346.model.UserPreferences
+import cs346.model.UserTheme
 import java.io.File
 
 interface UserPreferencesController {
@@ -24,7 +25,7 @@ class FileUserPreferencesController(private val filePath: String) : UserPreferen
                     positionX = parts[4].toFloat().dp,
                     positionY = parts[5].toFloat().dp,
                     timeFormat24H = parts[6].toBoolean(),
-                    theme = Theme.valueOf(parts[7])
+                    userTheme = UserTheme.valueOf(parts[7])
                 )
             }
         } else {
@@ -33,6 +34,6 @@ class FileUserPreferencesController(private val filePath: String) : UserPreferen
     }
 
     override fun savePreferences(preferences: UserPreferences) {
-        File(filePath).writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.theme.name}")
+        File(filePath).writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.userTheme.name}")
     }
 }

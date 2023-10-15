@@ -1,7 +1,9 @@
 package cs346
 
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import cs346.controller.FileUserPreferencesController
@@ -16,17 +18,12 @@ fun main() = application {
     ManageUserPreferences(preferencesController, windowState)
 
     Window(
-        title = "hi",
+        title = "Coursify",
         state = windowState,
         onCloseRequest = ::exitApplication
     ) {
-        Greeting("Compose")
-    }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text("Hello $name!")
+    }
 }
 
 //TODO: Implement user preferences for time format 24h and theme

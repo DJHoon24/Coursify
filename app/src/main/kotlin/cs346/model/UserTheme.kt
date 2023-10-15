@@ -1,5 +1,5 @@
 package cs346.model
 
-enum class Theme {
+enum class UserTheme {
     Light, Dark,
 }
