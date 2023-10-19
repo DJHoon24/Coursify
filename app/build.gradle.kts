@@ -57,8 +57,18 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "cs346"
+            packageName = "Coursify"
+            description = "Course Notes App"
             packageVersion = "1.0.0"
+            macOS {
+                iconFile.set(project.file("src/main/resources/images/icon.icns"))
+            }
+            windows {
+                iconFile.set(project.file("src/main/resources/images/icon.ico"))
+            }
+            linux {
+                iconFile.set(project.file("src/main/resources/images/icon.png"))
+            }
         }
     }
 }
