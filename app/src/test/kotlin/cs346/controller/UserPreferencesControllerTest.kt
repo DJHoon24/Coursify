@@ -1,8 +1,7 @@
-package cs346
+package cs346.controller
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
-import cs346.controller.FileUserPreferencesController
 import cs346.model.UserPreferences
 import cs346.model.UserTheme
 import kotlin.io.path.Path

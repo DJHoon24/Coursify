@@ -138,3 +138,6 @@ hs_err_pid*
 
 config.toml
 .runner_system_id
+
+# Temporary files until we create database to persist data
+user-preferences.txt
