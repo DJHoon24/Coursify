@@ -12,7 +12,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.0"
 
     // Compose
-    id("org.jetbrains.compose") version "1.5.3"
+    id("org.jetbrains.compose") version "1.5.10-rc01"
 
     // Apply the application plugin to add support for building a CLI application in Java.
 }
@@ -25,13 +25,11 @@ repositories {
 }
 
 dependencies {
-    // Use the Kotlin JUnit 5 integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-    // Use the JUnit 5 integration.
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.3")
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(kotlin("test-junit"))
+    implementation(kotlin("test-common"))
+    implementation("org.jetbrains.compose.ui:ui-test-junit4:1.5.10-rc01")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    implementation("io.kotest:kotest-assertions-core:5.2.3")
 
     // These dependencies are used by the application.
     implementation(compose.desktop.currentOs)
@@ -47,7 +45,7 @@ java {
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+//    useJUnitPlatform()
 }
 
 compose.desktop {
