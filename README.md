@@ -13,7 +13,11 @@ Sky Ouyang - s3ouyang@uwaterloo.ca
 Optional, but often helpful to have a screenshot or demo-video for new users.
 
 ## Quick-Start Instructions
-Instructions. Details on how to install and launch your application. 
+- Open the repository locally
+- Open and run Gradle Tasks -> build -> build
+- Open Gradle Tasks -> compose desktop -> package
+- DMG(Mac) or MSI(Windows) version of Coursify should be added to the app/build/compose/binaries directory
+- Run the DMG or MSI to create an executable version of Coursify.
 
 ## Project Documents
 [Project Proposal](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Project-Proposal)
