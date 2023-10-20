@@ -41,6 +41,7 @@ class NoteTest {
         val originalID = notesList[0].id
         val originalModifiedDate = notesList[0].lastModifiedDate
         val originalCreationDate = notesList[0].createdDate
+        Thread.sleep(500)
         notesList.edit("NEW TITLE", "NEW CONTENT", 1)
         assertEquals(1, notesList.size)
         assertEquals("NEW TITLE", notesList[0].title)
