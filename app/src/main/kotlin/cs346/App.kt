@@ -9,10 +9,13 @@ import androidx.compose.ui.window.*
 import cs346.controller.FileUserPreferencesController
 import cs346.controller.UserPreferencesController
 import cs346.model.UserPreferences
+import java.io.File
 
 fun main() = application {
     // TODO: save the user preferences in db instead of local file
-    val preferencesController = FileUserPreferencesController("user-preferences.txt")
+    val userHome = System.getProperty("user.home")
+    val desktopDirectory = "$userHome/Desktop"
+    val preferencesController = FileUserPreferencesController(File(desktopDirectory,"user-preferences.txt"))
     val windowState = rememberWindowState()
 
     ManageUserPreferences(preferencesController, windowState)

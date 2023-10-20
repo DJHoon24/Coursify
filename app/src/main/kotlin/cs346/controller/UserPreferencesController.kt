@@ -12,10 +12,10 @@ interface UserPreferencesController {
 }
 
 // TODO: save the user preferences in db instead of local file
-class FileUserPreferencesController(private val filePath: String) : UserPreferencesController {
+class FileUserPreferencesController(private val file: File) : UserPreferencesController {
     override fun loadPreferences(): UserPreferences {
-        return if (File(filePath).exists()) {
-            File(filePath).readText().let {
+        return if (file.exists()) {
+            file.readText().let {
                 val parts = it.split(",")
                 UserPreferences(
                     windowWidth = parts[0].toFloat().dp,
@@ -34,6 +34,6 @@ class FileUserPreferencesController(private val filePath: String) : UserPreferen
     }
 
     override fun savePreferences(preferences: UserPreferences) {
-        File(filePath).writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.userTheme.name}")
+        file.writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.userTheme.name}")
     }
 }
