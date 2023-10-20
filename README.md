@@ -23,7 +23,7 @@ Optional, but often helpful to have a screenshot or demo-video for new users.
 [Project Proposal](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Project-Proposal)
 
 ## Software Releases
-Include a link to your Wiki pages, see below.
+[Software Release Notes](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Release-Notes)
 
 ```
 cd existing_repo
