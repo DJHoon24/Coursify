@@ -9,6 +9,7 @@ import androidx.compose.ui.window.*
 import cs346.controller.FileUserPreferencesController
 import cs346.controller.UserPreferencesController
 import cs346.model.UserPreferences
+import cs346.views.components.CourseCard
 import java.io.File
 
 fun main() = application {
@@ -25,7 +26,7 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication
     ) {
-
+        CourseCard(editable = true)
     }
 }
 
