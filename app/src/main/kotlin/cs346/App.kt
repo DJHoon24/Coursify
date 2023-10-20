@@ -1,5 +1,6 @@
 package cs346
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import cs346.controller.FileUserPreferencesController
 import cs346.controller.UserPreferencesController
 import cs346.model.UserPreferences
 import cs346.views.components.CourseCard
+import cs346.views.components.MarkdownViewer
 import java.io.File
 
 fun main() = application {
@@ -26,7 +28,10 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication
     ) {
-        CourseCard(editable = true)
+        Column {
+            CourseCard(editable = true)
+            MarkdownViewer()
+        }
     }
 }
 
