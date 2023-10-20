@@ -33,6 +33,7 @@ dependencies {
 
     // These dependencies are used by the application.
     implementation(compose.desktop.currentOs)
+    implementation("com.halilibo.compose-richtext:richtext-commonmark:0.17.0")
     implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
 }
 
