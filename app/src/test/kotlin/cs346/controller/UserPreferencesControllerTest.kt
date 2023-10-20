@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 import cs346.model.UserPreferences
 import cs346.model.UserTheme
+import java.io.File
 import kotlin.io.path.Path
 import kotlin.io.path.createTempDirectory
 import kotlin.random.Random
@@ -14,19 +15,19 @@ import kotlin.test.assertEquals
 
 class UserPreferencesControllerTest {
 
-    private lateinit var testFile: String
+    private lateinit var testFile: File
     private lateinit var controller: FileUserPreferencesController
 
     @BeforeTest
     fun setUp() {
         val tempDir = createTempDirectory().toFile()
-        testFile = "${tempDir.absolutePath}/test-preferences.txt"
+        testFile = File("${tempDir.absolutePath}/test-preferences.txt")
         controller = FileUserPreferencesController(testFile)
     }
 
     @AfterTest
     fun tearDown() {
-        Path(testFile).toFile().delete()
+        Path(testFile.toString()).toFile().delete()
     }
 
     @Test

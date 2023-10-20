@@ -45,7 +45,6 @@ java {
     }
 }
 
-
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
@@ -62,6 +61,9 @@ compose.desktop {
             packageVersion = "1.0.0"
             macOS {
                 iconFile.set(project.file("src/main/resources/images/icon.icns"))
+                infoPlist {
+                    extraKeysRawXml = "  <key>NSDesktopFolderUsageDescription</key>\n  <string>We need access to files to read and write files.</string>"
+                }
             }
             windows {
                 iconFile.set(project.file("src/main/resources/images/icon.ico"))
