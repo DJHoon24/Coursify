@@ -11,8 +11,9 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import cs346.controller.FileUserPreferencesController
 import cs346.controller.UserPreferencesController
+import cs346.model.Note
 import cs346.model.UserPreferences
-import cs346.views.components.MarkdownViewer
+import cs346.views.pages.MarkdownViewer
 import cs346.views.pages.CourseListPage
 import cs346.views.pages.LandingPage
 import cs346.views.theme.PADDING_SMALL
@@ -30,7 +31,7 @@ fun main() = application {
     val preferencesController = FileUserPreferencesController(File(desktopDirectory, "user-preferences.txt"))
     val windowState = rememberWindowState()
     var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
-
+    var currentNote = Note(1, "LOL", " Hello")
     ManageUserPreferences(preferencesController, windowState)
 
     Window(

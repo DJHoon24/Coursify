@@ -12,3 +12,8 @@ val COURSE_SCHEDULE_TEST_TAG = "scheduleTextField"
 val TABLE_ROW_HEIGHT = 40.dp
 val NOTES_TABLE_ROW_TEST_TAG = "notesTableRow"
 val ASSIGNMENTS_TABLE_ROW_TEST_TAG = "assignmentsTableRow"
+
+// MarkdownViewer
+val MARKDOWN_VIEW_TEST_TAG = "markdownView"
+val MARKDOWN_EDIT_TEST_TAG = "markdownEdit"
+val NOTE_TITLE_TEST_TAG = "noteTitle"
