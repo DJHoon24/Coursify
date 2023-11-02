@@ -1,21 +1,21 @@
 package cs346.model
 
 enum class Screen(
-    val route: String,
+        val route: String,
 ) {
     LandingScreen(
-        route = "Landing",
+            route = "Landing",
     ),
     CourseListScreen(
-        route = "CourseList",
+            route = "CourseList",
     ),
     DefaultMarkdownScreen(
-        route = "Markdown"
+            route = "Markdown"
     ),
     MarkdownScreen(
-        route = "Markdown/{noteId}",
+            route = "Markdown/{noteId}",
     ),
     CourseScreen(
-        route = "Course/{courseId}",
+            route = "Course/{courseId}",
     ),
 }

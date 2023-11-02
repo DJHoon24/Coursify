@@ -3,34 +3,39 @@ package cs346.model
 import java.time.LocalDateTime
 
 data class Course(
-    var id: Int,
-    var courseNumber: String,
-    var lectureInfo: String,
-    var courseDescription: String,
-    var review: String,
-    var rating: Int,
-    var notes: MutableList<Note> = mutableListOf(),
-    var assignments: MutableList<Assignment> = mutableListOf(),
-    var createdDate: LocalDateTime = LocalDateTime.now(),
-    var lastModifiedDate: LocalDateTime = LocalDateTime.now()
+        var id: Int,
+        var courseNumber: String = "",
+        var lectureInfo: String = "",
+        var instructors: String = "",
+        var courseDescription: String = "",
+        var review: String = "",
+        var rating: Int = 1,
+        var notes: MutableList<Note> = mutableListOf(),
+        var assignments: MutableList<Assignment> = mutableListOf(),
+        var createdDate: LocalDateTime = LocalDateTime.now(),
+        var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
-    fun editCourseNumber(newCourseNumber: String): Course {
+    fun editCourseNumber(newCourseNumber: String = ""): Course {
         return copy(courseNumber = newCourseNumber, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editLectureInfo(newLectureInfo: String): Course {
+    fun editInstructors(newInstructors: String = ""): Course {
+        return copy(instructors = newInstructors, lastModifiedDate = LocalDateTime.now())
+    }
+
+    fun editLectureInfo(newLectureInfo: String = ""): Course {
         return copy(lectureInfo = newLectureInfo, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editCourseDescription(newCourseDescription: String): Course {
+    fun editCourseDescription(newCourseDescription: String = ""): Course {
         return copy(courseDescription = newCourseDescription, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editReview(newReview: String): Course {
+    fun editReview(newReview: String = ""): Course {
         return copy(review = newReview, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editRating(newRating: Int): Course {
+    fun editRating(newRating: Int = 0): Course {
         return copy(rating = newRating, lastModifiedDate = LocalDateTime.now())
     }
 }
@@ -40,25 +45,27 @@ fun MutableList<Course>.findNextID(): Int {
 }
 
 fun MutableList<Course>.add(
-    courseNumber: String,
-    lectureInfo: String,
-    courseDescription: String,
-    review: String,
-    rating: Int,
+        courseNumber: String = "",
+        lectureInfo: String = "",
+        instructors: String = "",
+        courseDescription: String = "",
+        review: String = "",
+        rating: Int = 0,
 ) {
     this.add(
-        Course(
-            id = findNextID(),
-            courseNumber = courseNumber,
-            lectureInfo = lectureInfo,
-            courseDescription = courseDescription,
-            review = review,
-            rating = rating
-        )
+            Course(
+                    id = findNextID(),
+                    courseNumber = courseNumber,
+                    lectureInfo = lectureInfo,
+                    instructors = instructors,
+                    courseDescription = courseDescription,
+                    review = review,
+                    rating = rating
+            )
     )
 }
 
-fun MutableList<Course>.editCourseNumber(newCourseNumber: String, id: Int) {
+fun MutableList<Course>.editCourseNumber(newCourseNumber: String = "", id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editCourseNumber(newCourseNumber)
@@ -67,7 +74,7 @@ fun MutableList<Course>.editCourseNumber(newCourseNumber: String, id: Int) {
     }
 }
 
-fun MutableList<Course>.editLectureInfo(newLectureInfo: String, id: Int) {
+fun MutableList<Course>.editLectureInfo(newLectureInfo: String = "", id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editLectureInfo(newLectureInfo)
@@ -76,7 +83,17 @@ fun MutableList<Course>.editLectureInfo(newLectureInfo: String, id: Int) {
     }
 }
 
-fun MutableList<Course>.editCourseDescription(courseDescription: String, id: Int) {
+fun MutableList<Course>.editInstructors(newInstructors: String, id: Int) {
+    this.forEachIndexed { index, course ->
+        if (course.id == id) {
+            this[index] = this[index].editInstructors(newInstructors)
+            return
+        }
+    }
+}
+
+
+fun MutableList<Course>.editCourseDescription(courseDescription: String = "", id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editCourseDescription(courseDescription)
@@ -85,7 +102,7 @@ fun MutableList<Course>.editCourseDescription(courseDescription: String, id: Int
     }
 }
 
-fun MutableList<Course>.editReview(newReview: String, id: Int) {
+fun MutableList<Course>.editReview(newReview: String = "", id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editReview(newReview)
@@ -94,7 +111,7 @@ fun MutableList<Course>.editReview(newReview: String, id: Int) {
     }
 }
 
-fun MutableList<Course>.editRating(newRating: Int, id: Int) {
+fun MutableList<Course>.editRating(newRating: Int = 0, id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editRating(newRating)
