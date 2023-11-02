@@ -14,12 +14,14 @@ import cs346.controller.UserPreferencesController
 import cs346.model.UserPreferences
 import cs346.views.components.MarkdownViewer
 import cs346.views.pages.CourseListPage
+import cs346.views.pages.LandingPage
 import cs346.views.theme.PADDING_SMALL
 import java.io.File
 
 enum class CurrentView {
     CourseList,
-    MarkdownViewer
+    MarkdownViewer,
+    LandingPage
 }
 fun main() = application {
     // TODO: save the user preferences in db instead of local file
@@ -27,7 +29,7 @@ fun main() = application {
     val desktopDirectory = "$userHome/Desktop"
     val preferencesController = FileUserPreferencesController(File(desktopDirectory, "user-preferences.txt"))
     val windowState = rememberWindowState()
-    var currentView by remember { mutableStateOf(CurrentView.CourseList) }
+    var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
 
     ManageUserPreferences(preferencesController, windowState)
 
@@ -38,6 +40,9 @@ fun main() = application {
     ) {
         Row {
             when (currentView) {
+                CurrentView.LandingPage -> LandingPage(
+                    onNavigate = { currentView = CurrentView.CourseList }
+                )
                 CurrentView.CourseList ->
                     Column {
                         Button(
@@ -48,7 +53,6 @@ fun main() = application {
                         }
                         CourseListPage(windowState)
                     }
-
                 CurrentView.MarkdownViewer -> MarkdownViewer(
                     onNavigate = { currentView = CurrentView.CourseList }
                 )
