@@ -35,6 +35,8 @@ val MartianMonoFamily = FontFamily(
 data class ExtendedTypography(
     val cardHeading: TextStyle,
     val cardSubheading: TextStyle,
+    val tableHeading: TextStyle,
+    val tableBody: TextStyle,
     val noteTitle: TextStyle,
     val noteBody: TextStyle,
     val landingTitle: TextStyle,
@@ -52,17 +54,28 @@ val LocalExtendedTypography = staticCompositionLocalOf {
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
         ),
-        noteTitle = TextStyle(
+        tableHeading = TextStyle(
             fontFamily = MartianMonoFamily,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 32.sp,
-            color = Color.White
+            fontSize = 14.sp,
         ),
-        noteBody = TextStyle(
+        tableBody = TextStyle(
             fontFamily = NotoSansMonoFamily,
             fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
+            fontSize = 14.sp,
+                color = Color.Black,
         ),
+            noteTitle = TextStyle(
+                    fontFamily = MartianMonoFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 32.sp,
+                    color = Color.White
+            ),
+            noteBody = TextStyle(
+                    fontFamily = NotoSansMonoFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+            ),
         landingTitle = TextStyle(
             fontFamily = MartianMonoFamily,
             fontWeight = FontWeight.Bold,

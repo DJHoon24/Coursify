@@ -3,16 +3,16 @@ package cs346.model
 import java.time.LocalDateTime
 
 data class Assignment(
-    var id: Int,
-    var name: String? = null,
-    var dueDate: LocalDateTime? = null,
-    var score: Double? = null,
-    var weight: Double? = null,
-    var weightedMark: Double? = null,
-    var createdDate: LocalDateTime = LocalDateTime.now(),
-    var lastModifiedDate: LocalDateTime = LocalDateTime.now()
+        var id: Int,
+        var name: String = "",
+        var dueDate: LocalDateTime? = LocalDateTime.now(),
+        var score: Float = 0f,
+        var weight: Float = 0f,
+        var weightedMark: Float = 0f,
+        var createdDate: LocalDateTime = LocalDateTime.now(),
+        var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
-    fun editName(newName: String? = null): Assignment {
+    fun editName(newName: String = ""): Assignment {
         return copy(name = newName, lastModifiedDate = LocalDateTime.now())
     }
 
@@ -20,23 +20,23 @@ data class Assignment(
         return copy(dueDate = newDueDate, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editScore(newScore: Double? = null): Assignment {
+    fun editScore(newScore: Float = 0f): Assignment {
         return copy(
             score = newScore,
-            weightedMark = weight?.let { newScore?.times(it / 100) },
+                weightedMark = weight.let { newScore.times(it / 100) },
             lastModifiedDate = LocalDateTime.now()
         )
     }
 
-    fun editWeight(newWeight: Double? = null): Assignment {
+    fun editWeight(newWeight: Float = 0f): Assignment {
         return copy(
             weight = newWeight,
-            weightedMark = score?.let { newWeight?.times(it / 100) },
+                weightedMark = score.let { newWeight.times(it / 100) },
             lastModifiedDate = LocalDateTime.now()
         )
     }
 
-    fun editWeightedMark(newWeightedMark: Double? = null): Assignment {
+    fun editWeightedMark(newWeightedMark: Float = 0f): Assignment {
         return copy(weightedMark = newWeightedMark, lastModifiedDate = LocalDateTime.now())
     }
 }
@@ -46,11 +46,13 @@ fun MutableList<Assignment>.findNextID(): Int {
 }
 
 fun MutableList<Assignment>.add(
-    name: String? = null,
-    dueDate: LocalDateTime? = null,
-    score: Double? = null,
-    weight: Double? = null,
+        name: String = "",
+        dueDate: LocalDateTime? = LocalDateTime.now(),
+        score: Float = 0f,
+        weight: Float = 0f,
 ) {
+    val weightedMark = (score * weight / 100)
+
     this.add(
         Assignment(
             id = findNextID(),
@@ -58,12 +60,12 @@ fun MutableList<Assignment>.add(
             dueDate = dueDate,
             score = score,
             weight = weight,
-            weightedMark = weight?.let { score?.times(it / 100) }
+                weightedMark = weightedMark
         )
     )
 }
 
-fun MutableList<Assignment>.editName(newName: String? = null, id: Int) {
+fun MutableList<Assignment>.editName(newName: String = "", id: Int) {
     this.forEachIndexed { index, assignment ->
         if (assignment.id == id) {
             this[index] = this[index].editName(newName)
@@ -81,7 +83,7 @@ fun MutableList<Assignment>.editDueDate(newDueDate: LocalDateTime? = null, id: I
     }
 }
 
-fun MutableList<Assignment>.editScore(newScore: Double? = null, id: Int) {
+fun MutableList<Assignment>.editScore(newScore: Float = 0f, id: Int) {
     this.forEachIndexed { index, assignment ->
         if (assignment.id == id) {
             this[index] = this[index].editScore(newScore)
@@ -90,7 +92,7 @@ fun MutableList<Assignment>.editScore(newScore: Double? = null, id: Int) {
     }
 }
 
-fun MutableList<Assignment>.editWeight(newWeight: Double? = null, id: Int) {
+fun MutableList<Assignment>.editWeight(newWeight: Float = 0f, id: Int) {
     this.forEachIndexed { index, assignment ->
         if (assignment.id == id) {
             this[index] = this[index].editWeight(newWeight)
@@ -99,7 +101,7 @@ fun MutableList<Assignment>.editWeight(newWeight: Double? = null, id: Int) {
     }
 }
 
-fun MutableList<Assignment>.editWeightedMark(newWeightedMark: Double? = null, id: Int) {
+fun MutableList<Assignment>.editWeightedMark(newWeightedMark: Float = 0f, id: Int) {
     this.forEachIndexed { index, assignment ->
         if (assignment.id == id) {
             this[index] = this[index].editWeightedMark(newWeightedMark)

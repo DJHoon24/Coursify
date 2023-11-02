@@ -5,8 +5,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 
 data class UserPreferences(
-    var windowWidth: Dp = 800.dp,
-    var windowHeight: Dp = 600.dp,
+        var windowWidth: Dp = 1000.dp, // Minimum value
+        var windowHeight: Dp = 600.dp, // Minimum value
     var placement: WindowPlacement = WindowPlacement.Floating,
     var isMinimized: Boolean = false,
     var positionX: Dp = 100.dp,
