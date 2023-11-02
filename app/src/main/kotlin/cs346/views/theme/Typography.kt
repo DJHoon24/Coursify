@@ -2,6 +2,7 @@ package cs346.views.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +35,8 @@ val MartianMonoFamily = FontFamily(
 data class ExtendedTypography(
     val cardHeading: TextStyle,
     val cardSubheading: TextStyle,
+    val noteTitle: TextStyle,
+    val noteBody: TextStyle,
 )
 
 val LocalExtendedTypography = staticCompositionLocalOf {
@@ -47,6 +50,17 @@ val LocalExtendedTypography = staticCompositionLocalOf {
             fontFamily = NotoSansMonoFamily,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
-        )
+        ),
+        noteTitle = TextStyle(
+            fontFamily = MartianMonoFamily,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 32.sp,
+            color = Color.White
+        ),
+        noteBody = TextStyle(
+            fontFamily = NotoSansMonoFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+        ),
     )
 }

@@ -11,8 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
-import cs346.views.components.*
-import cs346.views.theme.*
+import cs346.views.components.AddCourseButton
+import cs346.views.components.CourseCard
+import cs346.views.theme.PADDING_MEDIUM
+import cs346.views.theme.PADDING_SMALL
 
 @Composable
 fun CourseListPage(windowState: WindowState) {

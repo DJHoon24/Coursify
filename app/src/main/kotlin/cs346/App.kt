@@ -1,10 +1,12 @@
 package cs346
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import cs346.controller.FileUserPreferencesController
@@ -12,14 +14,20 @@ import cs346.controller.UserPreferencesController
 import cs346.model.UserPreferences
 import cs346.views.components.MarkdownViewer
 import cs346.views.pages.CourseListPage
+import cs346.views.theme.PADDING_SMALL
 import java.io.File
 
+enum class CurrentView {
+    CourseList,
+    MarkdownViewer
+}
 fun main() = application {
     // TODO: save the user preferences in db instead of local file
     val userHome = System.getProperty("user.home")
     val desktopDirectory = "$userHome/Desktop"
-    val preferencesController = FileUserPreferencesController(File(desktopDirectory,"user-preferences.txt"))
+    val preferencesController = FileUserPreferencesController(File(desktopDirectory, "user-preferences.txt"))
     val windowState = rememberWindowState()
+    var currentView by remember { mutableStateOf(CurrentView.CourseList) }
 
     ManageUserPreferences(preferencesController, windowState)
 
@@ -28,9 +36,23 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication
     ) {
-        Column{
-            CourseListPage(windowState)
-            MarkdownViewer()
+        Row {
+            when (currentView) {
+                CurrentView.CourseList ->
+                    Column {
+                        Button(
+                            onClick = {currentView = CurrentView.MarkdownViewer},
+                            modifier = Modifier.padding(PADDING_SMALL)
+                        ) {
+                            Text(text="Make a New Note")
+                        }
+                        CourseListPage(windowState)
+                    }
+
+                CurrentView.MarkdownViewer -> MarkdownViewer(
+                    onNavigate = { currentView = CurrentView.CourseList }
+                )
+            }
         }
     }
 }
