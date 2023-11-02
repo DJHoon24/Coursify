@@ -2,14 +2,16 @@ package cs346.controller
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.rememberWindowState
+import cs346.model.Course
 import cs346.model.Screen
 import cs346.views.pages.CourseListScreen
+import cs346.views.pages.CourseScreen
 import cs346.views.pages.LandingScreen
 import cs346.views.pages.MarkdownViewer
 
 @Composable
 fun CustomNavigationHost(
-    navController: NavController,
+        navController: NavController,
 //    courses: MutableList<Int>,
 //    notes: MutableList<Int>
 ) {
@@ -21,6 +23,10 @@ fun CustomNavigationHost(
 
         composable(Screen.CourseListScreen.route) {
             CourseListScreen(windowState)
+        }
+
+        composable(Screen.CourseScreen.route) {
+            CourseScreen(Course(id = 1), navController)
         }
 
         composable(Screen.DefaultMarkdownScreen.route) {
