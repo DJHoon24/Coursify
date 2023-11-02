@@ -21,6 +21,7 @@ object BaseColorScheme {
             Color(0xFF7368B9)
         ),
     )
+    val DEFAULT_USER_BACKGROUND = Color(0xFFD8D8D8)
 }
 
 @Immutable
@@ -29,6 +30,7 @@ data class ExtendedColors(
     val background: Color,
     val fadedBackground: Brush,
     val landingBackground: Brush,
+    val userBackground: Color
 )
 
 val LocalExtendedColors = staticCompositionLocalOf {
@@ -36,6 +38,7 @@ val LocalExtendedColors = staticCompositionLocalOf {
         primary = BaseColorScheme.PRIMARY,
         background = BaseColorScheme.LIGHT_BACKGROUND,
         fadedBackground = BaseColorScheme.FADED_BACKGROUND,
-        landingBackground = BaseColorScheme.LANDING_BACKGROUND
+        landingBackground = BaseColorScheme.LANDING_BACKGROUND,
+        userBackground = BaseColorScheme.DEFAULT_USER_BACKGROUND
     )
 }

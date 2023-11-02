@@ -4,33 +4,33 @@ import java.time.LocalDateTime
 
 data class Course(
     var id: Int,
-    var courseNumber: String? = null,
-    var lectureInfo: String? = null,
-    var courseDescription: String? = null,
-    var review: String? = null,
-    var rating: Int? = null,
+    var courseNumber: String,
+    var lectureInfo: String,
+    var courseDescription: String,
+    var review: String,
+    var rating: Int,
     var notes: MutableList<Note> = mutableListOf(),
     var assignments: MutableList<Assignment> = mutableListOf(),
     var createdDate: LocalDateTime = LocalDateTime.now(),
     var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
-    fun editCourseNumber(newCourseNumber: String? = null): Course {
+    fun editCourseNumber(newCourseNumber: String): Course {
         return copy(courseNumber = newCourseNumber, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editLectureInfo(newLectureInfo: String? = null): Course {
+    fun editLectureInfo(newLectureInfo: String): Course {
         return copy(lectureInfo = newLectureInfo, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editCourseDescription(newCourseDescription: String? = null): Course {
+    fun editCourseDescription(newCourseDescription: String): Course {
         return copy(courseDescription = newCourseDescription, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editReview(newReview: String? = null): Course {
+    fun editReview(newReview: String): Course {
         return copy(review = newReview, lastModifiedDate = LocalDateTime.now())
     }
 
-    fun editRating(newRating: Int? = null): Course {
+    fun editRating(newRating: Int): Course {
         return copy(rating = newRating, lastModifiedDate = LocalDateTime.now())
     }
 }
@@ -40,11 +40,11 @@ fun MutableList<Course>.findNextID(): Int {
 }
 
 fun MutableList<Course>.add(
-    courseNumber: String? = null,
-    lectureInfo: String? = null,
-    courseDescription: String? = null,
-    review: String? = null,
-    rating: Int? = null,
+    courseNumber: String,
+    lectureInfo: String,
+    courseDescription: String,
+    review: String,
+    rating: Int,
 ) {
     this.add(
         Course(
@@ -58,7 +58,7 @@ fun MutableList<Course>.add(
     )
 }
 
-fun MutableList<Course>.editCourseNumber(newCourseNumber: String? = null, id: Int) {
+fun MutableList<Course>.editCourseNumber(newCourseNumber: String, id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editCourseNumber(newCourseNumber)
@@ -67,7 +67,7 @@ fun MutableList<Course>.editCourseNumber(newCourseNumber: String? = null, id: In
     }
 }
 
-fun MutableList<Course>.editLectureInfo(newLectureInfo: String? = null, id: Int) {
+fun MutableList<Course>.editLectureInfo(newLectureInfo: String, id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editLectureInfo(newLectureInfo)
@@ -76,7 +76,7 @@ fun MutableList<Course>.editLectureInfo(newLectureInfo: String? = null, id: Int)
     }
 }
 
-fun MutableList<Course>.editCourseDescription(courseDescription: String? = null, id: Int) {
+fun MutableList<Course>.editCourseDescription(courseDescription: String, id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editCourseDescription(courseDescription)
@@ -85,7 +85,7 @@ fun MutableList<Course>.editCourseDescription(courseDescription: String? = null,
     }
 }
 
-fun MutableList<Course>.editReview(newReview: String? = null, id: Int) {
+fun MutableList<Course>.editReview(newReview: String, id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editReview(newReview)
@@ -94,7 +94,7 @@ fun MutableList<Course>.editReview(newReview: String? = null, id: Int) {
     }
 }
 
-fun MutableList<Course>.editRating(newRating: Int? = null, id: Int) {
+fun MutableList<Course>.editRating(newRating: Int, id: Int) {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
             this[index] = this[index].editRating(newRating)

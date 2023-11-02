@@ -3,14 +3,14 @@ package cs346.model
 import java.time.LocalDateTime
 
 data class Assignment(
-        var id: Int,
-        var name: String = "",
-        var dueDate: LocalDateTime? = LocalDateTime.now(),
-        var score: Float = 0f,
-        var weight: Float = 0f,
-        var weightedMark: Float = 0f,
-        var createdDate: LocalDateTime = LocalDateTime.now(),
-        var lastModifiedDate: LocalDateTime = LocalDateTime.now()
+    var id: Int,
+    var name: String = "",
+    var dueDate: LocalDateTime? = LocalDateTime.now(),
+    var score: Float = 0f,
+    var weight: Float = 0f,
+    var weightedMark: Float = 0f,
+    var createdDate: LocalDateTime = LocalDateTime.now(),
+    var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
     fun editName(newName: String = ""): Assignment {
         return copy(name = newName, lastModifiedDate = LocalDateTime.now())
@@ -23,7 +23,7 @@ data class Assignment(
     fun editScore(newScore: Float = 0f): Assignment {
         return copy(
             score = newScore,
-                weightedMark = weight.let { newScore.times(it / 100) },
+            weightedMark = weight.let { newScore.times(it / 100) },
             lastModifiedDate = LocalDateTime.now()
         )
     }
@@ -31,7 +31,7 @@ data class Assignment(
     fun editWeight(newWeight: Float = 0f): Assignment {
         return copy(
             weight = newWeight,
-                weightedMark = score.let { newWeight.times(it / 100) },
+            weightedMark = score.let { newWeight.times(it / 100) },
             lastModifiedDate = LocalDateTime.now()
         )
     }
@@ -46,10 +46,10 @@ fun MutableList<Assignment>.findNextID(): Int {
 }
 
 fun MutableList<Assignment>.add(
-        name: String = "",
-        dueDate: LocalDateTime? = LocalDateTime.now(),
-        score: Float = 0f,
-        weight: Float = 0f,
+    name: String = "",
+    dueDate: LocalDateTime? = LocalDateTime.now(),
+    score: Float = 0f,
+    weight: Float = 0f,
 ) {
     val weightedMark = (score * weight / 100)
 
@@ -60,7 +60,7 @@ fun MutableList<Assignment>.add(
             dueDate = dueDate,
             score = score,
             weight = weight,
-                weightedMark = weightedMark
+            weightedMark = weightedMark
         )
     )
 }

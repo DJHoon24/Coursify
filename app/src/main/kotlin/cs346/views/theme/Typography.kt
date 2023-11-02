@@ -33,8 +33,8 @@ val MartianMonoFamily = FontFamily(
 
 @Immutable
 data class ExtendedTypography(
-    val cardHeading: TextStyle,
-    val cardSubheading: TextStyle,
+    val cardHeading: (bold: Boolean) -> TextStyle,
+    val cardSubheading: (bold: Boolean) -> TextStyle,
     val tableHeading: TextStyle,
     val tableBody: TextStyle,
     val noteTitle: TextStyle,
@@ -44,16 +44,20 @@ data class ExtendedTypography(
 
 val LocalExtendedTypography = staticCompositionLocalOf {
     ExtendedTypography(
-        cardHeading = TextStyle(
-            fontFamily = MartianMonoFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 18.sp,
-        ),
-        cardSubheading = TextStyle(
-            fontFamily = NotoSansMonoFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
-        ),
+        cardHeading = { bold ->
+            TextStyle(
+                fontFamily = MartianMonoFamily,
+                fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
+                fontSize = 18.sp,
+            )
+        },
+        cardSubheading = { bold ->
+            TextStyle(
+                fontFamily = NotoSansMonoFamily,
+                fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
+                fontSize = 14.sp,
+            )
+        },
         tableHeading = TextStyle(
             fontFamily = MartianMonoFamily,
             fontWeight = FontWeight.SemiBold,
@@ -65,17 +69,17 @@ val LocalExtendedTypography = staticCompositionLocalOf {
             fontSize = 14.sp,
                 color = Color.Black,
         ),
-            noteTitle = TextStyle(
-                    fontFamily = MartianMonoFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 32.sp,
-                    color = Color.White
-            ),
-            noteBody = TextStyle(
-                    fontFamily = NotoSansMonoFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-            ),
+        noteTitle = TextStyle(
+                fontFamily = MartianMonoFamily,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 32.sp,
+                color = Color.White
+        ),
+        noteBody = TextStyle(
+                fontFamily = NotoSansMonoFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+        ),
         landingTitle = TextStyle(
             fontFamily = MartianMonoFamily,
             fontWeight = FontWeight.Bold,

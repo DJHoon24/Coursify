@@ -17,7 +17,7 @@ import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
 
 @Composable
-fun CourseListPage(windowState: WindowState) {
+fun CourseListScreen(windowState: WindowState) {
     var courses by remember { mutableStateOf(listOf<CourseCardData>()) }
     val scrollState = rememberLazyGridState()
 

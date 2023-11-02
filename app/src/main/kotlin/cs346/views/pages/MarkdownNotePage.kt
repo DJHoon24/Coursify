@@ -21,7 +21,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
+import cs346.controller.NavController
 import cs346.model.Note
+import cs346.model.Screen
 import cs346.views.components.MARKDOWN_EDIT_TEST_TAG
 import cs346.views.components.MARKDOWN_VIEW_TEST_TAG
 import cs346.views.components.NOTE_TITLE_TEST_TAG
@@ -34,7 +36,7 @@ enum class EditorMode {
 }
 
 @Composable
-fun MarkdownViewer(onNavigate: () -> Unit, note: Note? = null, courseID: Int = 0) {
+fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: Int = 0) {
     val markdownText = remember { mutableStateOf(TextFieldValue(note?.content ?: "")) }
     val title = remember { mutableStateOf(note?.title ?: "") }
     var editorMode by remember { mutableStateOf(EditorMode.Editing) }
@@ -78,7 +80,7 @@ fun MarkdownViewer(onNavigate: () -> Unit, note: Note? = null, courseID: Int = 0
                         println("Edit pre-existing note")
                         // Find NoteID and corresponding CourseID in model class and call edit note or create new note.
                     }
-                    onNavigate()
+                    navController.navigate(Screen.CourseListScreen.route)
                 },
                 modifier = Modifier.padding(PADDING_SMALL)
             ) {
