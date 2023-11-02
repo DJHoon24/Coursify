@@ -66,7 +66,7 @@ fun AssignmentsTable(data: Array<Assignment>) {
     }
     var tableData by remember { mutableStateOf(transformedRowData) }
 
-    var weightedMark = 0f;
+    var weightedMark = 0f
     for (i in 0 until data.size) {
         weightedMark += data[i].score * (data[i].weight / 100)
     }
