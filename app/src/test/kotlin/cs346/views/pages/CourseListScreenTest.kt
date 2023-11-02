@@ -21,7 +21,7 @@ class CourseCardListTest {
     fun addCourseButtonTest() {
         val windowState = WindowState(size = DpSize(900.dp, 900.dp))
         composeTestRule.setContent {
-            CourseListPage(windowState = windowState)
+            CourseListScreen(windowState = windowState)
         }
 
         // Assert that AddCourseButton is displayed initially

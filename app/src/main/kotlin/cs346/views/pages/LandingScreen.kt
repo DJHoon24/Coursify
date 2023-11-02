@@ -15,11 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cs346.controller.NavController
+import cs346.model.Screen
 import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.PADDING_MEDIUM
 
 @Composable
-fun LandingPage(onNavigate: () -> Unit) {
+fun LandingScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -35,12 +37,12 @@ fun LandingPage(onNavigate: () -> Unit) {
             Text(
                 text = "The all-in-one note taking\napp to help you take\ncontrol of your semester",
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = ExtendedTheme.typography.cardSubheading,
+                style = ExtendedTheme.typography.cardSubheading(false),
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
             OutlinedButton(
-                onClick = onNavigate,
+                onClick = { navController.navigate(Screen.CourseListScreen.route) },
                 modifier = Modifier
                     .padding(PADDING_MEDIUM)
                     .align(Alignment.CenterHorizontally),

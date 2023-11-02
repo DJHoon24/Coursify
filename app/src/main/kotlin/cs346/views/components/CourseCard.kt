@@ -63,18 +63,18 @@ private fun CourseCardEditableText(courseCardData: CourseCardData) {
             .padding(start = 16.dp, bottom = 8.dp, top = 12.73.dp)
             .testTag(COURSE_CODE_TEST_TAG)
             .focusRequester(focusRequester),
-        textStyle = ExtendedTheme.typography.cardHeading,
+        textStyle = ExtendedTheme.typography.cardHeading(false),
     )
     BasicTextField(
         value = courseCardData.schedule.value,
-        onValueChange = { if (it.length < COURSE_SCHEDULE_MAX_LEN) courseCardData.schedule.value = it},
+        onValueChange = { if (it.length < COURSE_SCHEDULE_MAX_LEN) courseCardData.schedule.value = it },
         singleLine = true,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         modifier = Modifier
             .padding(start = 16.dp)
             .testTag(COURSE_SCHEDULE_TEST_TAG),
-        textStyle = ExtendedTheme.typography.cardSubheading,
+        textStyle = ExtendedTheme.typography.cardSubheading(false),
     )
 }
 
@@ -84,19 +84,24 @@ private fun CourseCardStaticText(courseCardData: CourseCardData) {
         text = courseCardData.courseCode.value,
         modifier = Modifier
             .padding(start = 16.dp, bottom = 8.dp, top = 12.73.dp),
-        style = ExtendedTheme.typography.cardHeading,
+        style = ExtendedTheme.typography.cardHeading(false),
     )
     Text(
         text = courseCardData.schedule.value,
         modifier = Modifier
             .padding(start = 16.dp),
-        style = ExtendedTheme.typography.cardSubheading,
+        style = ExtendedTheme.typography.cardSubheading(false),
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CourseCardContainer(thumbnailColor: Color, cardWidth: Dp, cardHeight: Dp, textComponent: @Composable () -> Unit) {
+private fun CourseCardContainer(
+    thumbnailColor: Color,
+    cardWidth: Dp,
+    cardHeight: Dp,
+    textComponent: @Composable () -> Unit
+) {
 
     OutlinedCard(
         colors = CardDefaults.cardColors(
@@ -108,13 +113,14 @@ private fun CourseCardContainer(thumbnailColor: Color, cardWidth: Dp, cardHeight
             .size(cardWidth, cardHeight),
     ) {
         Box(
-          modifier = Modifier
-              .testTag("courseCardContainer")
-              .size(cardWidth, cardHeight / 3 * 2)
-              .background(
-                  color = thumbnailColor,
-                  shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp, bottomStart = 0.dp, bottomEnd = 0.dp))
-        ){}
+            modifier = Modifier
+                .testTag("courseCardContainer")
+                .size(cardWidth, cardHeight / 3 * 2)
+                .background(
+                    color = thumbnailColor,
+                    shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp, bottomStart = 0.dp, bottomEnd = 0.dp)
+                )
+        ) {}
         textComponent()
     }
 }
