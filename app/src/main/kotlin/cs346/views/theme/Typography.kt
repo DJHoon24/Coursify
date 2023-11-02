@@ -37,6 +37,7 @@ data class ExtendedTypography(
     val cardSubheading: TextStyle,
     val noteTitle: TextStyle,
     val noteBody: TextStyle,
+    val landingTitle: TextStyle,
 )
 
 val LocalExtendedTypography = staticCompositionLocalOf {
@@ -62,5 +63,10 @@ val LocalExtendedTypography = staticCompositionLocalOf {
             fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
         ),
+        landingTitle = TextStyle(
+            fontFamily = MartianMonoFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 40.sp,
+        )
     )
 }
