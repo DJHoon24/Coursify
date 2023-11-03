@@ -6,11 +6,11 @@ enum class Screen(
     CourseListScreen(
             route = "CourseList",
     ),
-    DefaultMarkdownScreen(
-            route = "Markdown"
+    RootMarkdownScreen(
+            route = "Markdown/{courseId}"
     ),
     MarkdownScreen(
-            route = "Markdown/{noteId}",
+            route = "Markdown/{courseId}/{noteId}",
     ),
     CourseScreen(
             route = "Course/{courseId}",

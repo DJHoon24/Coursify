@@ -2,6 +2,7 @@ package cs346.views.components
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import cs346.controller.NavController
 import cs346.model.Note
 import cs346.views.components.tables.NotesTable
 import cs346.views.theme.dateFormat
@@ -14,7 +15,7 @@ class NotesTableTest {
     val composeTestRule = createComposeRule()
 
     private val dummyData = listOf(
-            Note(1, "Note 1", createdDateTime = LocalDateTime.now(), lastModifiedDateTime = LocalDateTime.now().plusHours(1)),
+            Note(1,  "Note 1", createdDateTime = LocalDateTime.now(), lastModifiedDateTime = LocalDateTime.now().plusHours(1)),
             Note(2, "Note 2", createdDateTime = LocalDateTime.now().plusHours(2), lastModifiedDateTime = LocalDateTime.now().plusHours(3)),
     )
 
@@ -23,7 +24,7 @@ class NotesTableTest {
 
 
         composeTestRule.setContent {
-            NotesTable(data = dummyData.toTypedArray())
+            NotesTable(data = dummyData.toTypedArray(), courseId = 1, navController = NavController("test"))
         }
 
         // Verify the header row is displayed
@@ -47,7 +48,7 @@ class NotesTableTest {
     fun testNewButtonCreatesNewTableRow() {
 
         composeTestRule.setContent {
-            NotesTable(data = dummyData.toTypedArray())
+            NotesTable(data = dummyData.toTypedArray(), courseId = 1, navController = NavController("test"))
         }
 
         // Click the "New" button

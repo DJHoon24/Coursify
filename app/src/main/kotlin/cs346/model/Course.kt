@@ -44,6 +44,17 @@ fun MutableList<Course>.findNextID(): Int {
     return (this.maxOfOrNull { it.id } ?: 0) + 1
 }
 
+fun MutableList<Course>.getById(
+        id: Int
+): Course? {
+    this.forEachIndexed { index, course ->
+        if (course.id == id) {
+            return this[index]
+        }
+    }
+    return null
+}
+
 fun MutableList<Course>.add(
         courseNumber: String = "",
         lectureInfo: String = "",
@@ -64,6 +75,7 @@ fun MutableList<Course>.add(
             )
     )
 }
+
 
 fun MutableList<Course>.editCourseNumber(newCourseNumber: String = "", id: Int) {
     this.forEachIndexed { index, course ->

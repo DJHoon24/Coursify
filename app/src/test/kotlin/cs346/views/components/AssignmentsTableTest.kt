@@ -24,7 +24,7 @@ class AssignmentsTableTest {
 
 
         composeTestRule.setContent {
-            AssignmentsTable(data = dummyData.toTypedArray())
+            AssignmentsTable(data = dummyData.toTypedArray(), courseId = 1)
         }
 
         // Verify the header row is displayed
@@ -55,7 +55,7 @@ class AssignmentsTableTest {
     fun testNewButtonCreatesNewTableRow() {
 
         composeTestRule.setContent {
-            AssignmentsTable(data = dummyData.toTypedArray())
+            AssignmentsTable(data = dummyData.toTypedArray(), courseId = 1)
         }
 
         // Click the "New" button
