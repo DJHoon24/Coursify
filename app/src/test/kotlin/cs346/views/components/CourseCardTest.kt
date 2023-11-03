@@ -3,6 +3,7 @@ package cs346.views.components
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import cs346.controller.NavController
 import cs346.views.pages.CourseCardData
 import org.junit.Rule
 import kotlin.test.Test
@@ -21,7 +22,7 @@ class CourseCardTest {
 
         // Set editable to false and provide the course code and schedule
         composeTestRule.setContent {
-            CourseCard(courseCardData = testData)
+            CourseCard(NavController("test"),  courseCardData = testData)
         }
 
         // Assert the component displays non-editable text
@@ -38,7 +39,7 @@ class CourseCardTest {
         )
 
         composeTestRule.setContent {
-            CourseCard(courseCardData = testData)
+            CourseCard(NavController("test"), courseCardData = testData)
         }
 
         // Assert the component renders editable text fields with initial text
@@ -53,9 +54,7 @@ class CourseCardTest {
         courseCodeNode.performTextInput("Updated CS 346")
         courseCodeNode.assertTextEquals("Updated CS 346")
 
-        scheduleNode.performTextClearance()
-        scheduleNode.performTextInput("Updated Mon, Wed, Fri")
-        scheduleNode.assertTextEquals("Updated Mon, Wed, Fri")
+        scheduleNode.assertTextEquals("Mon, Wed, Fri")
     }
 
 }

@@ -17,7 +17,7 @@ fun CustomNavigationHost(
     val windowState = rememberWindowState()
     NavigationHost(navController) {
         composable(Screen.CourseListScreen.route) {
-            CourseListScreen(windowState)
+            CourseListScreen(navController)
         }
 
         composable(Screen.CourseScreen.route) {

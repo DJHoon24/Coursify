@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
+import cs346.controller.NavController
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -21,7 +22,7 @@ class CourseCardListTest {
     fun addCourseButtonTest() {
         val windowState = WindowState(size = DpSize(900.dp, 900.dp))
         composeTestRule.setContent {
-            CourseListScreen(windowState = windowState)
+            CourseListScreen(NavController("test"))
         }
 
         // Assert that AddCourseButton is displayed initially
