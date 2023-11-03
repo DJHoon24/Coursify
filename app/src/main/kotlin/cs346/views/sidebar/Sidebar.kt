@@ -1,27 +1,23 @@
 package cs346.views.sidebar
 
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import cs346.controller.NavController
 import cs346.model.Course
-import cs346.model.Note
 import cs346.model.Screen
-import cs346.views.theme.ExtendedColors
 import cs346.views.theme.ExtendedTheme
-import cs346.views.theme.LocalExtendedColors
 
 @Composable
 fun Sidebar(
@@ -97,7 +93,7 @@ fun CourseItem(
                     text = note.title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { navController.navigate(Screen.LandingScreen.route) }
+                        .clickable { navController.navigate(Screen.CourseListScreen.route) }
                         .padding(start = 16.dp)
                 )
             }

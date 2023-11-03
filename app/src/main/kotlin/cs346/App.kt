@@ -13,19 +13,30 @@ import cs346.controller.UserPreferencesController
 import cs346.controller.rememberNavController
 import cs346.model.Screen
 import cs346.model.UserPreferences
+import cs346.views.pages.LandingScreen
 import cs346.views.sidebar.Sidebar
 import java.io.File
 
+enum class CurrentView {
+    LandingPage,
+    LoggedIn
+}
 @Composable
 fun App() {
-    val navController by rememberNavController(Screen.CourseScreen.route)
-
-    Row {
-        Sidebar(navController)
-        Box(modifier = Modifier.fillMaxSize()) {
-            CustomNavigationHost(navController)
+    val navController by rememberNavController(Screen.CourseListScreen.route)
+    var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
+    when(currentView) {
+        CurrentView.LandingPage -> LandingScreen { currentView = CurrentView.LoggedIn }
+        CurrentView.LoggedIn -> {
+            Row {
+                Sidebar(navController)
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CustomNavigationHost(navController)
+                }
+            }
         }
     }
+
 }
 
 fun main() = application {
