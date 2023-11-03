@@ -185,13 +185,19 @@ fun applyMarkdownFormatting(textFieldValue: TextFieldValue, markdownSymbol: Stri
                 selection = TextRange(selection.start + markdownSymbol.length)
         )
     } else {
+        var leftIdx = selection.start
+        var rightIdx = selection.end
+        if (selection.end < selection.start) {
+            leftIdx = selection.end
+            rightIdx = selection.start
+        }
         // Wrap the selected text with the markdown symbol
-        val newText = textFieldValue.text.substring(0, selection.end) +
-                markdownSymbol + textFieldValue.text.substring(selection.end, selection.start) +
-                markdownSymbol + textFieldValue.text.substring(selection.start)
+        val newText = textFieldValue.text.substring(0, leftIdx) +
+                markdownSymbol + textFieldValue.text.substring(leftIdx, rightIdx) +
+                markdownSymbol + textFieldValue.text.substring(rightIdx)
         return textFieldValue.copy(
                 text = newText,
-                selection = TextRange(selection.start + markdownSymbol.length, selection.end + markdownSymbol.length)
+                selection = TextRange(leftIdx + markdownSymbol.length, rightIdx + markdownSymbol.length)
         )
     }
 }
