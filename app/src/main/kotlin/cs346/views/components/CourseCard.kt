@@ -93,12 +93,14 @@ private fun CourseCardEditableText(navController: NavController, courseCardData:
 private fun CourseCardStaticText(courseCardData: CourseCardData) {
     Text(
             text = courseCardData.courseCode.value,
+            maxLines = 1,
             modifier = Modifier
                     .padding(start = 16.dp, bottom = 8.dp, top = 12.73.dp),
             style = ExtendedTheme.typography.cardHeading(false),
     )
     Text(
             text = courseCardData.schedule.value,
+            maxLines = 1,
             modifier = Modifier
                     .padding(start = 16.dp),
             style = ExtendedTheme.typography.cardSubheading(false),
