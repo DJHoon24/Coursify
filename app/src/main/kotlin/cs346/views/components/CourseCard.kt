@@ -9,8 +9,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -19,11 +23,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import cs346.controller.NavController
+import cs346.model.Screen
 import cs346.views.pages.CourseCardData
 import cs346.views.theme.ExtendedTheme
 
 @Composable
-fun CourseCard(courseCardData: CourseCardData, cardWidth: Dp = 300.dp, cardHeight: Dp = 222.dp) {
+fun CourseCard(navController: NavController, courseCardData: CourseCardData, cardWidth: Dp = 300.dp, cardHeight: Dp = 222.dp) {
     // TODO: Randomly generate color on creation
     CourseCardContainer(
         thumbnailColor = ExtendedTheme.colors.primary,
@@ -31,7 +37,7 @@ fun CourseCard(courseCardData: CourseCardData, cardWidth: Dp = 300.dp, cardHeigh
         cardHeight,
     ) {
         if (courseCardData.editable.value) {
-            CourseCardEditableText(courseCardData)
+            CourseCardEditableText(navController, courseCardData)
         } else {
             CourseCardStaticText(courseCardData)
         }
@@ -39,15 +45,16 @@ fun CourseCard(courseCardData: CourseCardData, cardWidth: Dp = 300.dp, cardHeigh
 }
 
 @Composable
-private fun CourseCardEditableText(courseCardData: CourseCardData) {
+private fun CourseCardEditableText(navController: NavController, courseCardData: CourseCardData) {
     val focusRequester: FocusRequester = FocusRequester()
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
 
     val onEnterAction = {
-        if (courseCardData.courseCode.value.isNotEmpty() && courseCardData.schedule.value.isNotEmpty()) {
+        if (courseCardData.courseCode.value.isNotEmpty()) {
             courseCardData.editable.value = false
+            navController.navigate(Screen.CourseScreen.route.replace("{courseId}", "1"))
         }
     }
     val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
@@ -65,16 +72,13 @@ private fun CourseCardEditableText(courseCardData: CourseCardData) {
             .focusRequester(focusRequester),
         textStyle = ExtendedTheme.typography.cardHeading(false),
     )
-    BasicTextField(
-        value = courseCardData.schedule.value,
-        onValueChange = { if (it.length < COURSE_SCHEDULE_MAX_LEN) courseCardData.schedule.value = it },
-        singleLine = true,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
+    Text(
+        text = courseCardData.schedule.value,
+        maxLines = 1,
         modifier = Modifier
             .padding(start = 16.dp)
             .testTag(COURSE_SCHEDULE_TEST_TAG),
-        textStyle = ExtendedTheme.typography.cardSubheading(false),
+        style = ExtendedTheme.typography.cardSubheading(false),
     )
 }
 
