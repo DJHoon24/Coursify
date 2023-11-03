@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.rememberWindowState
 import cs346.model.Course
 import cs346.model.Screen
+import cs346.model.User
 import cs346.views.pages.CourseListScreen
 import cs346.views.pages.CourseScreen
 import cs346.views.pages.MarkdownViewer
@@ -21,20 +22,35 @@ fun CustomNavigationHost(
         }
 
         composable(Screen.CourseScreen.route) {
-            CourseScreen(Course(id = 1), navController)
+            CourseScreen(navController)
         }
 
-        composable(Screen.DefaultMarkdownScreen.route) {
-            MarkdownViewer(navController)
+        User.courses.forEach { course: Course ->
+            val courseRoute = Screen.CourseScreen.route.replace("{courseId}", course.id.toString())
+            composable(courseRoute) {
+                CourseScreen(navController, course.id)
+            }
+
+            course.notes.forEach { note ->
+                val noteRoute = Screen.MarkdownScreen.route
+                    .replace("{courseId}", course.id.toString())
+                    .replace("{noteId}", note.id.toString())
+                composable(noteRoute) {
+                    MarkdownViewer(navController, note, course.id)
+                }
+            }
+
+            composable(Screen.RootMarkdownScreen.route.replace("{courseId}", course.id.toString())) {
+                MarkdownViewer(navController = navController, courseID = course.id)
+            }
+
+
         }
 
-//        courseIds.forEach { courseId ->
-//            val route = Screen.CourseScreen.route.replace("{courseId}", courseId.toString())
-//            composable(route) {
-//                CourseScreen(courseId, navController)
-//            }
-//        }
-//
+
+
+
+
 //        notes.forEach { note ->
 //            val route = Screen.MarkdownScreen.route.replace("{noteId}", note.id.toString())
 //            composable(route) {

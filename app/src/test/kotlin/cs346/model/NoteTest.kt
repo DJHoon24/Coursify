@@ -17,8 +17,8 @@ class NoteTest {
 
     @Test
     fun testAddNotes() {
-        notesList.add("NOTE 1", "content")
-        notesList.add("NOTE 2", "2nd note")
+        notesList.add(Note(1, "NOTE 1", "content"))
+        notesList.add(Note(2, "NOTE 2", "2nd note"))
         assertEquals(2, notesList.size)
         assertEquals("NOTE 1", notesList[0].title)
         assertEquals("content", notesList[0].content)
@@ -30,7 +30,7 @@ class NoteTest {
 
     @Test
     fun testEditNotes() {
-        notesList.add("NOTE 1", "content")
+        notesList.add(Note(1, "NOTE 1", "content"))
         assertEquals(1, notesList.size)
         assertEquals("NOTE 1", notesList[0].title)
         assertEquals("content", notesList[0].content)

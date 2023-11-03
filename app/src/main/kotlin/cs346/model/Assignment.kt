@@ -3,14 +3,14 @@ package cs346.model
 import java.time.LocalDateTime
 
 data class Assignment(
-    var id: Int,
-    var name: String = "",
-    var dueDate: LocalDateTime? = LocalDateTime.now(),
-    var score: Float = 0f,
-    var weight: Float = 0f,
-    var weightedMark: Float = 0f,
-    var createdDate: LocalDateTime = LocalDateTime.now(),
-    var lastModifiedDate: LocalDateTime = LocalDateTime.now()
+        var id: Int,
+        var name: String = "",
+        var dueDate: LocalDateTime? = LocalDateTime.now(),
+        var score: Float = 0f,
+        var weight: Float = 0f,
+        var weightedMark: Float = 0f,
+        var createdDate: LocalDateTime = LocalDateTime.now(),
+        var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
     fun editName(newName: String = ""): Assignment {
         return copy(name = newName, lastModifiedDate = LocalDateTime.now())
@@ -22,17 +22,17 @@ data class Assignment(
 
     fun editScore(newScore: Float = 0f): Assignment {
         return copy(
-            score = newScore,
-            weightedMark = weight.let { newScore.times(it / 100) },
-            lastModifiedDate = LocalDateTime.now()
+                score = newScore,
+                weightedMark = weight.let { newScore.times(it / 100) },
+                lastModifiedDate = LocalDateTime.now()
         )
     }
 
     fun editWeight(newWeight: Float = 0f): Assignment {
         return copy(
-            weight = newWeight,
-            weightedMark = score.let { newWeight.times(it / 100) },
-            lastModifiedDate = LocalDateTime.now()
+                weight = newWeight,
+                weightedMark = score.let { newWeight.times(it / 100) },
+                lastModifiedDate = LocalDateTime.now()
         )
     }
 
@@ -45,23 +45,34 @@ fun MutableList<Assignment>.findNextID(): Int {
     return (this.maxOfOrNull { it.id } ?: 0) + 1
 }
 
+fun MutableList<Assignment>.getById(
+        id: Int
+): Assignment? {
+    this.forEachIndexed { index, assign ->
+        if (assign.id == id) {
+            return this[index]
+        }
+    }
+    return null
+}
+
 fun MutableList<Assignment>.add(
-    name: String = "",
-    dueDate: LocalDateTime? = LocalDateTime.now(),
-    score: Float = 0f,
-    weight: Float = 0f,
+        name: String = "",
+        dueDate: LocalDateTime? = LocalDateTime.now(),
+        score: Float = 0f,
+        weight: Float = 0f,
 ) {
     val weightedMark = (score * weight / 100)
 
     this.add(
-        Assignment(
-            id = findNextID(),
-            name = name,
-            dueDate = dueDate,
-            score = score,
-            weight = weight,
-            weightedMark = weightedMark
-        )
+            Assignment(
+                    id = findNextID(),
+                    name = name,
+                    dueDate = dueDate,
+                    score = score,
+                    weight = weight,
+                    weightedMark = weightedMark
+            )
     )
 }
 

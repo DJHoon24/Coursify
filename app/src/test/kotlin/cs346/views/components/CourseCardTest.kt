@@ -16,6 +16,7 @@ class CourseCardTest {
     @Test
     fun testStaticCourseCardRendersText() {
         val testData = CourseCardData(
+            id = 1,
             courseCode = mutableStateOf("CS 346"),
             schedule = mutableStateOf("Mon, Wed, Fri")
         )
@@ -34,6 +35,7 @@ class CourseCardTest {
     @Test
     fun testEditableCourseCardRendersTextFields() {
         val testData = CourseCardData(
+            id = 1,
             courseCode = mutableStateOf("CS 346"),
             schedule = mutableStateOf("Mon, Wed, Fri")
         )

@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -16,7 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import cs346.model.Note
+import cs346.controller.NavController
+import cs346.model.*
 import cs346.views.components.NOTES_TABLE_ROW_TEST_TAG
 import cs346.views.components.TABLE_ROW_HEIGHT
 import cs346.views.theme.ExtendedTheme
@@ -24,6 +24,7 @@ import cs346.views.theme.dateFormat
 import java.time.LocalDateTime
 
 data class NoteTableCell(
+        val id: Int,
         val state: MutableState<String> = mutableStateOf(""),
         val weight: Float,
         val isFilled: MutableState<Boolean> = mutableStateOf(false),
@@ -39,7 +40,12 @@ data class NoteTableRow(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NotesTable(data: Array<Note>) {
+fun NotesTable(data: Array<Note>?, navController: NavController, courseId: Int) {
+    println(data)
+    if (data === null) {
+        return
+    }
+
     val noteCellWeight = 0.6f
     val modifiedCellWeight = 0.2f
     val createdCellWeight = 0.2f
@@ -52,9 +58,9 @@ fun NotesTable(data: Array<Note>) {
 
     val transformedRowData = data.map {
         arrayOf(
-                NoteTableCell(mutableStateOf(it.title), noteCellWeight),
-                NoteTableCell(mutableStateOf(dateFormat.format(it.lastModifiedDateTime)), modifiedCellWeight),
-                NoteTableCell(mutableStateOf(dateFormat.format(it.createdDateTime)), createdCellWeight),
+                NoteTableCell(id = it.id, mutableStateOf(it.title), noteCellWeight),
+                NoteTableCell(id = it.id, mutableStateOf(dateFormat.format(it.lastModifiedDateTime)), modifiedCellWeight),
+                NoteTableCell(id = it.id, mutableStateOf(dateFormat.format(it.createdDateTime)), createdCellWeight),
         )
     }
     var tableData by remember { mutableStateOf(transformedRowData) }
@@ -82,6 +88,9 @@ fun NotesTable(data: Array<Note>) {
                 val keyboardActions = KeyboardActions(onDone = { onEnterAction() })
 
                 NoteTableEditableCell(
+                        tableData[it][0].id,
+                        courseId,
+                        navController,
                         tableData[it][0].state,
                         noteCellWeight,
                         tableData[it][0].isFilled,
@@ -90,18 +99,6 @@ fun NotesTable(data: Array<Note>) {
                 )
                 NoteTableStaticCell(tableData[it][1].state, modifiedCellWeight)
                 NoteTableStaticCell(tableData[it][2].state, createdCellWeight)
-
-//
-//                tableData[it].map {
-//
-//
-//                    NoteTableCellComponent(
-//                            NoteTableCell(
-//                                    state = it.state,
-//                                    weight = it.weight,
-//                            )
-//                    )
-//                }
             }
         }
 
@@ -118,8 +115,10 @@ fun NotesTable(data: Array<Note>) {
                             val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
                             val keyboardActions = KeyboardActions(onDone = { onEnterAction() })
 
+                            val newNoteId = User.courses.getById(courseId)?.notes?.findNextID() ?: -1
                             val newRow = arrayOf(
                                     NoteTableCell(
+                                            id = newNoteId,
                                             state = mutableStateOf(""),
                                             weight = noteCellWeight,
                                             isFilled = mutableStateOf(false),
@@ -127,19 +126,22 @@ fun NotesTable(data: Array<Note>) {
                                             keyboardActions = keyboardActions,
                                     ),
                                     NoteTableCell(
+                                            id = newNoteId,
                                             state = mutableStateOf(dateFormat.format(LocalDateTime.now())),
                                             weight = modifiedCellWeight
                                     ),
                                     NoteTableCell(
+                                            id = newNoteId,
                                             state = mutableStateOf(dateFormat.format(LocalDateTime.now())),
                                             weight = modifiedCellWeight
                                     )
                             )
-
-//                            val newRow = headingCells.map {
-//                                NoteTableCell(state = mutableStateOf(""), weight = it.weight)
-//                            }.toTypedArray()
                             tableData = tableData.toMutableList().plus(arrayOf(newRow))
+//                            User.courses.getById(courseId)?.notes?.add(
+//                                    Note(newNoteId, "", "", LocalDateTime.now(), LocalDateTime.now())
+//                            )
+
+                            navController.navigate(Screen.RootMarkdownScreen.route.replace("{courseId}", courseId.toString()))
                         },
                         modifier = Modifier
                                 .border(1.dp, Color.Black)
@@ -171,42 +173,30 @@ private fun RowScope.NoteTableStaticCell(
 
 @Composable
 private fun RowScope.NoteTableEditableCell(
+        noteId: Int,
+        courseId: Int,
+        navController: NavController,
         text: MutableState<String>,
         weight: Float,
         isFilled: MutableState<Boolean>,
         keyboardOptions: KeyboardOptions,
         keyboardActions: KeyboardActions,
 ) {
-    if (!isFilled.value) {
-        BasicTextField(
-                value = text.value,
-                onValueChange = {
-                    text.value = it
-                },
-                modifier = Modifier
-                        .border(1.dp, Color.Black)
-                        .weight(weight)
-                        .height(TABLE_ROW_HEIGHT)
-                        .padding(8.dp),
-                textStyle = ExtendedTheme.typography.tableBody,
-                singleLine = true,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-        )
-    } else {
-        TextButton(
-                onClick = {
-
-                },
-                modifier = Modifier
-                        .border(1.dp, Color.Black)
-                        .weight(weight)
-                        .height(TABLE_ROW_HEIGHT)
-        ) {
-            Text(text.value, style = ExtendedTheme.typography.tableBody)
-        }
+    // Note name is saved, navigate to page on click
+    TextButton(
+            onClick = {
+                navController.navigate(Screen.MarkdownScreen.route
+                    .replace("{courseId}", courseId.toString())
+                    .replace("{noteId}", noteId.toString())
+                )
+            },
+            modifier = Modifier
+                    .border(1.dp, Color.Black)
+                    .weight(weight)
+                    .height(TABLE_ROW_HEIGHT)
+    ) {
+        Text(text.value, style = ExtendedTheme.typography.tableBody)
     }
-
 }
 
 @Composable

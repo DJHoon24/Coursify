@@ -14,12 +14,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import cs346.model.Assignment
+import cs346.model.User
+import cs346.model.findNextID
+import cs346.model.getById
 import cs346.views.components.ASSIGNMENTS_TABLE_ROW_TEST_TAG
 import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.dateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 data class AssignmentTableCell(
+        val assignmentId: Int,
         val rowId: Int,
         val state: MutableState<String> = mutableStateOf(""),
         val textType: TextType,
@@ -38,7 +43,11 @@ data class AssignmentTableRow(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AssignmentsTable(data: Array<Assignment>) {
+fun AssignmentsTable(data: Array<Assignment>?, courseId: Int) {
+    if (data === null) {
+        return
+    }
+
     val nameCellWeight = 0.2f
     val dueDateCellWeight = 0.3f
     val scoreCellWeight = 0.1f
@@ -57,11 +66,11 @@ fun AssignmentsTable(data: Array<Assignment>) {
         AssignmentTableRow(
 
 
-                nameCell = AssignmentTableCell(i, mutableStateOf(it.name), TextType.STRING, nameCellWeight),
-                dueDateCell = AssignmentTableCell(i, mutableStateOf(dateFormat.format(it.dueDate)), TextType.STRING, dueDateCellWeight),
-                scoreCell = AssignmentTableCell(i, mutableStateOf(it.score.toString()), TextType.FLOAT, scoreCellWeight),
-                weightCell = AssignmentTableCell(i, mutableStateOf(it.weight.toString()), TextType.FLOAT, weightCellWeight),
-                weightedMarkCell = AssignmentTableCell(i, mutableStateOf(it.weightedMark.toString()), TextType.FLOAT, weightedMarkCellWeight),
+                nameCell = AssignmentTableCell(it.id, i, mutableStateOf(it.name), TextType.STRING, nameCellWeight),
+                dueDateCell = AssignmentTableCell(it.id, i, mutableStateOf(dateFormat.format(it.dueDate)), TextType.STRING, dueDateCellWeight),
+                scoreCell = AssignmentTableCell(it.id, i, mutableStateOf(it.score.toString()), TextType.FLOAT, scoreCellWeight),
+                weightCell = AssignmentTableCell(it.id, i, mutableStateOf(it.weight.toString()), TextType.FLOAT, weightCellWeight),
+                weightedMarkCell = AssignmentTableCell(it.id, i, mutableStateOf(it.weightedMark.toString()), TextType.FLOAT, weightedMarkCellWeight),
         )
     }
     var tableData by remember { mutableStateOf(transformedRowData) }
@@ -85,24 +94,51 @@ fun AssignmentsTable(data: Array<Assignment>) {
         // Core table rows
         items(tableData.size) {
             Row(Modifier.fillMaxWidth().testTag(ASSIGNMENTS_TABLE_ROW_TEST_TAG)) {
-                // Assignment and due date cells require no parameter overrides
+                val assignmentId = tableData[it].nameCell.assignmentId;
+
+                // Name Cell
                 AssignmentTableCellComponent(
                         AssignmentTableCell(
-                                it, tableData[it].nameCell.state, tableData[it].nameCell.textType, tableData[it].nameCell.weight
+                                assignmentId,
+                                it,
+                                tableData[it].nameCell.state,
+                                tableData[it].nameCell.textType,
+                                tableData[it].nameCell.weight,
+                                onChange = ({ value, _ ->
+                                    User.courses.getById(courseId)?.assignments?.getById(assignmentId)?.editName(value)
+                                }
+                                        )
+
                         )
-
                 )
+
+                // Due Date Cell
                 AssignmentTableCellComponent(
                         AssignmentTableCell(
-                                it, tableData[it].dueDateCell.state, tableData[it].dueDateCell.textType, tableData[it].dueDateCell.weight
+                                assignmentId,
+                                it,
+                                tableData[it].dueDateCell.state,
+                                tableData[it].dueDateCell.textType,
+                                tableData[it].dueDateCell.weight,
+                                onChange = ({ value, _ ->
+                                    val date = try {
+                                        LocalDateTime.parse(value, dateFormat)
+                                    } catch (e: Exception) {
+                                        null
+                                    }
+                                    User.courses.getById(courseId)?.assignments?.getById(assignmentId)?.editDueDate(date)
+                                })
                         )
                 )
 
-
-                // Score, weight, and weighted mark cells require onChange functions
+                // Score Cell
                 AssignmentTableCellComponent(
                         AssignmentTableCell(
-                                it, tableData[it].scoreCell.state, tableData[it].scoreCell.textType, tableData[it].scoreCell.weight,
+                                assignmentId,
+                                it,
+                                tableData[it].scoreCell.state,
+                                tableData[it].scoreCell.textType,
+                                tableData[it].scoreCell.weight,
                                 onChange = ({ value, rowId ->
                                     val mark = value.toFloatOrNull()
                                     val weight = tableData[rowId].weightCell.state.value.toFloatOrNull()
@@ -116,14 +152,22 @@ fun AssignmentsTable(data: Array<Assignment>) {
 
                                         totalMark = totalMark - prevWeightedMark + updatedRowWeightedMark
                                         tableData[rowId].weightedMarkCell.state.value = updatedRowWeightedMark.toString()
+
+                                        User.courses.getById(courseId)?.assignments?.getById(assignmentId)?.editScore(mark)
+                                        User.courses.getById(courseId)?.assignments?.getById(assignmentId)?.editWeightedMark(updatedRowWeightedMark)
                                     }
                                 })
                         )
                 )
 
+                // Weight Cell
                 AssignmentTableCellComponent(
                         AssignmentTableCell(
-                                it, tableData[it].weightCell.state, tableData[it].weightCell.textType, tableData[it].weightCell.weight,
+                                assignmentId,
+                                it,
+                                tableData[it].weightCell.state,
+                                tableData[it].weightCell.textType,
+                                tableData[it].weightCell.weight,
                                 onChange = ({ value, rowId ->
                                     val mark = tableData[rowId].scoreCell.state.value.toFloatOrNull()
                                     val weight = value.toFloatOrNull()
@@ -137,14 +181,18 @@ fun AssignmentsTable(data: Array<Assignment>) {
 
                                         totalMark = totalMark - prevWeightedMark + updatedRowWeightedMark
                                         tableData[rowId].weightedMarkCell.state.value = updatedRowWeightedMark.toString()
+
+                                        User.courses.getById(courseId)?.assignments?.getById(assignmentId)?.editWeight(weight)
+                                        User.courses.getById(courseId)?.assignments?.getById(assignmentId)?.editWeightedMark(updatedRowWeightedMark)
                                     }
                                 })
                         )
                 )
 
+                // Weighted Mark Cell
                 AssignmentTableCellComponent(
                         AssignmentTableCell(
-                                it, tableData[it].weightedMarkCell.state, tableData[it].weightedMarkCell.textType, tableData[it].weightedMarkCell.weight, editable = false
+                                assignmentId, it, tableData[it].weightedMarkCell.state, tableData[it].weightedMarkCell.textType, tableData[it].weightedMarkCell.weight, editable = false
                         )
                 )
             }
@@ -156,14 +204,26 @@ fun AssignmentsTable(data: Array<Assignment>) {
             Row(Modifier.fillMaxWidth().testTag(ASSIGNMENTS_TABLE_ROW_TEST_TAG)) {
                 TextButton(
                         onClick = {
+                            val newAssignmentId = User.courses.getById(courseId)?.assignments?.findNextID() ?: -1
                             val newRow = AssignmentTableRow(
-                                    nameCell = AssignmentTableCell(rowId = -1, textType = TextType.STRING, weight = nameCellWeight),
-                                    dueDateCell = AssignmentTableCell(rowId = -1, textType = TextType.STRING, weight = dueDateCellWeight),
-                                    scoreCell = AssignmentTableCell(rowId = -1, textType = TextType.FLOAT, weight = scoreCellWeight),
-                                    weightCell = AssignmentTableCell(rowId = -1, textType = TextType.FLOAT, weight = weightCellWeight),
-                                    weightedMarkCell = AssignmentTableCell(rowId = -1, textType = TextType.FLOAT, weight = weightedMarkCellWeight),
+                                    nameCell = AssignmentTableCell(assignmentId = newAssignmentId, rowId = -1, textType = TextType.STRING, weight = nameCellWeight),
+                                    dueDateCell = AssignmentTableCell(assignmentId = newAssignmentId, rowId = -1, textType = TextType.STRING, weight = dueDateCellWeight),
+                                    scoreCell = AssignmentTableCell(assignmentId = newAssignmentId, rowId = -1, textType = TextType.FLOAT, weight = scoreCellWeight),
+                                    weightCell = AssignmentTableCell(assignmentId = newAssignmentId, rowId = -1, textType = TextType.FLOAT, weight = weightCellWeight),
+                                    weightedMarkCell = AssignmentTableCell(assignmentId = newAssignmentId, rowId = -1, textType = TextType.FLOAT, weight = weightedMarkCellWeight),
                             )
                             tableData = tableData.toMutableList().plus(newRow)
+                            User.courses.getById(courseId)?.assignments?.add(
+                                    Assignment(
+                                            id = newAssignmentId,
+                                            name = "",
+                                            score = 0f,
+                                            weight = 0f,
+                                            weightedMark = 0f,
+                                            createdDate = LocalDateTime.now(),
+                                            lastModifiedDate = LocalDateTime.now()
+                                    )
+                            )
                         },
                         modifier = Modifier
                                 .border(1.dp, Color.Black)

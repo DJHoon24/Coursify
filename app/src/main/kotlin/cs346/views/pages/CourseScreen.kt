@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -23,7 +24,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import cs346.controller.NavController
-import cs346.model.Course
+import cs346.model.*
 import cs346.views.components.tables.AssignmentsTable
 import cs346.views.components.tables.NotesTable
 import cs346.views.theme.ExtendedTheme
@@ -116,10 +117,22 @@ fun StarRating(rating: MutableState<Int>) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CourseScreen(course: Course, navController: NavController) {
-    var courseCode by remember { mutableStateOf(course.courseNumber) }
-    var lectureSchedule by remember { mutableStateOf("Lectures: " + course.lectureInfo) }
-    var instructorInfo by remember { mutableStateOf("Professors: " + course.instructors) }
+fun CourseScreen(navController: NavController, id: Int? = null) {
+    println("CourseScreen")
+    var courseId = if (id === null) {-1} else {id};
+    var storedCourseCode = User.courses.getById(courseId)?.courseNumber ?: ""
+    var storedLectureSchedule = User.courses.getById(courseId)?.lectureInfo ?: ""
+    var storedInstructorInfo = User.courses.getById(courseId)?.instructors ?: ""
+    var storedCourseDescription = User.courses.getById(courseId)?.courseDescription ?: ""
+    var storedReview = User.courses.getById(courseId)?.review ?: ""
+    var storedRating = User.courses.getById(courseId)?.rating ?: 0
+
+    var courseCode = remember { mutableStateOf(storedCourseCode) }
+    var lectureSchedule = remember { mutableStateOf("Lectures: " + storedLectureSchedule) }
+    var instructorInfo = remember { mutableStateOf("Professors: " + storedInstructorInfo) }
+    var courseDescription = remember { mutableStateOf(storedCourseDescription) }
+    var review = remember { mutableStateOf(storedReview) }
+    var rating = remember { mutableStateOf(storedRating) }
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -138,6 +151,36 @@ fun CourseScreen(course: Course, navController: NavController) {
                     .verticalScroll(rememberScrollState())
     ) {
         // Course Code Container
+        Button( onClick = {
+            navController.navigate(Screen.CourseListScreen.route)
+        }) {
+            Text("List Page")
+        }
+        Button( onClick = {
+            if (courseId == -1) {
+                val newCourseId = User.courses.findNextID()
+                User.courses.add(
+                    courseNumber = courseCode.value,
+                    lectureInfo = lectureSchedule.value,
+                    instructors = instructorInfo.value,
+                    courseDescription = courseDescription.value,
+                    review = review.value,
+                    rating = rating.value,
+                )
+                courseId = newCourseId
+            } else {
+                User.courses.editCourseNumber(courseCode.value, courseId)
+                User.courses.editLectureInfo(lectureSchedule.value, courseId)
+                User.courses.editInstructors(instructorInfo.value, courseId)
+                User.courses.editCourseDescription(courseDescription.value, courseId)
+                User.courses.editReview(review.value, courseId)
+                User.courses.editRating(rating.value, courseId)
+            }
+        }
+        ) {
+            Text("Save")
+        }
+
         Box(
                 modifier = Modifier
                         .fillMaxWidth()
@@ -145,8 +188,11 @@ fun CourseScreen(course: Course, navController: NavController) {
                         .background(brush = ExtendedTheme.colors.fadedBackground)
         ) {
             BasicTextField(
-                    value = courseCode,
-                    onValueChange = { courseCode = it },
+                    value = courseCode.value,
+                    onValueChange = {
+                        courseCode.value = it
+                        User.courses.editCourseNumber(it, courseId)
+                    },
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
                     textStyle = ExtendedTheme.typography.pageTitle,
@@ -165,12 +211,14 @@ fun CourseScreen(course: Course, navController: NavController) {
                         .fillMaxHeight(fraction = 0.5f),
         ) {
             BasicTextField(
-                    value = lectureSchedule,
+                    value = lectureSchedule.value,
                     onValueChange = {
                         if (!it.startsWith("Lectures: ")) {
-                            lectureSchedule = "Lectures: "
+                            lectureSchedule.value = "Lectures: "
                         } else {
-                            lectureSchedule = it
+                            lectureSchedule.value = it
+                            val parsedString = it.substring(it.indexOf("Lectures: "))
+                            User.courses.editLectureInfo(parsedString, courseId)
                         }
                     },
                     keyboardOptions = keyboardOptions,
@@ -182,12 +230,14 @@ fun CourseScreen(course: Course, navController: NavController) {
             )
 
             BasicTextField(
-                    value = instructorInfo,
+                    value = instructorInfo.value,
                     onValueChange = {
                         if (!it.startsWith("Professors: ")) {
-                            instructorInfo = "Professors: "
+                            instructorInfo.value = "Professors: "
                         } else {
-                            instructorInfo = it
+                            instructorInfo.value = it
+                            val parsedString = it.substring(it.indexOf("Professors: "))
+                            User.courses.editLectureInfo(parsedString, courseId)
                         }
                     },
                     keyboardOptions = keyboardOptions,
@@ -197,18 +247,18 @@ fun CourseScreen(course: Course, navController: NavController) {
                             .padding(PADDING_LARGE, PADDING_MEDIUM, 0.dp, 0.dp),
                     singleLine = true,
             )
-            ExpandableTextField("Description", mutableStateOf(course.courseDescription))
-            ExpandableTextField("Review", mutableStateOf(course.review))
-            StarRating(mutableStateOf(course.rating))
+            ExpandableTextField("Description", courseDescription)
+            ExpandableTextField("Review", review)
+            StarRating(rating)
         }
 
         // Table Containers
         Box(modifier = Modifier.fillMaxWidth().height(300.dp)) {
-            NotesTable(course.notes.toTypedArray())
+            NotesTable(User.courses.getById(courseId)?.notes?.toTypedArray(), navController, courseId)
         }
 
         Box(modifier = Modifier.fillMaxWidth().height(300.dp)) {
-            AssignmentsTable(course.assignments.toTypedArray())
+            AssignmentsTable(User.courses.getById(courseId)?.assignments?.toTypedArray(), courseId)
         }
     }
 }

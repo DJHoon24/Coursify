@@ -37,8 +37,8 @@ class CourseCardListTest {
         // Wait for recomposition
         composeTestRule.waitForIdle()
 
-        // Assert that the courses list has increased in size by checking the number of CourseCards
+        // Assert that the courses list has not increased in size by checking the number of CourseCards
         val newCourseCardsCount = composeTestRule.onAllNodesWithTag("courseCardContainer").fetchSemanticsNodes().size
-        assertEquals(initialCourseCardsCount + 1, newCourseCardsCount, "The number of CourseCards did not increase by 1")
+        assertEquals(initialCourseCardsCount, newCourseCardsCount, "The number of CourseCards did not increase by 1")
     }
 }

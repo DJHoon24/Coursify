@@ -3,6 +3,7 @@ package cs346.views.sidebar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import cs346.controller.NavController
 import cs346.model.Course
 import cs346.model.Screen
+import cs346.model.User
 import cs346.views.theme.ExtendedTheme
 
 @Composable
@@ -24,7 +26,7 @@ fun Sidebar(
     navController: NavController,
 ) {
     val userName: String = "Paul Oh" //change to actual username
-    val courses: MutableList<Course> //make it fetch actual courses
+    val courses: MutableList<Course> = User.courses //make it fetch actual courses
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -52,11 +54,11 @@ fun Sidebar(
         Spacer(modifier = Modifier.height(24.dp))
         Text(text = "Courses", style = ExtendedTheme.typography.cardHeading(true))
 
-//        LazyColumn {
-//            items(courses.size) { index ->
-//                CourseItem(courses[index], navController)
-//            }
-//        }
+        LazyColumn {
+            items(courses.size) { index ->
+                CourseItem(courses[index], navController)
+            }
+        }
     }
 }
 
@@ -65,7 +67,7 @@ fun CourseItem(
     course: Course,
     navController: NavController
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(true) }
     val courseRoute = Screen.CourseScreen.route.replace(
         "{courseId}",
         course.id.toString()
@@ -85,15 +87,16 @@ fun CourseItem(
                 })
         if (isExpanded) {
             course.notes.forEach { note ->
-                val noteRoute = Screen.MarkdownScreen.route.replace(
-                    "{noteId}",
-                    note.id.toString()
-                )
+                val noteRoute = Screen.MarkdownScreen.route.replace("{courseId}", course.id.toString())
+                    .replace(
+                        "{noteId}",
+                        note.id.toString()
+                    )
                 Text(
                     text = note.title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { navController.navigate(Screen.CourseListScreen.route) }
+                        .clickable { navController.navigate(noteRoute) }
                         .padding(start = 16.dp)
                 )
             }
