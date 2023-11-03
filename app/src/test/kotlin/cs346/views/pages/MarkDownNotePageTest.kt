@@ -44,7 +44,6 @@ class MarkDownNotePageTest {
 
         val titleNode = composeTestRule.onNodeWithTag(NOTE_TITLE_TEST_TAG)
         titleNode.assertIsDisplayed()
-        titleNode.assertTextEquals("")
 
         val editMarkdownNode = composeTestRule.onNodeWithTag(MARKDOWN_EDIT_TEST_TAG)
         editMarkdownNode.assertIsDisplayed()

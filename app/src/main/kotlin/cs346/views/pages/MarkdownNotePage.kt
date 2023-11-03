@@ -64,6 +64,12 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                             .padding(PADDING_SMALL),
                     textStyle = ExtendedTheme.typography.noteTitle,
                     singleLine = true,
+                    decorationBox = { innerTextField ->
+                        if (title.value.isEmpty()) {
+                            Text(text = "Note Title:", color = Color.Gray, style = ExtendedTheme.typography.noteTitle)
+                        }
+                        innerTextField()  // This will draw the actual BasicTextField
+                    }
             )
         }
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {

@@ -40,11 +40,8 @@ data class NoteTableRow(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NotesTable(data: Array<Note>?, navController: NavController, courseId: Int) {
-    println(data)
-    if (data === null) {
-        return
-    }
+fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId: Int) {
+
 
     val noteCellWeight = 0.6f
     val modifiedCellWeight = 0.2f
@@ -56,7 +53,7 @@ fun NotesTable(data: Array<Note>?, navController: NavController, courseId: Int) 
             HeadingCell("Created", TextType.STRING, createdCellWeight)
     )
 
-    val transformedRowData = data.map {
+    val transformedRowData = data?.map {
         arrayOf(
                 NoteTableCell(id = it.id, mutableStateOf(it.title), noteCellWeight),
                 NoteTableCell(id = it.id, mutableStateOf(dateFormat.format(it.lastModifiedDateTime)), modifiedCellWeight),
@@ -76,29 +73,31 @@ fun NotesTable(data: Array<Note>?, navController: NavController, courseId: Int) 
         }
 
         // Core table rows
-        items(tableData.size) {
-            Row(Modifier.fillMaxWidth().testTag(NOTES_TABLE_ROW_TEST_TAG)) {
-                // State for cell editability
-                val onEnterAction = {
-                    if (tableData[it][0].state.value.isNotEmpty()) {
-                        tableData[it][0].isFilled.value = true
+        tableData?.let {
+            items(it.size) {
+                Row(Modifier.fillMaxWidth().testTag(NOTES_TABLE_ROW_TEST_TAG)) {
+                    // State for cell editability
+                    val onEnterAction = {
+                        if (tableData!![it][0].state.value.isNotEmpty()) {
+                            tableData!![it][0].isFilled.value = true
+                        }
                     }
-                }
-                val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
-                val keyboardActions = KeyboardActions(onDone = { onEnterAction() })
+                    val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+                    val keyboardActions = KeyboardActions(onDone = { onEnterAction() })
 
-                NoteTableEditableCell(
-                        tableData[it][0].id,
+                    NoteTableEditableCell(
+                        tableData!![it][0].id,
                         courseId,
                         navController,
-                        tableData[it][0].state,
+                        tableData!![it][0].state,
                         noteCellWeight,
-                        tableData[it][0].isFilled,
+                        tableData!![it][0].isFilled,
                         keyboardOptions,
                         keyboardActions,
-                )
-                NoteTableStaticCell(tableData[it][1].state, modifiedCellWeight)
-                NoteTableStaticCell(tableData[it][2].state, createdCellWeight)
+                    )
+                    NoteTableStaticCell(tableData!![it][1].state, modifiedCellWeight)
+                    NoteTableStaticCell(tableData!![it][2].state, createdCellWeight)
+                }
             }
         }
 
@@ -108,8 +107,8 @@ fun NotesTable(data: Array<Note>?, navController: NavController, courseId: Int) 
                 TextButton(
                         onClick = {
                             val onEnterAction = {
-                                if (tableData[tableData.size][0].state.value.isNotEmpty()) {
-                                    tableData[tableData.size][0].isFilled.value = true
+                                if (tableData?.get(tableData!!.size)?.get(0)?.state?.value?.isNotEmpty() == true) {
+                                    tableData?.get(tableData!!.size)?.get(0)?.isFilled?.value ?: true
                                 }
                             }
                             val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
@@ -136,7 +135,7 @@ fun NotesTable(data: Array<Note>?, navController: NavController, courseId: Int) 
                                             weight = modifiedCellWeight
                                     )
                             )
-                            tableData = tableData.toMutableList().plus(arrayOf(newRow))
+                            tableData = tableData?.toMutableList()?.plus(arrayOf(newRow))
 //                            User.courses.getById(courseId)?.notes?.add(
 //                                    Note(newNoteId, "", "", LocalDateTime.now(), LocalDateTime.now())
 //                            )
