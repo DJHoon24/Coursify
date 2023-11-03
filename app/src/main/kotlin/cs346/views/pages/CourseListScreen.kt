@@ -33,7 +33,7 @@ fun CourseListScreen(navController: NavController) {
     val windowHeight = windowSize.height.dp
 
     val cardWidth = windowWidth / 3 - PADDING_MEDIUM
-    val cardHeight = windowHeight * 2 / 7 - PADDING_MEDIUM
+    val cardHeight = windowHeight / 5 - PADDING_MEDIUM
 
     Column(modifier = Modifier.fillMaxSize().background(ExtendedTheme.colors.pageBackground)) {
         LazyVerticalGrid(

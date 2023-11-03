@@ -25,7 +25,7 @@ import cs346.views.theme.ExtendedTheme
 fun Sidebar(
     navController: NavController,
 ) {
-    val userName: String = "Paul Oh" //change to actual username
+    val userName: String = "${User.firstName} ${User.lastName}" //change to actual username
     val courses: MutableList<Course> = User.courses //make it fetch actual courses
     Column(
         modifier = Modifier

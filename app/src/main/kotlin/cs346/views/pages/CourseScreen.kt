@@ -118,7 +118,6 @@ fun StarRating(rating: MutableState<Int>) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CourseScreen(navController: NavController, id: Int? = null) {
-    println("CourseScreen")
     var courseId = if (id === null) {
         -1
     } else {

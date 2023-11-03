@@ -85,14 +85,12 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
             Button(
                     onClick = {
                         if (note == null) {
-                            println("Save New Note")
                             // Save new note in courseID
                             User.courses.getById(courseID)?.notes?.addNote(title.value, markdownText.value.text)
 
                         } else {
-                            println("Edit pre-existing note")
                             // Find NoteID and corresponding CourseID in model class and call edit note or create new note.
-                            User.courses.getById(courseID)?.notes?.getById(note.id)?.editNote(title.value, markdownText.value.text)
+                            User.courses.getById(courseID)?.notes?.edit(title.value, markdownText.value.text, note.id)
                         }
                         navController.navigate(Screen.CourseListScreen.route)
                     },

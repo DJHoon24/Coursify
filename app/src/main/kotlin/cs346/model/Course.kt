@@ -1,19 +1,20 @@
 package cs346.model
 
+import androidx.compose.runtime.mutableStateListOf
 import java.time.LocalDateTime
 
 data class Course(
-        var id: Int,
-        var courseNumber: String = "",
-        var lectureInfo: String = "",
-        var instructors: String = "",
-        var courseDescription: String = "",
-        var review: String = "",
-        var rating: Int = 1,
-        var notes: MutableList<Note> = mutableListOf(),
-        var assignments: MutableList<Assignment> = mutableListOf(),
-        var createdDate: LocalDateTime = LocalDateTime.now(),
-        var lastModifiedDate: LocalDateTime = LocalDateTime.now()
+    var id: Int,
+    var courseNumber: String = "",
+    var lectureInfo: String = "",
+    var instructors: String = "",
+    var courseDescription: String = "",
+    var review: String = "",
+    var rating: Int = 1,
+    var notes: MutableList<Note> = mutableStateListOf(),
+    var assignments: MutableList<Assignment> = mutableStateListOf(),
+    var createdDate: LocalDateTime = LocalDateTime.now(),
+    var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
     fun editCourseNumber(newCourseNumber: String = ""): Course {
         return copy(courseNumber = newCourseNumber, lastModifiedDate = LocalDateTime.now())
