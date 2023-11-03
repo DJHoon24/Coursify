@@ -51,8 +51,11 @@ fun Sidebar(
                 contentDescription = "Settings"
             )
         }
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "Courses", style = ExtendedTheme.typography.cardHeading(true))
+        Text(
+            text = "Courses",
+            style = ExtendedTheme.typography.sidebarHeadingText,
+            modifier = Modifier.padding(top = 24.dp, bottom = 4.dp)
+        )
 
         LazyColumn {
             items(courses.size) { index ->
@@ -78,13 +81,15 @@ fun CourseItem(
             .clickable { isExpanded = !isExpanded }
     ) {
         Text(text = course.courseNumber,
+            style = ExtendedTheme.typography.sidebarCourse,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
                     navController.navigate(
                         courseRoute
                     )
-                })
+                }
+                .padding(top = 10.dp, start = 12.dp))
         if (isExpanded) {
             course.notes.forEach { note ->
                 val noteRoute = Screen.MarkdownScreen.route.replace("{courseId}", course.id.toString())
@@ -94,10 +99,11 @@ fun CourseItem(
                     )
                 Text(
                     text = note.title,
+                    style = ExtendedTheme.typography.sidebarNote,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { navController.navigate(noteRoute) }
-                        .padding(start = 16.dp)
+                        .padding(start = 28.dp, top = 6.dp)
                 )
             }
         }
