@@ -31,12 +31,17 @@ import cs346.views.pages.CourseCardData
 import cs346.views.theme.ExtendedTheme
 
 @Composable
-fun CourseCard(navController: NavController, courseCardData: CourseCardData, cardWidth: Dp = 300.dp, cardHeight: Dp = 222.dp) {
+fun CourseCard(
+    navController: NavController,
+    courseCardData: CourseCardData,
+    cardWidth: Dp = 300.dp,
+    cardHeight: Dp = 222.dp
+) {
     // TODO: Randomly generate color on creation
     CourseCardContainer(
-            thumbnailColor = ExtendedTheme.colors.primary,
-            cardWidth,
-            cardHeight,
+        thumbnailColor = ExtendedTheme.colors.primary,
+        cardWidth,
+        cardHeight,
     ) {
         if (courseCardData.editable.value) {
             CourseCardEditableText(navController, courseCardData)
@@ -63,21 +68,21 @@ private fun CourseCardEditableText(navController: NavController, courseCardData:
     val keyboardActions = KeyboardActions(onDone = { onEnterAction() })
 
     BasicTextField(
-            value = courseCardData.courseCode.value,
-            onValueChange = {
-                if (it.length < COURSE_CODE_MAX_LEN) {
-                    courseCardData.courseCode.value = it
-                    User.courses.editCourseNumber(it, courseCardData.id)
-                }
-            },
-            singleLine = true,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            modifier = Modifier
-                    .padding(start = 16.dp, bottom = 8.dp, top = 12.73.dp)
-                    .testTag(COURSE_CODE_TEST_TAG)
-                    .focusRequester(focusRequester),
-            textStyle = ExtendedTheme.typography.cardHeading(false),
+        value = courseCardData.courseCode.value,
+        onValueChange = {
+            if (it.length < COURSE_CODE_MAX_LEN) {
+                courseCardData.courseCode.value = it
+                User.courses.editCourseNumber(it, courseCardData.id)
+            }
+        },
+        singleLine = true,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        modifier = Modifier
+            .padding(start = 16.dp, bottom = 4.dp, top = 12.dp)
+            .testTag(COURSE_CODE_TEST_TAG)
+            .focusRequester(focusRequester),
+        textStyle = ExtendedTheme.typography.cardHeading(false),
     )
     Text(
         text = courseCardData.schedule.value,
@@ -92,47 +97,47 @@ private fun CourseCardEditableText(navController: NavController, courseCardData:
 @Composable
 private fun CourseCardStaticText(courseCardData: CourseCardData) {
     Text(
-            text = courseCardData.courseCode.value,
-            maxLines = 1,
-            modifier = Modifier
-                    .padding(start = 16.dp, bottom = 8.dp, top = 12.73.dp),
-            style = ExtendedTheme.typography.cardHeading(false),
+        text = courseCardData.courseCode.value,
+        maxLines = 1,
+        modifier = Modifier
+            .padding(start = 16.dp, bottom = 4.dp, top = 12.dp),
+        style = ExtendedTheme.typography.cardHeading(false),
     )
     Text(
-            text = courseCardData.schedule.value,
-            maxLines = 1,
-            modifier = Modifier
-                    .padding(start = 16.dp),
-            style = ExtendedTheme.typography.cardSubheading(false),
+        text = courseCardData.schedule.value,
+        maxLines = 1,
+        modifier = Modifier
+            .padding(start = 16.dp),
+        style = ExtendedTheme.typography.cardSubheading(false),
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CourseCardContainer(
-        thumbnailColor: Color,
-        cardWidth: Dp,
-        cardHeight: Dp,
-        textComponent: @Composable () -> Unit
+    thumbnailColor: Color,
+    cardWidth: Dp,
+    cardHeight: Dp,
+    textComponent: @Composable () -> Unit
 ) {
 
     OutlinedCard(
-            colors = CardDefaults.cardColors(
-                    containerColor = ExtendedTheme.colors.background,
-            ),
-            border = BorderStroke(1.dp, Color.Black),
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                    .size(cardWidth, cardHeight),
+        colors = CardDefaults.cardColors(
+            containerColor = ExtendedTheme.colors.background,
+        ),
+        border = BorderStroke(1.dp, Color.Black),
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier
+            .size(cardWidth, cardHeight),
     ) {
         Box(
-                modifier = Modifier
-                        .testTag("courseCardContainer")
-                        .size(cardWidth, cardHeight / 3 * 2)
-                        .background(
-                                color = thumbnailColor,
-                                shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp, bottomStart = 0.dp, bottomEnd = 0.dp)
-                        )
+            modifier = Modifier
+                .testTag("courseCardContainer")
+                .size(cardWidth, cardHeight / 3 * 2)
+                .background(
+                    color = thumbnailColor,
+                    shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp, bottomStart = 0.dp, bottomEnd = 0.dp)
+                )
         ) {}
         textComponent()
     }

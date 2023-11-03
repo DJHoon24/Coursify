@@ -1,9 +1,8 @@
 package cs346.views.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -18,6 +17,7 @@ import cs346.model.Screen
 import cs346.model.User
 import cs346.views.components.AddCourseButton
 import cs346.views.components.CourseCard
+import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
 
@@ -33,61 +33,72 @@ fun CourseListScreen(navController: NavController) {
     val windowHeight = windowSize.height.dp
 
     val cardWidth = windowWidth / 3 - PADDING_MEDIUM
-    val cardHeight = windowHeight / 5 - PADDING_MEDIUM
+    val cardHeight = windowHeight * 2 / 7 - PADDING_MEDIUM
 
-    LazyVerticalGrid(state = scrollState, columns = GridCells.Fixed(3), modifier = Modifier.padding(PADDING_SMALL)) {
-        itemsIndexed(courses) { _, courseCardData ->
-            Box(
+    Column(modifier = Modifier.fillMaxSize().background(ExtendedTheme.colors.pageBackground)) {
+        LazyVerticalGrid(
+            state = scrollState,
+            columns = GridCells.Fixed(3),
+            modifier = Modifier.padding(PADDING_SMALL)
+        ) {
+            itemsIndexed(courses) { _, courseCardData ->
+                Box(
                     modifier = Modifier
-                            .padding(PADDING_SMALL)
-                            .size(cardWidth, cardHeight)
-                            .clickable {
-                                navController.navigate(Screen.CourseScreen.route.replace("{courseId}", courseCardData.id.toString()))
-                            }
-            ) {
-                CourseCard(
-                    navController,
+                        .padding(PADDING_SMALL)
+                        .size(cardWidth, cardHeight)
+                        .clickable {
+                            navController.navigate(
+                                Screen.CourseScreen.route.replace(
+                                    "{courseId}",
+                                    courseCardData.id.toString()
+                                )
+                            )
+                        }
+                ) {
+                    CourseCard(
+                        navController,
                         CourseCardData(
-                                id = courseCardData.id,
-                                editable = mutableStateOf(
-                                        if (courseCardData.courseNumber.isNotEmpty()) {
-                                            false
-                                        } else {
-                                            true
-                                        }),
-                                courseCode = mutableStateOf(courseCardData.courseNumber),
-                                schedule = mutableStateOf(courseCardData.lectureInfo)
+                            id = courseCardData.id,
+                            editable = mutableStateOf(
+                                if (courseCardData.courseNumber.isNotEmpty()) {
+                                    false
+                                } else {
+                                    true
+                                }
+                            ),
+                            courseCode = mutableStateOf(courseCardData.courseNumber),
+                            schedule = mutableStateOf(courseCardData.lectureInfo)
                         ),
                         cardWidth = cardWidth,
                         cardHeight = cardHeight
-                )
+                    )
+                }
             }
-        }
 
-        item {
-            Box(
+            item {
+                Box(
                     modifier = Modifier
-                            .padding(8.dp)
-                            .size(cardWidth, cardHeight)
-            ) {
-                AddCourseButton {
-//                    CourseCardData(id = 0)
-//                    val newCourseId = User.courses.findNextID()
-//                    val newCourse = Course(id = newCourseId)
-//                    User.courses.add(newCourse)
-//                    courses = (courses + newCourse).toMutableList()
-//                    navController.navigate(Screen.CourseScreen.route.replace("{courseId}", newCourseId.toString()))
-                    navController.navigate(Screen.CourseScreen.route)
+                        .padding(8.dp)
+                        .size(cardWidth, cardHeight)
+                ) {
+                    AddCourseButton {
+                        //                    CourseCardData(id = 0)
+                        //                    val newCourseId = User.courses.findNextID()
+                        //                    val newCourse = Course(id = newCourseId)
+                        //                    User.courses.add(newCourse)
+                        //                    courses = (courses + newCourse).toMutableList()
+                        //                    navController.navigate(Screen.CourseScreen.route.replace("{courseId}", newCourseId.toString()))
+                        navController.navigate(Screen.CourseScreen.route)
+                    }
                 }
             }
         }
-
     }
 }
 
 data class CourseCardData(
-        val id: Int,
-        val editable: MutableState<Boolean> = mutableStateOf(true),
-        val courseCode: MutableState<String> = mutableStateOf(""),
-        val schedule: MutableState<String> = mutableStateOf("")
+    val id: Int,
+    val editable: MutableState<Boolean> = mutableStateOf(true),
+    val courseCode: MutableState<String> = mutableStateOf(""),
+    val schedule: MutableState<String> = mutableStateOf("")
 )
