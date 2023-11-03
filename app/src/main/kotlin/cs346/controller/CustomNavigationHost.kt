@@ -6,7 +6,6 @@ import cs346.model.Course
 import cs346.model.Screen
 import cs346.views.pages.CourseListScreen
 import cs346.views.pages.CourseScreen
-import cs346.views.pages.LandingScreen
 import cs346.views.pages.MarkdownViewer
 
 @Composable
@@ -17,10 +16,6 @@ fun CustomNavigationHost(
 ) {
     val windowState = rememberWindowState()
     NavigationHost(navController) {
-        composable(Screen.LandingScreen.route) {
-            LandingScreen(navController)
-        }
-
         composable(Screen.CourseListScreen.route) {
             CourseListScreen(windowState)
         }
