@@ -1,6 +1,7 @@
 package cs346.model
 
 import androidx.compose.runtime.mutableStateListOf
+import cs346.controller.APIController
 import java.time.LocalDateTime
 
 data class Course(
@@ -16,6 +17,26 @@ data class Course(
     var createdDate: LocalDateTime = LocalDateTime.now(),
     var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) {
+    companion object {
+        suspend fun createCourse(courseCode: String): Course {
+            val apiCourseData = CourseCatalogue.getCourse(courseCode)
+            if (apiCourseData === null || apiCourseData.courseId === null) {
+                return Course(
+                    id = User.courses.findNextID(),
+                    courseNumber = courseCode,
+                )
+            }
+
+            val lectureInfo = APIController.getCourseSchedule(courseId = apiCourseData.courseId)
+            return Course(
+                id = User.courses.findNextID(),
+                courseNumber = courseCode,
+                courseDescription = apiCourseData.description ?: "",
+                lectureInfo = lectureInfo,
+            )
+        }
+    }
+
     fun editCourseNumber(newCourseNumber: String = ""): Course {
         return copy(courseNumber = newCourseNumber, lastModifiedDate = LocalDateTime.now())
     }
@@ -46,7 +67,7 @@ fun MutableList<Course>.findNextID(): Int {
 }
 
 fun MutableList<Course>.getById(
-        id: Int
+    id: Int
 ): Course? {
     this.forEachIndexed { index, course ->
         if (course.id == id) {
@@ -57,23 +78,23 @@ fun MutableList<Course>.getById(
 }
 
 fun MutableList<Course>.add(
-        courseNumber: String = "",
-        lectureInfo: String = "",
-        instructors: String = "",
-        courseDescription: String = "",
-        review: String = "",
-        rating: Int = 0,
+    courseNumber: String = "",
+    lectureInfo: String = "",
+    instructors: String = "",
+    courseDescription: String = "",
+    review: String = "",
+    rating: Int = 0,
 ) {
     this.add(
-            Course(
-                    id = findNextID(),
-                    courseNumber = courseNumber,
-                    lectureInfo = lectureInfo,
-                    instructors = instructors,
-                    courseDescription = courseDescription,
-                    review = review,
-                    rating = rating
-            )
+        Course(
+            id = findNextID(),
+            courseNumber = courseNumber,
+            lectureInfo = lectureInfo,
+            instructors = instructors,
+            courseDescription = courseDescription,
+            review = review,
+            rating = rating
+        )
     )
 }
 

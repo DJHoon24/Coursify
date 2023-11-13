@@ -35,6 +35,8 @@ import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.PADDING_LARGE
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -229,16 +231,13 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                 "Save",
                 onClick = {
                     if (courseId == -1) {
-                        val newCourseId = User.courses.findNextID()
-                        User.courses.add(
-                            courseNumber = courseCode.value,
-                            lectureInfo = lectureSchedule.value,
-                            instructors = instructorInfo.value,
-                            courseDescription = courseDescription.value,
-                            review = review.value,
-                            rating = rating.value,
-                        )
-                        courseId = newCourseId
+                        runBlocking {
+                            launch {
+                                val newCourse = Course.createCourse(courseCode.value)
+                                User.courses.add(newCourse)
+                                courseId = newCourse.id
+                            }
+                        }
                     } else {
                         User.courses.editCourseNumber(courseCode.value, courseId)
                         User.courses.editLectureInfo(lectureSchedule.value, courseId)

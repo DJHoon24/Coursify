@@ -1,5 +1,6 @@
 package cs346
 
+// Ktor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,10 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
-import cs346.controller.CustomNavigationHost
-import cs346.controller.FileUserPreferencesController
-import cs346.controller.UserPreferencesController
-import cs346.controller.rememberNavController
+import cs346.controller.*
 import cs346.model.Screen
 import cs346.model.UserPreferences
 import cs346.views.pages.LandingScreen
@@ -21,11 +19,12 @@ enum class CurrentView {
     LandingPage,
     LoggedIn
 }
+
 @Composable
 fun App() {
     val navController by rememberNavController(Screen.CourseListScreen.route)
     var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
-    when(currentView) {
+    when (currentView) {
         CurrentView.LandingPage -> LandingScreen { currentView = CurrentView.LoggedIn }
         CurrentView.LoggedIn -> {
             Row {
@@ -47,6 +46,9 @@ fun main() = application {
     val windowState = rememberWindowState()
 
     ManageUserPreferences(preferencesController, windowState)
+    APIController.callRequest {
+        APIController.populateTermCourseData()
+    }
     Window(
             title = "Coursify",
             state = windowState,
@@ -55,6 +57,7 @@ fun main() = application {
         App()
     }
 }
+
 
 @Composable
 fun ManageUserPreferences(controller: UserPreferencesController, windowState: WindowState) {
@@ -69,14 +72,14 @@ fun ManageUserPreferences(controller: UserPreferencesController, windowState: Wi
     DisposableEffect(windowState) {
         onDispose {
             controller.savePreferences(
-                    UserPreferences(
-                            windowWidth = windowState.size.width,
-                            windowHeight = windowState.size.height,
-                            placement = windowState.placement,
-                            isMinimized = windowState.isMinimized,
-                            positionX = windowState.position.x,
-                            positionY = windowState.position.y,
-                    )
+                UserPreferences(
+                    windowWidth = windowState.size.width,
+                    windowHeight = windowState.size.height,
+                    placement = windowState.placement,
+                    isMinimized = windowState.isMinimized,
+                    positionX = windowState.position.x,
+                    positionY = windowState.position.y,
+                )
             )
         }
     }
