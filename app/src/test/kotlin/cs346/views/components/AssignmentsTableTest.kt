@@ -4,9 +4,10 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import cs346.model.Assignment
 import cs346.views.components.tables.AssignmentsTable
-import cs346.views.theme.dateFormat
+import cs346.views.theme.getLocalDateTime
+import kotlinx.datetime.*
+import kotlinx.datetime.TimeZone
 import org.junit.Rule
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.Test
 
@@ -15,8 +16,8 @@ class AssignmentsTableTest {
     val composeTestRule = createComposeRule()
 
     private val dummyData = listOf(
-            Assignment(1, "A1", LocalDateTime.now(), 87f, 4f, 3.48f),
-            Assignment(2, "A2", LocalDateTime.now().plusHours(1), 91f, 5f, 4.55f),
+            Assignment(1, 1, "A1", getLocalDateTime().toString(), 87f, 4f, 3.48f),
+            Assignment(2, 2, "A2", Clock.System.now().plus(1, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(TimeZone.UTC).toString(), 91f, 5f, 4.55f),
     )
 
     @Test
@@ -41,7 +42,7 @@ class AssignmentsTableTest {
         // Verify cells contain the provided data
         dummyData.forEachIndexed { _, assignment ->
             composeTestRule.onNodeWithText(assignment.name).assertIsDisplayed()
-            composeTestRule.onNodeWithText(dateFormat.format(assignment.dueDate)).assertIsDisplayed()
+            assignment.dueDate?.let { assignment.dueDate }?.let { composeTestRule.onNodeWithText(it).assertIsDisplayed() }
             composeTestRule.onNodeWithText(assignment.score.toString()).assertIsDisplayed()
             composeTestRule.onNodeWithText(assignment.weight.toString()).assertIsDisplayed()
             composeTestRule.onNodeWithText(assignment.weightedMark.toString()).assertIsDisplayed()

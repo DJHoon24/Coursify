@@ -29,7 +29,7 @@ import cs346.views.components.NOTE_TITLE_TEST_TAG
 import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
-import java.time.LocalDateTime
+import cs346.views.theme.getLocalDateTime
 
 enum class EditorMode {
     Editing, Viewing
@@ -63,7 +63,7 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                         onClick = {
                             if (note == null) {
                                 // Save new note in courseID
-                                User.courses.getById(courseID)?.notes?.addNote(title.value, markdownText.value.text)
+                                User.courses.getById(courseID)?.notes?.addNote(courseID, title.value, markdownText.value.text)
 
                             } else {
                                 // Find NoteID and corresponding CourseID in model class and call edit note or create new note.
@@ -85,7 +85,7 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                             User.courses.getById(courseID)?.notes?.getById(
                                 note?.id
                                     ?: -1
-                            )?.lastModifiedDateTime = LocalDateTime.now()
+                            )?.lastModifiedDateTime = getLocalDateTime()
                         },
                         modifier = Modifier
                             .testTag(NOTE_TITLE_TEST_TAG)

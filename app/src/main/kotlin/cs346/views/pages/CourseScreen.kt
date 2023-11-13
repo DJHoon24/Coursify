@@ -234,8 +234,14 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                         runBlocking {
                             launch {
                                 val newCourse = Course.createCourse(courseCode.value)
-                                User.courses.add(newCourse)
-                                courseId = newCourse.id
+                                courseId = User.courses.add(
+                                    courseNumber = newCourse.courseNumber,
+                                    lectureInfo = if (lectureSchedule.value.isNullOrEmpty()) newCourse.lectureInfo else lectureSchedule.value,
+                                    courseDescription = if (courseDescription.value.isNullOrEmpty()) newCourse.courseDescription else courseDescription.value,
+                                    instructors = instructorInfo.value,
+                                    review = review.value,
+                                    rating = rating.value
+                                )
                             }
                         }
                     } else {

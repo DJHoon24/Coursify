@@ -6,8 +6,9 @@ import cs346.controller.NavController
 import cs346.model.Note
 import cs346.views.components.tables.NotesTable
 import cs346.views.theme.dateFormat
+import cs346.views.theme.getLocalDateTime
+import kotlinx.datetime.*
 import org.junit.Rule
-import java.time.LocalDateTime
 import kotlin.test.Test
 
 class NotesTableTest {
@@ -15,8 +16,9 @@ class NotesTableTest {
     val composeTestRule = createComposeRule()
 
     private val dummyData = listOf(
-            Note(1,  "Note 1", createdDateTime = LocalDateTime.now(), lastModifiedDateTime = LocalDateTime.now().plusHours(1)),
-            Note(2, "Note 2", createdDateTime = LocalDateTime.now().plusHours(2), lastModifiedDateTime = LocalDateTime.now().plusHours(3)),
+            Note(1,  1, "Note 1", createdDateTime = getLocalDateTime(), lastModifiedDateTime = Clock.System.now().plus(1, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)),
+            Note(2, 1, "Note 2", createdDateTime = Clock.System.now().plus(2, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(
+                TimeZone.UTC), lastModifiedDateTime = Clock.System.now().plus(3, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)),
     )
 
     @Test
@@ -39,8 +41,8 @@ class NotesTableTest {
         // Verify cells contain the provided data
         dummyData.forEachIndexed { _, note ->
             composeTestRule.onNodeWithText(note.title).assertIsDisplayed()
-            composeTestRule.onNodeWithText(dateFormat.format(note.lastModifiedDateTime)).assertIsDisplayed()
-            composeTestRule.onNodeWithText(dateFormat.format(note.createdDateTime)).assertIsDisplayed()
+            composeTestRule.onNodeWithText(dateFormat(note.lastModifiedDateTime)).assertIsDisplayed()
+            composeTestRule.onNodeWithText(dateFormat(note.createdDateTime)).assertIsDisplayed()
         }
     }
 
