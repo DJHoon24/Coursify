@@ -12,6 +12,9 @@ class CourseTest {
 
     @AfterTest
     fun tearDown() {
+        for (course in courseList) {
+            course.deleteCourse()
+        }
         courseList.clear()
     }
 
@@ -26,14 +29,12 @@ class CourseTest {
         assertEquals("Fantastic course", courseList[0].courseDescription)
         assertEquals("Nice prof", courseList[0].review)
         assertEquals(4, courseList[0].rating)
-        assertEquals(1, courseList[0].id)
         assertEquals("CS 002", courseList[1].courseNumber)
         assertEquals("Tue, Thu | 2:30 PM - 4:20 PM | MC 1012", courseList[1].lectureInfo)
         assertEquals("Feridun", courseList[1].instructors)
         assertEquals("Amazing yay", courseList[1].courseDescription)
         assertEquals("hooray i love this prof", courseList[1].review)
         assertEquals(5, courseList[1].rating)
-        assertEquals(2, courseList[1].id)
     }
 
     @Test

@@ -10,6 +10,7 @@ import cs346.model.Note
 import cs346.views.components.MARKDOWN_EDIT_TEST_TAG
 import cs346.views.components.MARKDOWN_VIEW_TEST_TAG
 import cs346.views.components.NOTE_TITLE_TEST_TAG
+import cs346.views.theme.getLocalDateTime
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,7 +22,7 @@ class MarkDownNotePageTest {
     @Test
     fun presetNoteTest() {
         composeTestRule.setContent {
-            MarkdownViewer(NavController("test"), Note(1, "PRESET TITLE", "preset content"))
+            MarkdownViewer(NavController("test"), Note(1, 1, "PRESET TITLE", "preset content", getLocalDateTime(), getLocalDateTime()))
         }
 
         val titleNode = composeTestRule.onNodeWithTag(NOTE_TITLE_TEST_TAG)

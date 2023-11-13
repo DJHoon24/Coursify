@@ -11,8 +11,13 @@ plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.9.0"
 
+    // Kotlin Annotation Processing Tool
+    id("org.jetbrains.kotlin.kapt") version "1.9.0"
+
     // Compose
     id("org.jetbrains.compose") version "1.5.10-rc01"
+
+    id("app.cash.sqldelight") version "2.0.0"
 
     // Serialization
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
@@ -26,6 +31,14 @@ repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("cs346.sqldelight")
+        }
+    }
 }
 
 dependencies {
@@ -56,6 +69,9 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.halilibo.compose-richtext:richtext-commonmark:0.17.0")
     implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
+
+    implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -91,6 +107,7 @@ compose.desktop {
             linux {
                 iconFile.set(project.file("src/main/resources/images/icon.png"))
             }
+            modules("java.sql")
         }
     }
 }

@@ -21,7 +21,7 @@ import cs346.views.components.NOTES_TABLE_ROW_TEST_TAG
 import cs346.views.components.TABLE_ROW_HEIGHT
 import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.dateFormat
-import java.time.LocalDateTime
+import cs346.views.theme.getLocalDateTime
 
 data class NoteTableCell(
         val id: Int,
@@ -41,8 +41,6 @@ data class NoteTableRow(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId: Int) {
-
-
     val noteCellWeight = 0.6f
     val modifiedCellWeight = 0.2f
     val createdCellWeight = 0.2f
@@ -56,8 +54,8 @@ fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId
     val transformedRowData = data?.map {
         arrayOf(
                 NoteTableCell(id = it.id, mutableStateOf(it.title), noteCellWeight),
-                NoteTableCell(id = it.id, mutableStateOf(dateFormat.format(it.lastModifiedDateTime)), modifiedCellWeight),
-                NoteTableCell(id = it.id, mutableStateOf(dateFormat.format(it.createdDateTime)), createdCellWeight),
+                NoteTableCell(id = it.id, mutableStateOf(dateFormat(it.lastModifiedDateTime)), modifiedCellWeight),
+                NoteTableCell(id = it.id, mutableStateOf(dateFormat(it.createdDateTime)), createdCellWeight),
         )
     }
     var tableData by remember { mutableStateOf(transformedRowData) }
@@ -116,29 +114,26 @@ fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId
 
                             val newNoteId = User.courses.getById(courseId)?.notes?.findNextID() ?: -1
                             val newRow = arrayOf(
-                                    NoteTableCell(
-                                            id = newNoteId,
-                                            state = mutableStateOf(""),
-                                            weight = noteCellWeight,
-                                            isFilled = mutableStateOf(false),
-                                            keyboardOptions = keyboardOptions,
-                                            keyboardActions = keyboardActions,
-                                    ),
-                                    NoteTableCell(
-                                            id = newNoteId,
-                                            state = mutableStateOf(dateFormat.format(LocalDateTime.now())),
-                                            weight = modifiedCellWeight
-                                    ),
-                                    NoteTableCell(
-                                            id = newNoteId,
-                                            state = mutableStateOf(dateFormat.format(LocalDateTime.now())),
-                                            weight = modifiedCellWeight
-                                    )
+                                NoteTableCell(
+                                    id = newNoteId,
+                                    state = mutableStateOf(""),
+                                    weight = noteCellWeight,
+                                    isFilled = mutableStateOf(false),
+                                    keyboardOptions = keyboardOptions,
+                                    keyboardActions = keyboardActions,
+                                ),
+                                NoteTableCell(
+                                    id = newNoteId,
+                                    state = mutableStateOf(dateFormat(getLocalDateTime())),
+                                    weight = modifiedCellWeight
+                                ),
+                                NoteTableCell(
+                                    id = newNoteId,
+                                    state = mutableStateOf(dateFormat(getLocalDateTime())),
+                                    weight = modifiedCellWeight
+                                )
                             )
                             tableData = tableData?.toMutableList()?.plus(arrayOf(newRow))
-//                            User.courses.getById(courseId)?.notes?.add(
-//                                    Note(newNoteId, "", "", LocalDateTime.now(), LocalDateTime.now())
-//                            )
 
                             navController.navigate(Screen.RootMarkdownScreen.route.replace("{courseId}", courseId.toString()))
                         },

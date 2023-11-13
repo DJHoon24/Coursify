@@ -35,7 +35,6 @@ fun App() {
             }
         }
     }
-
 }
 
 fun main() = application {

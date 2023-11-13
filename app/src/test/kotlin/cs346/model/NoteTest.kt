@@ -1,5 +1,6 @@
 package cs346.model
 
+import cs346.views.theme.getLocalDateTime
 import kotlin.test.*
 
 class NoteTest {
@@ -17,8 +18,8 @@ class NoteTest {
 
     @Test
     fun testAddNotes() {
-        notesList.add(Note(1, "NOTE 1", "content"))
-        notesList.add(Note(2, "NOTE 2", "2nd note"))
+        notesList.add(Note(1, 1, "NOTE 1", "content", getLocalDateTime(), getLocalDateTime()))
+        notesList.add(Note(2, 1, "NOTE 2", "2nd note", getLocalDateTime(), getLocalDateTime()))
         assertEquals(2, notesList.size)
         assertEquals("NOTE 1", notesList[0].title)
         assertEquals("content", notesList[0].content)
@@ -30,7 +31,7 @@ class NoteTest {
 
     @Test
     fun testEditNotes() {
-        notesList.add(Note(1, "NOTE 1", "content"))
+        notesList.add(Note(1, 1, "NOTE 1", "content", getLocalDateTime(), getLocalDateTime()))
         assertEquals(1, notesList.size)
         assertEquals("NOTE 1", notesList[0].title)
         assertEquals("content", notesList[0].content)

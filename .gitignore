@@ -142,3 +142,5 @@ config.toml
 
 # Temporary files until we create database to persist data
 user-preferences.txt
+
+*.db

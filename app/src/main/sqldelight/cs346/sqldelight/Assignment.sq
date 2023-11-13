@@ -1,0 +1,51 @@
+CREATE TABLE IF NOT EXISTS Assignment (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    courseId INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    dueDate TEXT NOT NULL,
+    score REAL NOT NULL,
+    weight REAL NOT NULL,
+    weightedMark REAL NOT NULL,
+    createdDate TEXT NOT NULL,
+    lastModifiedDate TEXT NOT NULL,
+    FOREIGN KEY(courseId) REFERENCES Course(id)
+);
+
+selectAllAssignments:
+SELECT *
+FROM Assignment;
+
+selectAllAssignmentsByCourseId:
+SELECT Assignment.*
+FROM Assignment
+WHERE Assignment.courseId = ?;
+
+selectAssignment:
+SELECT * FROM Assignment WHERE id = ?;
+
+insertAssignment:
+INSERT INTO Assignment (courseId, name, dueDate, score, weight, weightedMark, createdDate, lastModifiedDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+lastInsertAssignmentId:
+SELECT last_insert_rowid();
+
+lastInsertAssignment:
+SELECT * FROM Assignment WHERE id = last_insert_rowid();
+
+updateName:
+UPDATE Assignment SET name = ?, lastModifiedDate = ? WHERE id = ?;
+
+updateDueDate:
+UPDATE Assignment SET dueDate = ?, lastModifiedDate = ? WHERE id = ?;
+
+updateScore:
+UPDATE Assignment SET score = ?, weightedMark = ?, lastModifiedDate = ? WHERE id = ?;
+
+updateWeight:
+UPDATE Assignment SET weight = ?, weightedMark = ?, lastModifiedDate = ? WHERE id = ?;
+
+updateWeightedMark:
+UPDATE Assignment SET weightedMark = ?, lastModifiedDate = ? WHERE id = ?;
+
+deleteAssignment:
+DELETE FROM Assignment WHERE id = ?;
