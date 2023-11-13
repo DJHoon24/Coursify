@@ -82,12 +82,6 @@ fun CourseListScreen(navController: NavController) {
                         .size(cardWidth, cardHeight)
                 ) {
                     AddCourseButton {
-                        //                    CourseCardData(id = 0)
-                        //                    val newCourseId = User.courses.findNextID()
-                        //                    val newCourse = Course(id = newCourseId)
-                        //                    User.courses.add(newCourse)
-                        //                    courses = (courses + newCourse).toMutableList()
-                        //                    navController.navigate(Screen.CourseScreen.route.replace("{courseId}", newCourseId.toString()))
                         navController.navigate(Screen.CourseScreen.route)
                     }
                 }

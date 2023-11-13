@@ -14,7 +14,11 @@ plugins {
     // Compose
     id("org.jetbrains.compose") version "1.5.10-rc01"
 
-    // Apply the application plugin to add support for building a CLI application in Java.
+    // Serialization
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
+
+    // Ktor Serialization
+//    id("io.ktor.plugin") version "2.3.5"
 }
 
 repositories {
@@ -30,6 +34,23 @@ dependencies {
     implementation("org.jetbrains.compose.ui:ui-test-junit4:1.5.10-rc01")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
     implementation("io.kotest:kotest-assertions-core:5.2.3")
+
+    // Ktor
+    implementation("io.ktor:ktor-client-core:2.3.5")
+    implementation("io.ktor:ktor-client-cio:2.3.5")
+    implementation("io.ktor:ktor-server-core:2.3.5")
+    implementation("io.ktor:ktor-server-netty:2.3.5")
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.5")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+    implementation("ch.qos.logback:logback-classic:1.4.11")
+    testImplementation("io.ktor:ktor-server-test-host:2.3.5")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+
+    // JSON Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
 
     // These dependencies are used by the application.
     implementation(compose.desktop.currentOs)
