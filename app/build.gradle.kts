@@ -98,7 +98,7 @@ compose.desktop {
             macOS {
                 iconFile.set(project.file("src/main/resources/images/icon.icns"))
                 infoPlist {
-                    extraKeysRawXml = "  <key>NSDesktopFolderUsageDescription</key>\n  <string>We need access to files to read and write files.</string>"
+                    extraKeysRawXml = "  <key>NSDocumentsFolderUsageDescription</key>\n  <string>We need access to files to read and write files.</string>"
                 }
             }
             windows {
