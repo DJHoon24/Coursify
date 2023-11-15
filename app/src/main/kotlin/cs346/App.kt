@@ -40,8 +40,12 @@ fun App() {
 fun main() = application {
     // TODO: save the user preferences in db instead of local file
     val userHome = System.getProperty("user.home")
-    val desktopDirectory = "$userHome/Desktop"
-    val preferencesController = FileUserPreferencesController(File(desktopDirectory, "user-preferences.txt"))
+    val documentsDirectory = "$userHome/Documents/Coursify"
+    val directory = File(documentsDirectory)
+    if (!directory.exists()) {
+        directory.mkdirs()
+    }
+    val preferencesController = FileUserPreferencesController(File(documentsDirectory, "user-preferences.txt"))
     val windowState = rememberWindowState()
 
     ManageUserPreferences(preferencesController, windowState)
