@@ -256,6 +256,17 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                 },
                 modifier = Modifier.padding(PADDING_MEDIUM)
             )
+            if (id != null) {
+                DefaultButton(
+                    "Delete",
+                    onClick = {
+                        User.courses.getById(id)?.deleteCourse()
+                        User.courses.remove(User.courses.getById(id))
+                        navController.navigate(Screen.CourseListScreen.route)
+                    },
+                    modifier = Modifier.padding(PADDING_MEDIUM)
+                )
+            }
         }
 
         Box(

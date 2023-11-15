@@ -12,6 +12,9 @@ class AssignmentTest {
 
     @AfterTest
     fun tearDown() {
+        for (assignment in assignmentList) {
+            assignment.deleteAssignment()
+        }
         assignmentList.clear()
     }
 

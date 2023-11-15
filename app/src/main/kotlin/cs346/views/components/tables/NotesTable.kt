@@ -41,9 +41,9 @@ data class NoteTableRow(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId: Int) {
-    val noteCellWeight = 0.6f
-    val modifiedCellWeight = 0.2f
-    val createdCellWeight = 0.2f
+    val noteCellWeight = 0.4f
+    val modifiedCellWeight = 0.3f
+    val createdCellWeight = 0.3f
 
     val headingCells = arrayOf(
             HeadingCell("Note", TextType.STRING, noteCellWeight),
@@ -158,7 +158,7 @@ private fun RowScope.NoteTableStaticCell(
             modifier = Modifier
                     .border(1.dp, Color.Black)
                     .weight(weight)
-                    .height(40.dp)
+                    .height(TABLE_ROW_HEIGHT)
                     .padding(8.dp),
             style = ExtendedTheme.typography.tableBody,
     )

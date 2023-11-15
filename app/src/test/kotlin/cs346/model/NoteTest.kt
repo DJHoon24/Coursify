@@ -13,6 +13,9 @@ class NoteTest {
 
     @AfterTest
     fun tearDown() {
+        for (note in notesList) {
+            note.deleteNote()
+        }
         notesList.clear()
     }
 
