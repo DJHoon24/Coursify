@@ -22,8 +22,6 @@ class AssignmentsTableTest {
 
     @Test
     fun testAssignmentsTableIsDisplayed() {
-
-
         composeTestRule.setContent {
             AssignmentsTable(data = dummyData.toTypedArray(), courseId = 1)
         }
@@ -42,7 +40,7 @@ class AssignmentsTableTest {
         // Verify cells contain the provided data
         dummyData.forEachIndexed { _, assignment ->
             composeTestRule.onNodeWithText(assignment.name).assertIsDisplayed()
-            assignment.dueDate?.let { assignment.dueDate }?.let { composeTestRule.onNodeWithText(it).assertIsDisplayed() }
+            assignment.dueDate.let { assignment.dueDate }.let { composeTestRule.onNodeWithText(it).assertIsDisplayed() }
             composeTestRule.onNodeWithText(assignment.score.toString()).assertIsDisplayed()
             composeTestRule.onNodeWithText(assignment.weight.toString()).assertIsDisplayed()
             composeTestRule.onNodeWithText(assignment.weightedMark.toString()).assertIsDisplayed()
@@ -69,5 +67,9 @@ class AssignmentsTableTest {
         // Verify that the new row contains all blank cells
         val newCells = composeTestRule.onAllNodesWithText("")
         newCells.assertCountEquals(5)
+
+        composeTestRule.onAllNodesWithTag(ASSIGNMENT_DELETE_TEST_TAG).onLast().performClick()
+        val deletedCells = composeTestRule.onAllNodesWithText("")
+        deletedCells.assertCountEquals(0)
     }
 }

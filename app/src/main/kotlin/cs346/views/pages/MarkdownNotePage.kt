@@ -73,6 +73,18 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                         },
                         modifier = Modifier.padding(PADDING_SMALL)
                     )
+                    if (note != null){
+                        DefaultButton(
+                            text = "Delete",
+                            onClick = {
+                                // Find NoteID and corresponding CourseID in model class and call edit note or create new note.
+                                note.deleteNote()
+                                User.courses.getById(courseID)?.notes?.remove(note)
+                                navController.navigate(Screen.CourseListScreen.route)
+                            },
+                            modifier = Modifier.padding(PADDING_SMALL)
+                        )
+                    }
                 }
                 Box(modifier = Modifier
                     .fillMaxWidth()
