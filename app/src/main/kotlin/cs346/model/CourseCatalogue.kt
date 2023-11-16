@@ -1,6 +1,6 @@
 package cs346.model
 
-import cs346.model.api.UWOpenAPICourse
+import cs346.model.UWOpenAPI.UWOpenAPICourse
 
 object CourseCatalogue {
     private val courseMap = HashMap<String, UWOpenAPICourse>()

@@ -16,9 +16,30 @@ class NotesTableTest {
     val composeTestRule = createComposeRule()
 
     private val dummyData = listOf(
-            Note(1,  1, "Note 1", createdDateTime = getLocalDateTime(), lastModifiedDateTime = Clock.System.now().plus(1, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)),
-            Note(2, 1, "Note 2", createdDateTime = Clock.System.now().plus(2, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(
-                TimeZone.UTC), lastModifiedDateTime = Clock.System.now().plus(3, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)),
+        Note(
+            1,
+            "Note 1",
+            "",
+            createdDateTime = dateFormat(getLocalDateTime()),
+            lastModifiedDateTime = dateFormat(
+                Clock.System.now().plus(1, DateTimeUnit.HOUR, TimeZone.UTC)
+                    .toLocalDateTime(TimeZone.UTC)
+            )
+        ),
+        Note(
+            2,
+            "Note 2",
+            "blah blah",
+            createdDateTime = dateFormat(
+                Clock.System.now().plus(2, DateTimeUnit.HOUR, TimeZone.UTC).toLocalDateTime(
+                    TimeZone.UTC
+                )
+            ),
+            lastModifiedDateTime = dateFormat(
+                Clock.System.now().plus(3, DateTimeUnit.HOUR, TimeZone.UTC)
+                    .toLocalDateTime(TimeZone.UTC)
+            )
+        ),
     )
 
     @Test
@@ -41,8 +62,8 @@ class NotesTableTest {
         // Verify cells contain the provided data
         dummyData.forEachIndexed { _, note ->
             composeTestRule.onNodeWithText(note.title).assertIsDisplayed()
-            composeTestRule.onNodeWithText(dateFormat(note.lastModifiedDateTime)).assertIsDisplayed()
-            composeTestRule.onNodeWithText(dateFormat(note.createdDateTime)).assertIsDisplayed()
+            composeTestRule.onNodeWithText(note.lastModifiedDateTime).assertIsDisplayed()
+            composeTestRule.onNodeWithText(note.createdDateTime).assertIsDisplayed()
         }
     }
 
@@ -58,7 +79,7 @@ class NotesTableTest {
 
         // Verify that a new row is added
         composeTestRule.onAllNodesWithTag(NOTES_TABLE_ROW_TEST_TAG)
-                .assertCountEquals(dummyData.size + 3)
+            .assertCountEquals(dummyData.size + 3)
 
         // Verify that the new row contains a single blank cell
         val newCells = composeTestRule.onAllNodesWithText("")

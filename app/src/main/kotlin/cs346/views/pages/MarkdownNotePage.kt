@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
+import cs346.controller.AuthController
 import cs346.controller.DefaultButton
 import cs346.controller.NavController
 import cs346.model.*
@@ -29,7 +30,6 @@ import cs346.views.components.NOTE_TITLE_TEST_TAG
 import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
-import cs346.views.theme.getLocalDateTime
 
 enum class EditorMode {
     Editing, Viewing
@@ -53,7 +53,8 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                     DefaultButton(
                         text = if (editorMode == EditorMode.Editing) "View Mode" else "Edit Mode",
                         onClick = {
-                            editorMode = if (editorMode == EditorMode.Editing) EditorMode.Viewing else EditorMode.Editing
+                            editorMode =
+                                if (editorMode == EditorMode.Editing) EditorMode.Viewing else EditorMode.Editing
                         },
                         modifier = Modifier.padding(PADDING_SMALL)
                     )
@@ -62,42 +63,53 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                         text = "Save",
                         onClick = {
                             if (note == null) {
-                                // Save new note in courseID
-                                User.courses.getById(courseID)?.notes?.addNote(courseID, title.value, markdownText.value.text)
-
+                                User.courses.getById(courseID)?.notes?.addNote(
+                                    title.value,
+                                    markdownText.value.text
+                                )
                             } else {
-                                // Find NoteID and corresponding CourseID in model class and call edit note or create new note.
-                                User.courses.getById(courseID)?.notes?.edit(title.value, markdownText.value.text, note.id)
+                                User.courses.getById(courseID)?.notes?.edit(
+                                    title.value,
+                                    markdownText.value.text,
+                                    note.id
+                                )
+                            }
+                            AuthController.callRequest {
+                                AuthController.updateCourses(
+                                    User.email,
+                                    User.courses.toMutableList()
+                                )
                             }
                             navController.navigate(Screen.CourseListScreen.route)
                         },
                         modifier = Modifier.padding(PADDING_SMALL)
                     )
-                    if (note != null){
+                    if (note != null) {
                         DefaultButton(
                             text = "Delete",
                             onClick = {
-                                // Find NoteID and corresponding CourseID in model class and call edit note or create new note.
-                                note.deleteNote()
                                 User.courses.getById(courseID)?.notes?.remove(note)
+                                AuthController.callRequest {
+                                    AuthController.updateCourses(
+                                        User.email,
+                                        User.courses.toMutableList()
+                                    )
+                                }
                                 navController.navigate(Screen.CourseListScreen.route)
                             },
                             modifier = Modifier.padding(PADDING_SMALL)
                         )
                     }
                 }
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(brush = ExtendedTheme.colors.fadedBackground)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(brush = ExtendedTheme.colors.fadedBackground)
+                ) {
                     BasicTextField(
                         value = title.value,
                         onValueChange = {
                             title.value = it
-                            User.courses.getById(courseID)?.notes?.getById(note?.id ?: -1)?.title = it
-                            User.courses.getById(courseID)?.notes?.getById(
-                                note?.id
-                                    ?: -1
-                            )?.lastModifiedDateTime = getLocalDateTime()
                         },
                         modifier = Modifier
                             .testTag(NOTE_TITLE_TEST_TAG)
@@ -109,7 +121,11 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                         singleLine = true,
                         decorationBox = { innerTextField ->
                             if (title.value.isEmpty()) {
-                                Text(text = "Note Title:", color = Color.Gray, style = ExtendedTheme.typography.noteTitle)
+                                Text(
+                                    text = "Note Title:",
+                                    color = Color.Gray,
+                                    style = ExtendedTheme.typography.noteTitle
+                                )
                             }
                             innerTextField()  // This will draw the actual BasicTextField
                         }

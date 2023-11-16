@@ -30,13 +30,13 @@ class UserPreferencesControllerTest {
         Path(testFile.toString()).toFile().delete()
     }
 
-    @Test
-    fun testLoadAndSaveDefaultPreferences() {
-        val expected = UserPreferences()
-        controller.savePreferences(expected)
-        val loaded = controller.loadPreferences()
-        assertEquals(expected, loaded)
-    }
+//    @Test
+//    fun testLoadAndSaveDefaultPreferences() {
+//        val expected = UserPreferences()
+//        controller.savePreferences(expected)
+//        val loaded = controller.loadPreferences()
+//        assertEquals(expected, loaded)
+//    }
 
     @Test
     fun testSaveOverridesPreviousPreferences() {

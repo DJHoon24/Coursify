@@ -11,9 +11,7 @@ import cs346.views.pages.MarkdownViewer
 
 @Composable
 fun CustomNavigationHost(
-        navController: NavController,
-//    courses: MutableList<Int>,
-//    notes: MutableList<Int>
+    navController: NavController,
 ) {
     val windowState = rememberWindowState()
     NavigationHost(navController) {
@@ -46,9 +44,6 @@ fun CustomNavigationHost(
 
 
         }
-
-
-
 
 
 //        notes.forEach { note ->

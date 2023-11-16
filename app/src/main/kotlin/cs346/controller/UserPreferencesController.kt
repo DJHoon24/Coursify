@@ -26,6 +26,7 @@ class FileUserPreferencesController(private val file: File) : UserPreferencesCon
                     positionY = parts[5].toFloat().dp,
                     timeFormat24H = parts[6].toBoolean(),
                     userTheme = UserTheme.valueOf(parts[7])
+//                    token = parts[8]
                 )
             }
         } else {
@@ -34,6 +35,6 @@ class FileUserPreferencesController(private val file: File) : UserPreferencesCon
     }
 
     override fun savePreferences(preferences: UserPreferences) {
-        file.writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.userTheme.name}")
+        file.writeText("${preferences.windowWidth.value},${preferences.windowHeight.value},${preferences.placement.name},${preferences.isMinimized},${preferences.positionX.value},${preferences.positionY.value},${preferences.timeFormat24H},${preferences.userTheme.name},${preferences.token}")
     }
 }

@@ -1,6 +1,5 @@
 package cs346
 
-// Ktor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,20 +11,24 @@ import cs346.controller.*
 import cs346.model.Screen
 import cs346.model.UserPreferences
 import cs346.views.pages.LandingScreen
+import cs346.views.pages.LoginScreen
 import cs346.views.sidebar.Sidebar
 import java.io.File
 
 enum class CurrentView {
     LandingPage,
+    LoginPage,
     LoggedIn
 }
 
 @Composable
-fun App() {
+fun App(preferencesController: UserPreferencesController) {
     val navController by rememberNavController(Screen.CourseListScreen.route)
+
     var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
     when (currentView) {
-        CurrentView.LandingPage -> LandingScreen { currentView = CurrentView.LoggedIn }
+        CurrentView.LandingPage -> LandingScreen { currentView = CurrentView.LoginPage }
+        CurrentView.LoginPage -> LoginScreen { currentView = CurrentView.LoggedIn }
         CurrentView.LoggedIn -> {
             Row {
                 Sidebar(navController)
@@ -49,15 +52,15 @@ fun main() = application {
     val windowState = rememberWindowState()
 
     ManageUserPreferences(preferencesController, windowState)
-    APIController.callRequest {
-        APIController.populateTermCourseData()
+    UWOpenAPIController.callRequest {
+        UWOpenAPIController.populateTermCourseData()
     }
     Window(
-            title = "Coursify",
-            state = windowState,
-            onCloseRequest = ::exitApplication
+        title = "Coursify",
+        state = windowState,
+        onCloseRequest = ::exitApplication
     ) {
-        App()
+        App(preferencesController)
     }
 }
 

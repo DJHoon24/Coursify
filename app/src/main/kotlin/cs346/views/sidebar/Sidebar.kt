@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cs346.controller.AuthController
 import cs346.controller.NavController
 import cs346.model.Course
 import cs346.model.Screen
@@ -85,6 +86,12 @@ fun CourseItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
+                    AuthController.callRequest {
+                        AuthController.updateCourses(
+                            User.email,
+                            User.courses.toMutableList()
+                        )
+                    }
                     navController.navigate(
                         courseRoute
                     )
@@ -102,7 +109,15 @@ fun CourseItem(
                     style = ExtendedTheme.typography.sidebarNote,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { navController.navigate(noteRoute) }
+                        .clickable {
+                            AuthController.callRequest {
+                                AuthController.updateCourses(
+                                    User.email,
+                                    User.courses.toMutableList()
+                                )
+                            }
+                            navController.navigate(noteRoute)
+                        }
                         .padding(start = 28.dp, top = 6.dp)
                 )
             }

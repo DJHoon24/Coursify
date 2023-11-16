@@ -1,46 +1,33 @@
 package cs346.model
 
 import androidx.compose.runtime.mutableStateListOf
-import cs346.controller.APIController
-import cs346.helper.toClass
+import cs346.controller.UWOpenAPIController
+import cs346.views.theme.dateFormat
 import cs346.views.theme.getLocalDateTime
-import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Course(
-    @SerialName("id")
     var id: Int,
-    @SerialName("userId")
-    var userId: Int,
-    @SerialName("courseNumber")
-    var courseNumber: String = "",
-    @SerialName("lectureInfo")
-    var lectureInfo: String = "",
-    @SerialName("instructors")
-    var instructors: String = "",
-    @SerialName("courseDescription")
-    var courseDescription: String = "",
-    @SerialName("review")
-    var review: String = "",
-    @SerialName("rating")
-    var rating: Int = 1,
-    @SerialName("notes")
+    var courseNumber: String,
+    var lectureInfo: String,
+    var instructors: String,
+    var courseDescription: String,
+    var review: String,
+    var rating: Int,
     var notes: MutableList<Note> = mutableStateListOf(),
-    @SerialName("assignments")
     var assignments: MutableList<Assignment> = mutableStateListOf(),
-    @SerialName("createdDate")
-    var createdDate: LocalDateTime,
-    @SerialName("lastModifiedDate")
-    var lastModifiedDate: LocalDateTime,
+    var createdDate: String,
+    var lastModifiedDate: String,
 ) {
     companion object {
 
         data class ApiCourseData(
             val courseNumber: String = "",
             val courseDescription: String = "",
-            val lectureInfo: String = "",)
+            val lectureInfo: String = "",
+        )
+
         suspend fun createCourse(courseCode: String): ApiCourseData {
             val apiCourseData = CourseCatalogue.getCourse(courseCode)
             if (apiCourseData === null || apiCourseData.courseId === null) {
@@ -49,7 +36,7 @@ data class Course(
                 )
             }
 
-            val lectureInfo = APIController.getCourseSchedule(courseId = apiCourseData.courseId)
+            val lectureInfo = UWOpenAPIController.getCourseSchedule(courseId = apiCourseData.courseId)
             return ApiCourseData(
                 courseNumber = courseCode,
                 courseDescription = apiCourseData.description ?: "",
@@ -59,50 +46,32 @@ data class Course(
     }
 
     fun editCourseNumber(newCourseNumber: String = ""): Course {
-        val lastModifiedDate = getLocalDateTime()
-        Db.database.courseQueries.updateCourseNumber(newCourseNumber, lastModifiedDate.toString(), id.toLong())
-        return copy(courseNumber = newCourseNumber, lastModifiedDate = lastModifiedDate)
+        return copy(courseNumber = newCourseNumber, lastModifiedDate = dateFormat(getLocalDateTime()))
     }
 
     fun editInstructors(newInstructors: String = ""): Course {
-        val lastModifiedDate = getLocalDateTime()
-        Db.database.courseQueries.updateInstructors(newInstructors, lastModifiedDate.toString(), id.toLong())
-        return copy(instructors = newInstructors, lastModifiedDate = lastModifiedDate)
+        return copy(instructors = newInstructors, lastModifiedDate = dateFormat(getLocalDateTime()))
     }
 
     fun editLectureInfo(newLectureInfo: String = ""): Course {
-        val lastModifiedDate = getLocalDateTime()
-        Db.database.courseQueries.updateLectureInfo(newLectureInfo, lastModifiedDate.toString(), id.toLong())
-        return copy(lectureInfo = newLectureInfo, lastModifiedDate = lastModifiedDate)
+        return copy(lectureInfo = newLectureInfo, lastModifiedDate = dateFormat(getLocalDateTime()))
     }
 
     fun editCourseDescription(newCourseDescription: String = ""): Course {
-        val lastModifiedDate = getLocalDateTime()
-        Db.database.courseQueries.updateCourseDescription(newCourseDescription, lastModifiedDate.toString(), id.toLong())
-        return copy(courseDescription = newCourseDescription, lastModifiedDate = lastModifiedDate)
+        return copy(courseDescription = newCourseDescription, lastModifiedDate = dateFormat(getLocalDateTime()))
     }
 
     fun editReview(newReview: String = ""): Course {
-        val lastModifiedDate = getLocalDateTime()
-        Db.database.courseQueries.updateReview(newReview, lastModifiedDate.toString(), id.toLong())
-        return copy(review = newReview, lastModifiedDate = lastModifiedDate)
+        return copy(review = newReview, lastModifiedDate = dateFormat(getLocalDateTime()))
     }
 
     fun editRating(newRating: Int = 0): Course {
-        val lastModifiedDate = getLocalDateTime()
-        Db.database.courseQueries.updateRating(newRating.toLong(), lastModifiedDate.toString(), id.toLong())
-        return copy(rating = newRating, lastModifiedDate = lastModifiedDate)
+        return copy(rating = newRating, lastModifiedDate = dateFormat(getLocalDateTime()))
     }
+}
 
-    fun deleteCourse() {
-        for (note in this.notes) {
-            note.deleteNote()
-        }
-        for (assignment in this.assignments) {
-            assignment.deleteAssignment()
-        }
-        Db.database.courseQueries.deleteCourse(this.id.toLong())
-    }
+fun MutableList<Course>.findNextID(): Int {
+    return (this.maxOfOrNull { it.id } ?: 0) + 1
 }
 
 fun MutableList<Course>.getById(
@@ -124,34 +93,24 @@ fun MutableList<Course>.add(
     courseDescription: String = "",
     review: String = "",
     rating: Int = 0,
-): Int {
-    var lastInsertCourse: cs346.sqldelight.Course
-    var lastInsertCourseId = -1
-
-    Db.database.transactionWithResult {
-        Db.database.courseQueries.insertCourse(
-            userId = User.id.toLong(),
+    createdDate: String = dateFormat(getLocalDateTime()),
+    lastModifiedDate: String = dateFormat(getLocalDateTime())
+) {
+    this.add(
+        Course(
+            id = findNextID(),
             courseNumber = courseNumber,
             lectureInfo = lectureInfo,
             instructors = instructors,
             courseDescription = courseDescription,
             review = review,
-            rating = rating.toLong(),
-            createdDate = getLocalDateTime().toString(),
-            lastModifiedDate = getLocalDateTime().toString()
+            rating = rating,
+            notes = mutableStateListOf(),
+            assignments = mutableStateListOf(),
+            createdDate = createdDate,
+            lastModifiedDate = lastModifiedDate
         )
-        lastInsertCourse = Db.database.courseQueries.lastInsertCourse().executeAsOne()
-        lastInsertCourseId = Db.database.courseQueries.lastInsertCourseId().executeAsOne().toInt()
-
-        add(lastInsertCourse.toClass())
-    }
-
-    return lastInsertCourseId
-}
-
-fun MutableList<Course>.deleteCourse(id: Int) {
-    var currentCourse = this.getById(id)
-    currentCourse?.deleteCourse()
+    )
 }
 
 fun MutableList<Course>.editCourseNumber(newCourseNumber: String = "", id: Int) {

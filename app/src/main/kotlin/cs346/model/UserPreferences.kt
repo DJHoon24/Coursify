@@ -13,4 +13,5 @@ data class UserPreferences(
     var positionY: Dp = 100.dp,
     var timeFormat24H: Boolean = false,
     var userTheme: UserTheme = UserTheme.Light,
+    var token: String? = null,
 )

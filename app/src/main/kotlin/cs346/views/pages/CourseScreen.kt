@@ -26,6 +26,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import cs346.controller.AuthController
 import cs346.controller.DefaultButton
 import cs346.controller.NavController
 import cs346.model.*
@@ -147,9 +148,11 @@ fun DefaultTextField(
 ) {
     var isHovered by remember { mutableStateOf(false) }
     Row {
-        Text(title,
+        Text(
+            title,
             style = ExtendedTheme.typography.courseSubheading,
-            modifier = Modifier.padding(PADDING_LARGE, PADDING_MEDIUM, 0.dp, 0.dp))
+            modifier = Modifier.padding(PADDING_LARGE, PADDING_MEDIUM, 0.dp, 0.dp)
+        )
         BasicTextField(
             value = content.value,
             onValueChange = {
@@ -175,7 +178,7 @@ fun DefaultTextField(
                 },
             singleLine = true,
 
-        )
+            )
     }
 }
 
@@ -222,6 +225,12 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
             DefaultButton(
                 "List Page",
                 onClick = {
+                    AuthController.callRequest {
+                        AuthController.updateCourses(
+                            User.email,
+                            User.courses.toMutableList()
+                        )
+                    }
                     navController.navigate(Screen.CourseListScreen.route)
                 },
                 modifier = Modifier.padding(PADDING_MEDIUM)
@@ -234,7 +243,7 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                         runBlocking {
                             launch {
                                 val newCourse = Course.createCourse(courseCode.value)
-                                courseId = User.courses.add(
+                                User.courses.add(
                                     courseNumber = newCourse.courseNumber,
                                     lectureInfo = if (lectureSchedule.value.isNullOrEmpty()) newCourse.lectureInfo else lectureSchedule.value,
                                     courseDescription = if (courseDescription.value.isNullOrEmpty()) newCourse.courseDescription else courseDescription.value,
@@ -252,6 +261,12 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                         User.courses.editReview(review.value, courseId)
                         User.courses.editRating(rating.value, courseId)
                     }
+                    AuthController.callRequest {
+                        AuthController.updateCourses(
+                            User.email,
+                            User.courses.toMutableList()
+                        )
+                    }
                     navController.navigate(Screen.CourseListScreen.route)
                 },
                 modifier = Modifier.padding(PADDING_MEDIUM)
@@ -260,8 +275,13 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                 DefaultButton(
                     "Delete",
                     onClick = {
-                        User.courses.getById(id)?.deleteCourse()
                         User.courses.remove(User.courses.getById(id))
+                        AuthController.callRequest {
+                            AuthController.updateCourses(
+                                User.email,
+                                User.courses.toMutableList()
+                            )
+                        }
                         navController.navigate(Screen.CourseListScreen.route)
                     },
                     modifier = Modifier.padding(PADDING_MEDIUM)
