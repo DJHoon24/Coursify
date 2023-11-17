@@ -92,7 +92,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Coursify"
             description = "Course Notes App"
-            packageVersion = "2.0.0"
+            packageVersion = "3.0.0"
             macOS {
                 iconFile.set(project.file("src/main/resources/images/icon.icns"))
                 infoPlist {
