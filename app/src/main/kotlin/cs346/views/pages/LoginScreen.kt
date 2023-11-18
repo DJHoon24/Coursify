@@ -116,7 +116,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
             if (loginError.value) {
                 Text(
                     errorText.value,
-                    color = Color.Red,
+                    color = Color.Black,
                     style = ExtendedTheme.typography.courseBody,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )

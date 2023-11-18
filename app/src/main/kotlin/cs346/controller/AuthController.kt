@@ -56,8 +56,7 @@ object AuthController {
                 )
             }
             if (response.status.isSuccess()) {
-                val responseBody = response.bodyAsText() // Or process the response as needed
-                println("Success: $responseBody")
+                println("Success")
                 signIn(email, password)
             } else {
                 println("Error: Received response status: ${response.status}")
@@ -82,8 +81,7 @@ object AuthController {
             }
 
             if (httpResponse.status.isSuccess()) {
-                val responseBody = httpResponse.bodyAsText() // Or process the response as needed
-                println("Success: $responseBody")
+                println("Success")
 
                 val response: SignInAuthResponse = httpResponse.body()
                 User.firstName = response.firstName
@@ -145,8 +143,7 @@ object AuthController {
                 setBody(req)
             }
             if (response.status.isSuccess()) {
-                val responseBody = response.bodyAsText() // Or process the response as needed
-                println("Success: $responseBody")
+                println("Success")
             } else {
                 println("Error: Received response status: ${response.status}")
             }
