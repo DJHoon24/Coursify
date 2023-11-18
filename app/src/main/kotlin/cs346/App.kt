@@ -22,7 +22,7 @@ enum class CurrentView {
 }
 
 @Composable
-fun App(preferencesController: UserPreferencesController) {
+fun App() {
     val navController by rememberNavController(Screen.CourseListScreen.route)
 
     var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
@@ -31,7 +31,7 @@ fun App(preferencesController: UserPreferencesController) {
         CurrentView.LoginPage -> LoginScreen { currentView = CurrentView.LoggedIn }
         CurrentView.LoggedIn -> {
             Row {
-                Sidebar(navController)
+                Sidebar(navController, { currentView = CurrentView.LandingPage })
                 Box(modifier = Modifier.fillMaxSize()) {
                     CustomNavigationHost(navController)
                 }
@@ -60,7 +60,7 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication
     ) {
-        App(preferencesController)
+        App()
     }
 }
 

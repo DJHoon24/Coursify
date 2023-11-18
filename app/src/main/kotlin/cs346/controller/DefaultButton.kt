@@ -10,15 +10,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DefaultButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun DefaultButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, contentColor: Color = Color.White) {
     OutlinedButton(
         onClick = { onClick() },
         modifier = modifier,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = Color.White,
+            contentColor = contentColor,
             backgroundColor = Color.Transparent
         ),
-        border = BorderStroke(1.dp, Color.White),
+        border = BorderStroke(1.dp, contentColor),
     ) {
         Text(text)
     }

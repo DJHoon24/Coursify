@@ -16,15 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cs346.controller.AuthController
+import cs346.controller.DefaultButton
 import cs346.controller.NavController
 import cs346.model.Course
 import cs346.model.Screen
 import cs346.model.User
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.PADDING_SMALL
 
 @Composable
 fun Sidebar(
     navController: NavController,
+    onNavigate: () -> Unit
 ) {
     val userName: String = "${User.firstName} ${User.lastName}" //change to actual username
     val courses: MutableList<Course> = User.courses //make it fetch actual courses
@@ -63,6 +66,22 @@ fun Sidebar(
                 CourseItem(courses[index], navController)
             }
         }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        DefaultButton(
+            text = "Sign out",
+            onClick = {
+                User.id = ""
+                User.firstName = ""
+                User.lastName = ""
+                User.email = ""
+                User.courses = mutableStateListOf<Course>()
+                onNavigate()
+            },
+            Modifier.padding(PADDING_SMALL),
+            contentColor = Color.Black
+        )
     }
 }
 
