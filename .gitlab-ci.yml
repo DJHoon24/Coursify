@@ -13,12 +13,13 @@
 image: gradle:alpine
 
 before_script:
-  - GRADLE_USER_HOME="$(pwd)/.gradle"
-  - export GRADLE_USER_HOME
+  - echo `pwd`
+  - export GRADLE_USER_HOME=`pwd`/.gradle
 
 build:
   stage: build
-  script: /opt/homebrew/Cellar/gradle/8.3/bin/gradle --build-cache assemble
+  script:
+    - ./gradlew build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -28,7 +29,8 @@ build:
 
 test:
   stage: test
-  script: /opt/homebrew/Cellar/gradle/8.3/bin/gradle check
+  script:
+    - ./gradlew check
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -38,5 +40,5 @@ test:
 
 deploy:
   stage: deploy
-  script: echo "Define your deployment script!"
+  script: echo "We have passed and will deploy"
   environment: production

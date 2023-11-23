@@ -1,18 +1,13 @@
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-val kmongo_version: String by project
-val commons_codec_version: String by project
+val ktorVersion: String by project
+val kotlinVersion: String by project
+val logbackVersion: String by project
+val kmongoVersion: String by project
+val commonsCodecVersion: String by project
 
-plugins {
-    application
-    kotlin("jvm") version "1.6.21"
-                id("org.jetbrains.kotlin.plugin.serialization") version "1.6.21"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+kotlin {
+    jvmToolchain(17)
 }
 
-group = "com.team204"
-version = "0.0.1"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
     project.setProperty("mainClassName", mainClass.get())
@@ -21,32 +16,16 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
+plugins {
+    kotlin("jvm")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    application
 }
 
-val sshAntTask = configurations.create("sshAntTask")
+version = "1.0.0"
 
-dependencies {
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-call-logging-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
-    testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-
-    implementation("org.litote.kmongo:kmongo:$kmongo_version")
-    implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
-
-    implementation("commons-codec:commons-codec:$commons_codec_version")
-
-    sshAntTask("org.apache.ant:ant-jsch:1.10.12")
-}
+val sshAntTask: Configuration = configurations.create("sshAntTask")
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     manifest {
@@ -54,6 +33,27 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
             "Main-Class" to application.mainClass.get()
         )
     }
+}
+
+
+dependencies {
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+
+    implementation("org.litote.kmongo:kmongo:$kmongoVersion")
+    implementation("org.litote.kmongo:kmongo-coroutine:$kmongoVersion")
+
+    implementation("commons-codec:commons-codec:$commonsCodecVersion")
+
+    sshAntTask("org.apache.ant:ant-jsch:1.10.12")
 }
 
 ant.withGroovyBuilder {

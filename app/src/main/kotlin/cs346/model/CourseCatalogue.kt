@@ -6,7 +6,7 @@ object CourseCatalogue {
     private val courseMap = HashMap<String, UWOpenAPICourse>()
 
     fun initializeCourses(courses: List<UWOpenAPICourse>) {
-        courses.forEachIndexed { i, it ->
+        courses.forEachIndexed { _, it ->
             if (it.subjectCode === null || it.catalogNumber === null) {
                 return@forEachIndexed
             }

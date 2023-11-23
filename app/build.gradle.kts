@@ -6,47 +6,26 @@
  */
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
+kotlin {
+    jvmToolchain(17)
+}
 
 plugins {
-    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.9.0"
-
     // Kotlin Annotation Processing Tool
+    kotlin("jvm")
     id("org.jetbrains.kotlin.kapt") version "1.9.0"
 
     // Compose
     id("org.jetbrains.compose") version "1.5.10-rc01"
-
-    id("app.cash.sqldelight") version "2.0.0"
-
-    // Serialization
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
-
-    // Ktor Serialization
-//    id("io.ktor.plugin") version "2.3.5"
-}
-
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    google()
-}
-
-sqldelight {
-    databases {
-        create("Database") {
-            packageName.set("cs346.sqldelight")
-        }
-    }
 }
 
 dependencies {
     implementation(kotlin("test-junit"))
     implementation(kotlin("test-common"))
     implementation("org.jetbrains.compose.ui:ui-test-junit4:1.5.10-rc01")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
-    implementation("io.kotest:kotest-assertions-core:5.2.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    implementation("io.kotest:kotest-assertions-core:5.5.5")
 
     // Ktor
     implementation("io.ktor:ktor-client-core:2.3.5")
@@ -57,7 +36,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:2.3.5")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
     // JSON Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
@@ -68,7 +47,6 @@ dependencies {
     implementation("com.halilibo.compose-richtext:richtext-commonmark:0.17.0")
     implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
 
-    implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 }
 

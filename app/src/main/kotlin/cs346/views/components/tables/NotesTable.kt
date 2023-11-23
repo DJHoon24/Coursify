@@ -75,24 +75,12 @@ fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId
         tableData?.let {
             items(it.size) {
                 Row(Modifier.fillMaxWidth().testTag(NOTES_TABLE_ROW_TEST_TAG)) {
-                    // State for cell editability
-                    val onEnterAction = {
-                        if (tableData!![it][0].state.value.isNotEmpty()) {
-                            tableData!![it][0].isFilled.value = true
-                        }
-                    }
-                    val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
-                    val keyboardActions = KeyboardActions(onDone = { onEnterAction() })
-
                     NoteTableEditableCell(
                         tableData!![it][0].id,
                         courseId,
                         navController,
                         tableData!![it][0].state,
                         noteCellWeight,
-                        tableData!![it][0].isFilled,
-                        keyboardOptions,
-                        keyboardActions,
                     )
                     NoteTableStaticCell(tableData!![it][1].state, modifiedCellWeight)
                     NoteTableStaticCell(tableData!![it][2].state, createdCellWeight)
@@ -183,9 +171,6 @@ private fun RowScope.NoteTableEditableCell(
     navController: NavController,
     text: MutableState<String>,
     weight: Float,
-    isFilled: MutableState<Boolean>,
-    keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions,
 ) {
     // Note name is saved, navigate to page on click
     TextButton(
