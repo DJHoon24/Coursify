@@ -17,7 +17,7 @@ Optional, but often helpful to have a screenshot or demo-video for new users.
 
 ### To Build a packaged version of the app:
 - Open and run Gradle coursify-project -> Tasks -> build -> build
-- Open Gradle Tasks -> compose desktop -> package
+- Open Gradle coursify-project -> app -> Tasks -> compose desktop -> package
 - DMG(Mac) or MSI(Windows) version of Coursify should be added to the app/build/compose/binaries directory
 - Run the DMG or MSI to create an executable version of Coursify.
 
