@@ -14,10 +14,22 @@ Optional, but often helpful to have a screenshot or demo-video for new users.
 
 ## Quick-Start Instructions
 - Open the repository locally
-- Open and run Gradle Tasks -> build -> build
+
+### To Build a packaged version of the app:
+- Open and run Gradle coursify-project -> Tasks -> build -> build
 - Open Gradle Tasks -> compose desktop -> package
 - DMG(Mac) or MSI(Windows) version of Coursify should be added to the app/build/compose/binaries directory
 - Run the DMG or MSI to create an executable version of Coursify.
+
+### To run pre-packaged app:
+- Go to releases folder and choose between local server and cloud server version of packaged app
+    - Local server version will require local server to be running (Mentioned below)
+    - Cloud server version will require the microservice to be running on Heroku
+- DMG(Mac) or MSI(Windows) run the respective executable and it will isntall the app.
+
+### Launch Local Server:
+- Open and run Gradle coursify-project -> Tasks -> build -> build
+- Open and run Gradle coursify-project -> KtorJwtAuth -> Tasks -> application -> run
 
 ## Project Documents
 [Project Proposal](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Project-Proposal)
