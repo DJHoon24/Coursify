@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,13 +41,12 @@ fun Sidebar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                tint = Color.White,
-                contentDescription = null,
-                modifier = Modifier.size(50.dp).background(Color(0xFFD8D8D8), shape = CircleShape)
+            Text(
+                text = userName,
+                style = ExtendedTheme.typography.cardHeading(false),
+                maxLines = 1,
+                modifier = Modifier.fillMaxWidth(0.8f)
             )
-            Text(text = userName, style = ExtendedTheme.typography.cardHeading(false))
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Settings"
@@ -72,6 +69,12 @@ fun Sidebar(
         DefaultButton(
             text = "Sign out",
             onClick = {
+                AuthController.callRequest {
+                    AuthController.updateCourses(
+                        User.email,
+                        User.courses.toMutableList()
+                    )
+                }
                 User.id = ""
                 User.firstName = ""
                 User.lastName = ""
