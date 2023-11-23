@@ -27,7 +27,6 @@ object AuthController {
         }
     }
 
-    //    private val userPrefController = FileUserPreferencesController()
     private val url = "http://localhost:8080"
     fun callRequest(requestFunction: suspend () -> Unit) {
         runBlocking {
