@@ -22,6 +22,10 @@ enum class SignInMode {
     Login, SignUp
 }
 
+fun checkFields(emailVal: String, passwordVal: String, firstNameVal: String, lastNameVal: String): Boolean {
+    return !(emailVal == "" || passwordVal == "" || firstNameVal == "" || lastNameVal == "")
+}
+
 @Composable
 fun LoginScreen(onNavigate: () -> Unit) {
     var signInMode by remember { mutableStateOf(SignInMode.Login) }
@@ -129,31 +133,41 @@ fun LoginScreen(onNavigate: () -> Unit) {
                         if (signInMode == SignInMode.Login) {
                             AuthController.callRequest {
                                 val response = AuthController.signIn(email.value, password.value)
-                                if (response?.status?.isSuccess() == false) {
+                                if (response == null) {
+                                    loginError.value = true
+                                    errorText.value = "Cannot connect to server"
+                                } else if (!response.status.isSuccess()) {
                                     loginError.value = true
                                     errorText.value = "Invalid credentials"
                                 } else {
                                     onNavigate()
                                 }
                             }
-
                         } else {
-                            AuthController.callRequest {
-                                val response = AuthController.signUp(
-                                    email.value,
-                                    password.value,
-                                    firstName.value,
-                                    lastName.value
-                                )
-                                if (response?.status?.isSuccess() == false) {
-                                    loginError.value = true
-                                    errorText.value = response.bodyAsText()
-                                } else {
-                                    onNavigate()
+                            if (!checkFields(email.value, password.value, firstName.value, lastName.value)) {
+                                loginError.value = true
+                                errorText.value = "Please fill in the fields"
+                            } else {
+                                AuthController.callRequest {
+
+                                    val response = AuthController.signUp(
+                                        email.value,
+                                        password.value,
+                                        firstName.value,
+                                        lastName.value
+                                    )
+                                    if (response == null) {
+                                        loginError.value = true
+                                        errorText.value = "Cannot connect to server"
+                                    } else if (!response.status.isSuccess()) {
+                                        loginError.value = true
+                                        errorText.value = response.bodyAsText()
+                                    } else {
+                                        onNavigate()
+                                    }
                                 }
                             }
                         }
-
                     },
                     Modifier.padding(PADDING_SMALL)
                 )
@@ -167,6 +181,5 @@ fun LoginScreen(onNavigate: () -> Unit) {
                 )
             }
         }
-
     }
 }
