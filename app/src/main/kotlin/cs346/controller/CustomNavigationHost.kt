@@ -1,7 +1,6 @@
 package cs346.controller
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.window.rememberWindowState
 import cs346.model.Course
 import cs346.model.Screen
 import cs346.model.User
@@ -13,7 +12,6 @@ import cs346.views.pages.MarkdownViewer
 fun CustomNavigationHost(
     navController: NavController,
 ) {
-    val windowState = rememberWindowState()
     NavigationHost(navController) {
         composable(Screen.CourseListScreen.route) {
             CourseListScreen(navController)
