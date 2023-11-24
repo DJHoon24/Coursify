@@ -20,6 +20,8 @@ import cs346.views.components.ASSIGNMENT_DELETE_TEST_TAG
 import cs346.views.components.TABLE_ROW_HEIGHT
 import cs346.views.theme.ExtendedTheme
 import java.util.*
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 data class AssignmentTableCell(
     val assignmentId: Int,
@@ -38,6 +40,11 @@ data class AssignmentTableRow(
     val weightCell: AssignmentTableCell,
     val weightedMarkCell: AssignmentTableCell,
 )
+
+fun roundOffDecimal(number: Float): Float {
+    val multiplier = 10.0.pow(2.toDouble()).toFloat()
+    return (number * multiplier).roundToInt() / multiplier
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -148,10 +155,12 @@ fun AssignmentsTable(data: Array<Assignment>? = null, courseId: Int) {
                             tableData!![it].scoreCell.textType,
                             tableData!![it].scoreCell.weight,
                             onChange = ({ value, rowId ->
-                                val mark = value.toFloatOrNull()
-                                val weight = tableData!![rowId].weightCell.state.value.toFloatOrNull()
+                                var mark = value.toFloatOrNull()
+                                var weight = tableData!![rowId].weightCell.state.value.toFloatOrNull()
                                 if (mark !== null && weight !== null) {
-                                    val updatedRowWeightedMark = mark * (weight / 100)
+                                    mark = roundOffDecimal(mark)
+                                    weight = roundOffDecimal(weight)
+                                    val updatedRowWeightedMark = roundOffDecimal(mark * (weight / 100))
                                     val prevWeightedMark =
                                         if (tableData!![rowId].weightedMarkCell.state.value.toFloatOrNull() !== null) {
                                             tableData!![rowId].weightedMarkCell.state.value.toFloat()
@@ -159,7 +168,7 @@ fun AssignmentsTable(data: Array<Assignment>? = null, courseId: Int) {
                                             0f
                                         }
 
-                                    totalMark = totalMark - prevWeightedMark + updatedRowWeightedMark
+                                    totalMark = roundOffDecimal(totalMark - prevWeightedMark + updatedRowWeightedMark)
                                     tableData!![rowId].weightedMarkCell.state.value = updatedRowWeightedMark.toString()
 
                                     User.courses.getById(courseId)?.assignments?.editScore(mark, assignmentId)
@@ -178,10 +187,12 @@ fun AssignmentsTable(data: Array<Assignment>? = null, courseId: Int) {
                             tableData!![it].weightCell.textType,
                             tableData!![it].weightCell.weight,
                             onChange = ({ value, rowId ->
-                                val mark = tableData!![rowId].scoreCell.state.value.toFloatOrNull()
-                                val weight = value.toFloatOrNull()
+                                var mark = tableData!![rowId].scoreCell.state.value.toFloatOrNull()
+                                var weight = value.toFloatOrNull()
                                 if (mark !== null && weight !== null) {
-                                    val updatedRowWeightedMark = mark * (weight / 100)
+                                    mark = roundOffDecimal(mark!!)
+                                    weight = roundOffDecimal(weight!!)
+                                    val updatedRowWeightedMark = roundOffDecimal(mark!! * (weight!! / 100))
                                     val prevWeightedMark =
                                         if (tableData!![rowId].weightedMarkCell.state.value.toFloatOrNull() !== null) {
                                             tableData!![rowId].weightedMarkCell.state.value.toFloat()
@@ -189,11 +200,11 @@ fun AssignmentsTable(data: Array<Assignment>? = null, courseId: Int) {
                                             0f
                                         }
 
-                                    totalMark = totalMark - prevWeightedMark + updatedRowWeightedMark
+                                    totalMark = roundOffDecimal(totalMark - prevWeightedMark + updatedRowWeightedMark)
                                     tableData!![rowId].weightedMarkCell.state.value = updatedRowWeightedMark.toString()
 
-                                    User.courses.getById(courseId)?.assignments?.editScore(mark, assignmentId)
-                                    User.courses.getById(courseId)?.assignments?.editWeight(weight, assignmentId)
+                                    User.courses.getById(courseId)?.assignments?.editScore(mark!!, assignmentId)
+                                    User.courses.getById(courseId)?.assignments?.editWeight(weight!!, assignmentId)
                                 }
                             })
                         )
