@@ -27,7 +27,7 @@ object AuthController {
         }
     }
 
-    private val url = "http://localhost:8080"
+    private val url = "https://team204-server-491123dd7a81.herokuapp.com"
     fun callRequest(requestFunction: suspend () -> Unit) {
         runBlocking {
             launch {

@@ -6,7 +6,7 @@ enum class TextType {
 }
 
 data class HeadingCell(
-        val title: String,
-        val textType: TextType = TextType.STRING,
-        val weight: Float,
+    val title: String,
+    val textType: TextType = TextType.STRING,
+    val weight: Float,
 )
