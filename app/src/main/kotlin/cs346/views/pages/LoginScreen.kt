@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import cs346.controller.AuthController
 import cs346.controller.DefaultButton
@@ -59,6 +60,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                 label = { Text("Email", color = Color.White) },
                 singleLine = true,
                 modifier = Modifier
+                    .testTag("emailField")
                     .align(Alignment.CenterHorizontally)
                     .padding(PADDING_MEDIUM, PADDING_MEDIUM, PADDING_MEDIUM, PADDING_SMALL),
                 textStyle = ExtendedTheme.typography.courseBody
@@ -76,6 +78,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                 label = { Text("Password", color = Color.White) },
                 singleLine = true,
                 modifier = Modifier
+                    .testTag("passwordField")
                     .align(Alignment.CenterHorizontally)
                     .padding(PADDING_SMALL),
                 textStyle = ExtendedTheme.typography.courseBody,
@@ -95,6 +98,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                     label = { Text("First Name", color = Color.White) },
                     singleLine = true,
                     modifier = Modifier
+                        .testTag("firstNameField")
                         .align(Alignment.CenterHorizontally)
                         .padding(PADDING_SMALL),
                     textStyle = ExtendedTheme.typography.courseBody
@@ -111,6 +115,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                     label = { Text("Last Name", color = Color.White) },
                     singleLine = true,
                     modifier = Modifier
+                        .testTag("lastNameField")
                         .align(Alignment.CenterHorizontally)
                         .padding(PADDING_SMALL),
                     textStyle = ExtendedTheme.typography.courseBody
@@ -169,7 +174,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                             }
                         }
                     },
-                    Modifier.padding(PADDING_SMALL)
+                    Modifier.padding(PADDING_SMALL).testTag("loginButton")
                 )
                 DefaultButton(
                     text = if (signInMode == SignInMode.Login) "Switch to Sign Up" else "Switch to Login",
@@ -177,7 +182,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                         loginError.value = false
                         signInMode = if (signInMode == SignInMode.Login) SignInMode.SignUp else SignInMode.Login
                     },
-                    Modifier.padding(PADDING_SMALL)
+                    Modifier.padding(PADDING_SMALL).testTag("switchButton")
                 )
             }
         }

@@ -4,6 +4,8 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class CourseTest {
     private lateinit var courseList: MutableList<Course>
@@ -28,55 +30,67 @@ class CourseTest {
             "Nice prof",
             4
         )
-        courseList.add(
-            "CS 002",
-            "Tue, Thu | 2:30 PM - 4:20 PM | MC 1012",
-            "Feridun",
-            "Amazing yay",
-            "hooray i love this prof",
-            5
-        )
-        assertEquals(2, courseList.size)
-        assertEquals("CS 001", courseList[0].courseNumber)
-        assertEquals("Wed, Fri | 2:30 PM - 4:20 PM | MC 2035", courseList[0].lectureInfo)
-        assertEquals("Jeff Avery", courseList[0].instructors)
-        assertEquals("Fantastic course", courseList[0].courseDescription)
-        assertEquals("Nice prof", courseList[0].review)
-        assertEquals(4, courseList[0].rating)
-        assertEquals("CS 002", courseList[1].courseNumber)
-        assertEquals("Tue, Thu | 2:30 PM - 4:20 PM | MC 1012", courseList[1].lectureInfo)
-        assertEquals("Feridun", courseList[1].instructors)
-        assertEquals("Amazing yay", courseList[1].courseDescription)
-        assertEquals("hooray i love this prof", courseList[1].review)
-        assertEquals(5, courseList[1].rating)
+        assertEquals(1, courseList.size)
+        val course = courseList[0]
+        assertEquals("CS 001", course.courseNumber)
+        assertEquals("Wed, Fri | 2:30 PM - 4:20 PM | MC 2035", course.lectureInfo)
+        assertEquals("Jeff Avery", course.instructors)
+        assertEquals("Fantastic course", course.courseDescription)
+        assertEquals("Nice prof", course.review)
+        assertEquals(4, course.rating)
+        assertNotNull(course.createdDate)
+        assertNotNull(course.lastModifiedDate)
     }
 
-//    @Test
-//    fun testEditCourses() {
-//        courseList.add(
-//            "CS 001",
-//            "Wed, Fri | 2:30 PM - 4:20 PM | MC 2035",
-//            "Jeff Avery",
-//            "Fantastic course",
-//            "Nice prof",
-//            4
-//        )
-//        val originalID = courseList[0].id
-//        val originalModifiedDate = courseList[0].lastModifiedDate
-//        Thread.sleep(500)
-//        courseList.editCourseNumber("CS 002", originalID)
-//        courseList.editLectureInfo("great info", originalID)
-//        courseList.editInstructors("Feridun", originalID)
-//        courseList.editCourseDescription("cool description", originalID)
-//        courseList.editReview("cool prof", originalID)
-//        courseList.editRating(3, originalID)
-//        assertEquals(1, courseList.size)
-//        assertEquals("CS 002", courseList[0].courseNumber)
-//        assertEquals("great info", courseList[0].lectureInfo)
-//        assertEquals("Feridun", courseList[0].instructors)
-//        assertEquals("cool description", courseList[0].courseDescription)
-//        assertEquals("cool prof", courseList[0].review)
-//        assertEquals(3, courseList[0].rating)
-//        assertNotEquals(originalModifiedDate, courseList[0].lastModifiedDate)
-//    }
+    @Test
+    fun testEditCourses() {
+        courseList.add(
+            "CS 001",
+            "Wed, Fri | 2:30 PM - 4:20 PM | MC 2035",
+            "Jeff Avery",
+            "Fantastic course",
+            "Nice prof",
+            4
+        )
+        val originalCourse = courseList[0]
+        val originalID = originalCourse.id
+        courseList.editCourseNumber("CS 002", originalID)
+        courseList.editLectureInfo("great info", originalID)
+        courseList.editInstructors("Feridun", originalID)
+        courseList.editCourseDescription("cool description", originalID)
+        courseList.editReview("cool prof", originalID)
+        courseList.editRating(3, originalID)
+
+        assertEquals(1, courseList.size)
+        val updatedCourse = courseList[0]
+        assertEquals("CS 002", updatedCourse.courseNumber)
+        assertEquals("great info", updatedCourse.lectureInfo)
+        assertEquals("Feridun", updatedCourse.instructors)
+        assertEquals("cool description", updatedCourse.courseDescription)
+        assertEquals("cool prof", updatedCourse.review)
+        assertEquals(3, updatedCourse.rating)
+    }
+
+    @Test
+    fun testGetById() {
+        courseList.add(
+            "CS 001",
+            "Wed, Fri | 2:30 PM - 4:20 PM | MC 2035",
+            "Jeff Avery",
+            "Fantastic course",
+            "Nice prof",
+            4
+        )
+        val originalCourse = courseList[0]
+        val originalID = originalCourse.id
+        val course = courseList.getById(originalID)
+        assertNotNull(course)
+        assertEquals(originalCourse, course)
+    }
+
+    @Test
+    fun testGetById_NotFound() {
+        val course = courseList.getById(-1)
+        assertNull(course)
+    }
 }

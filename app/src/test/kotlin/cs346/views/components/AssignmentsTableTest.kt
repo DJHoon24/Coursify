@@ -1,10 +1,7 @@
 package cs346.views.components
 
-import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithText
 import cs346.model.Assignment
 import cs346.views.components.tables.AssignmentsTable
 import cs346.views.theme.dateFormat
@@ -72,26 +69,26 @@ class AssignmentsTableTest {
         composeTestRule.onNodeWithText(String.format(Locale.US, "%.2f", 8.03)).assertIsDisplayed()
     }
 
-//    @Test
-//    fun testNewButtonCreatesNewTableRow() {
-//
-//        composeTestRule.setContent {
-//            AssignmentsTable(data = dummyData.toTypedArray(), courseId = 1)
-//        }
-//
-//        // Click the "New" button
-//        composeTestRule.onNodeWithText("+").performClick()
-//
-//        // Verify that a new row is added
-//        composeTestRule.onAllNodesWithTag(ASSIGNMENTS_TABLE_ROW_TEST_TAG)
-//            .assertCountEquals(dummyData.size + 3)
-//
-//        // Verify that the new row contains all blank cells
-//        val newCells = composeTestRule.onAllNodesWithText("")
-//        newCells.assertCountEquals(5)
-//
-//        composeTestRule.onAllNodesWithTag(ASSIGNMENT_DELETE_TEST_TAG).onLast().performClick()
-//        val deletedCells = composeTestRule.onAllNodesWithText("")
-//        deletedCells.assertCountEquals(0)
-//    }
+    @Test
+    fun testNewButtonCreatesNewTableRow() {
+
+        composeTestRule.setContent {
+            AssignmentsTable(data = dummyData.toTypedArray(), courseId = 1)
+        }
+
+        // Click the "New" button
+        composeTestRule.onNodeWithText("+").performClick()
+
+        // Verify that a new row is added
+        composeTestRule.onAllNodesWithTag(ASSIGNMENTS_TABLE_ROW_TEST_TAG)
+            .assertCountEquals(dummyData.size + 3)
+
+        // Verify that the new row contains all blank cells
+        val newCells = composeTestRule.onAllNodesWithText("")
+        newCells.assertCountEquals(5)
+
+        composeTestRule.onAllNodesWithTag(ASSIGNMENT_DELETE_TEST_TAG).onLast().performClick()
+        val deletedCells = composeTestRule.onAllNodesWithText("")
+        deletedCells.assertCountEquals(0)
+    }
 }
