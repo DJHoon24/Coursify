@@ -2,9 +2,7 @@ package cs346.views.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -133,7 +131,8 @@ private fun CourseCardContainer(
         Box(
             modifier = Modifier
                 .testTag("courseCardContainer")
-                .size(cardWidth, cardHeight / 3 * 2)
+                .fillMaxWidth()
+                .height(cardHeight - 70.dp)
                 .background(
                     color = thumbnailColor,
                     shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp, bottomStart = 0.dp, bottomEnd = 0.dp)
