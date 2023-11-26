@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import org.junit.Rule
 import org.junit.Test
 
-class CoursePageTest {
+class CourseScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

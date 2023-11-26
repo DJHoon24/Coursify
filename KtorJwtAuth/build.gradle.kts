@@ -53,6 +53,10 @@ dependencies {
 
     implementation("commons-codec:commons-codec:$commonsCodecVersion")
 
+    testImplementation("io.mockk:mockk:1.12.0")
+    implementation(kotlin("test-junit"))
+    implementation(kotlin("test-common"))
+
     sshAntTask("org.apache.ant:ant-jsch:1.10.12")
 }
 

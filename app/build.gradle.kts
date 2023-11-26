@@ -23,6 +23,8 @@ plugins {
 dependencies {
     implementation(kotlin("test-junit"))
     implementation(kotlin("test-common"))
+    testImplementation("io.mockk:mockk:1.12.0")
+    implementation("io.ktor:ktor-client-mock:2.0.1")
     implementation("org.jetbrains.compose.ui:ui-test-junit4:1.5.10-rc01")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
     implementation("io.kotest:kotest-assertions-core:5.5.5")

@@ -39,17 +39,6 @@ fun CustomNavigationHost(
             composable(Screen.RootMarkdownScreen.route.replace("{courseId}", course.id.toString())) {
                 MarkdownViewer(navController = navController, courseID = course.id)
             }
-
-
         }
-
-
-//        notes.forEach { note ->
-//            val route = Screen.MarkdownScreen.route.replace("{noteId}", note.id.toString())
-//            composable(route) {
-//                NoteScreen(note, navController)
-//            }
-//        }
-
     }.build()
 }

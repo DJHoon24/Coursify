@@ -1,11 +1,11 @@
 package cs346.model
 
-import cs346.views.theme.dateFormat
-import cs346.views.theme.getLocalDateTime
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class NoteTest {
     private lateinit var notesList: MutableList<Note>
@@ -22,33 +22,40 @@ class NoteTest {
 
     @Test
     fun testAddNotes() {
-        notesList.add(Note(1, "NOTE 1", "content", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime())))
-        notesList.add(Note(2, "NOTE 2", "2nd note", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime())))
+        notesList.addNote("NOTE 1", "content")
+        notesList.addNote("NOTE 2", "2nd note")
         assertEquals(2, notesList.size)
         assertEquals("NOTE 1", notesList[0].title)
         assertEquals("content", notesList[0].content)
-        assertEquals(1, notesList[0].id)
         assertEquals("NOTE 2", notesList[1].title)
         assertEquals("2nd note", notesList[1].content)
-        assertEquals(2, notesList[1].id)
     }
 
-//    @Test
-//    fun testEditNotes() {
-//        notesList.add(Note(1, "NOTE 1", "content", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime())))
-//        assertEquals(1, notesList.size)
-//        assertEquals("NOTE 1", notesList[0].title)
-//        assertEquals("content", notesList[0].content)
-//        val originalID = notesList[0].id
-//        val originalModifiedDate = notesList[0].lastModifiedDateTime
-//        val originalCreationDate = notesList[0].createdDateTime
-//        Thread.sleep(500)
-//        notesList.edit("NEW TITLE", "NEW CONTENT", 1)
-//        assertEquals(1, notesList.size)
-//        assertEquals("NEW TITLE", notesList[0].title)
-//        assertEquals("NEW CONTENT", notesList[0].content)
-//        assertEquals(originalID, notesList[0].id)
-//        assertEquals(originalCreationDate, notesList[0].createdDateTime)
-//        assertNotEquals(originalModifiedDate, notesList[0].lastModifiedDateTime)
-//    }
+    @Test
+    fun testEditNotes() {
+        notesList.addNote("NOTE 1", "content")
+        val originalNote = notesList[0]
+        val originalID = originalNote.id
+        notesList.edit("NEW TITLE", "NEW CONTENT", originalID)
+        val editedNote = notesList[0]
+        assertEquals("NEW TITLE", editedNote.title)
+        assertEquals("NEW CONTENT", editedNote.content)
+        assertEquals(originalID, editedNote.id)
+    }
+
+    @Test
+    fun testGetById() {
+        notesList.addNote("NOTE 1", "content")
+        val originalNote = notesList[0]
+        val originalID = originalNote.id
+        val note = notesList.getById(originalID)
+        assertNotNull(note)
+        assertEquals(originalNote, note)
+    }
+
+    @Test
+    fun testGetById_NotFound() {
+        val note = notesList.getById(999)
+        assertNull(note)
+    }
 }
