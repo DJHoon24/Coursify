@@ -1,5 +1,5 @@
 package cs346.model
 
 enum class UserTheme {
-    Light, Dark,
+    Default, Mint, DeepBlue, Sunset, Ocean, Forest
 }

@@ -27,6 +27,7 @@ import cs346.model.User
 import cs346.model.editCourseNumber
 import cs346.views.pages.CourseCardData
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 
 @Composable
 fun CourseCard(
@@ -37,7 +38,7 @@ fun CourseCard(
 ) {
     // TODO: Randomly generate color on creation
     CourseCardContainer(
-        thumbnailColor = ExtendedTheme.colors.primary,
+        thumbnailColor = LocalExtendedColors.current.colorScheme.primary,
         cardWidth,
         cardHeight,
     ) {
@@ -121,7 +122,7 @@ private fun CourseCardContainer(
 
     OutlinedCard(
         colors = CardDefaults.cardColors(
-            containerColor = ExtendedTheme.colors.background,
+            containerColor = LocalExtendedColors.current.colorScheme.background,
         ),
         border = BorderStroke(1.dp, Color.Black),
         shape = RoundedCornerShape(10.dp),

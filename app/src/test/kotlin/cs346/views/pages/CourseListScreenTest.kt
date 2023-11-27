@@ -1,11 +1,15 @@
 package cs346.views.pages
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import cs346.controller.NavController
+import cs346.model.UserTheme
+import cs346.views.theme.LocalExtendedColors
+import cs346.views.theme.getExtendedColors
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -18,14 +22,19 @@ class CourseCardListTest {
     @Test
     fun addCourseButtonTest() {
         composeTestRule.setContent {
-            CourseListScreen(NavController("test"))
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                CourseListScreen(NavController("test"))
+            }
         }
 
         // Assert that AddCourseButton is displayed initially
         composeTestRule.onNodeWithContentDescription("Add Course").assertIsDisplayed()
 
         // Count the number of CourseCards before clicking the button
-        val initialCourseCardsCount = composeTestRule.onAllNodesWithTag("courseCardContainer").fetchSemanticsNodes().size
+        val initialCourseCardsCount =
+            composeTestRule.onAllNodesWithTag("courseCardContainer").fetchSemanticsNodes().size
 
         // Click on AddCourseButton
         composeTestRule.onNodeWithContentDescription("Add Course").performClick()

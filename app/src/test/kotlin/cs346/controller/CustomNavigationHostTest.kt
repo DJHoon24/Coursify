@@ -1,12 +1,12 @@
 package cs346.controller
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import cs346.model.Course
-import cs346.model.Note
-import cs346.model.Screen
-import cs346.model.User
+import cs346.model.*
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.dateFormat
+import cs346.views.theme.getExtendedColors
 import cs346.views.theme.getLocalDateTime
 import org.junit.Rule
 import org.junit.Test
@@ -16,10 +16,38 @@ import kotlin.test.BeforeTest
 class CustomNavigationHostTest {
 
     // Set up mock data
-    val course1 = Course(1, "Course 1", "Course 1 description", "Course 1 start date", "Course 1 end date", rating = 1, review = "Note 1 review", notes = mutableListOf(Note(
-        1, "Note 1", "Note 1 content", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime()))), createdDate = dateFormat(getLocalDateTime()), lastModifiedDate = dateFormat(getLocalDateTime()))
-    val course2 = Course(2, "Course 2", "Course 2 description", "Course 2 start date", "Course 2 end date", rating = 1, review = "Note 2 review", notes = mutableListOf(Note(
-        2, "Note 2", "Note 2 content", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime()))), createdDate = dateFormat(getLocalDateTime()), lastModifiedDate = dateFormat(getLocalDateTime()))
+    val course1 = Course(
+        1,
+        "Course 1",
+        "Course 1 description",
+        "Course 1 start date",
+        "Course 1 end date",
+        rating = 1,
+        review = "Note 1 review",
+        notes = mutableListOf(
+            Note(
+                1, "Note 1", "Note 1 content", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime())
+            )
+        ),
+        createdDate = dateFormat(getLocalDateTime()),
+        lastModifiedDate = dateFormat(getLocalDateTime())
+    )
+    val course2 = Course(
+        2,
+        "Course 2",
+        "Course 2 description",
+        "Course 2 start date",
+        "Course 2 end date",
+        rating = 1,
+        review = "Note 2 review",
+        notes = mutableListOf(
+            Note(
+                2, "Note 2", "Note 2 content", dateFormat(getLocalDateTime()), dateFormat(getLocalDateTime())
+            )
+        ),
+        createdDate = dateFormat(getLocalDateTime()),
+        lastModifiedDate = dateFormat(getLocalDateTime())
+    )
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -43,7 +71,11 @@ class CustomNavigationHostTest {
 
         // Set up the CustomNavigationHost
         composeTestRule.setContent {
-            CustomNavigationHost(navController)
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                CustomNavigationHost(navController)
+            }
         }
 
         // Initially, CourseListScreen should be displayed.

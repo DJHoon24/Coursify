@@ -1,11 +1,15 @@
 package cs346.views.components
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import cs346.controller.NavController
 import cs346.model.Note
+import cs346.model.UserTheme
 import cs346.views.components.tables.NotesTable
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.dateFormat
+import cs346.views.theme.getExtendedColors
 import cs346.views.theme.getLocalDateTime
 import kotlinx.datetime.*
 import org.junit.Rule
@@ -47,7 +51,11 @@ class NotesTableTest {
 
 
         composeTestRule.setContent {
-            NotesTable(data = dummyData.toTypedArray(), courseId = 1, navController = NavController("test"))
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                NotesTable(data = dummyData.toTypedArray(), courseId = 1, navController = NavController("test"))
+            }
         }
 
         // Verify the header row is displayed
@@ -71,7 +79,11 @@ class NotesTableTest {
     fun testNewButtonCreatesNewTableRow() {
 
         composeTestRule.setContent {
-            NotesTable(data = dummyData.toTypedArray(), courseId = 1, navController = NavController("test"))
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                NotesTable(data = dummyData.toTypedArray(), courseId = 1, navController = NavController("test"))
+            }
         }
 
         // Click the "New" button

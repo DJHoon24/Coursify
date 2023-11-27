@@ -1,47 +1,67 @@
 package cs346.views.theme
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import cs346.model.UserPreferences
+import cs346.model.UserTheme
 
-object BaseColorScheme {
-    val PRIMARY = Color(0xFFF99C9C)
-    val PAGE_BACKGROUND = Color(0xFFBCB3B0)
-    val LIGHT_BACKGROUND = Color(0xFFE8E0DE)
-    val FADED_BACKGROUND = Brush.verticalGradient(
-            colors = listOf(
-                    Color(0xFFF99C9C),
-                    Color(0xFFF99C9C),
-                    Color(0xFFA9A9A9)
-            ),
-    )
-    val LANDING_BACKGROUND = Brush.verticalGradient(
-            colors = listOf(
-                    Color(0xFFF99C9C),
-                    Color(0xFF7368B9)
-            ),
-    )
-    val DEFAULT_USER_BACKGROUND = Color(0xFFD8D8D8)
+sealed class ColorScheme {
+    abstract val primary: Color
+    abstract val background: Color
+    abstract val fadedBackground: Brush
+    abstract val landingBackground: Brush
+    abstract val userBackground: Color
+    abstract val pageBackground: Color
+    abstract val componentAccent: Color
 }
 
 @Immutable
 data class ExtendedColors(
-        val primary: Color,
-        val background: Color,
-        val fadedBackground: Brush,
-        val landingBackground: Brush,
-        val userBackground: Color,
-        val pageBackground: Color,
+    val colorScheme: ColorScheme,
 )
 
-val LocalExtendedColors = staticCompositionLocalOf {
-    ExtendedColors(
-            primary = BaseColorScheme.PRIMARY,
-            background = BaseColorScheme.LIGHT_BACKGROUND,
-            fadedBackground = BaseColorScheme.FADED_BACKGROUND,
-            landingBackground = BaseColorScheme.LANDING_BACKGROUND,
-            userBackground = BaseColorScheme.DEFAULT_USER_BACKGROUND,
-            pageBackground = BaseColorScheme.PAGE_BACKGROUND,
-    )
+
+val LocalExtendedColors = staticCompositionLocalOf<ExtendedColors> {
+    error("No ColorScheme provided")
+}
+
+val LocalUserTheme = staticCompositionLocalOf<UserTheme> {
+    error("No UserTheme provided")
+}
+
+@Composable
+fun getExtendedColors(userTheme: UserTheme): ExtendedColors {
+    val colorScheme = when (userTheme) {
+        UserTheme.Default -> DefaultColorScheme
+        UserTheme.Mint -> MintColorScheme
+        UserTheme.DeepBlue -> DeepBlueColorScheme
+        UserTheme.Sunset -> SunsetColorScheme
+        UserTheme.Ocean -> OceanColorScheme
+        UserTheme.Forest -> ForestColorScheme
+    }
+
+    return ExtendedColors(colorScheme)
+}
+
+@Composable
+fun ProvideColorScheme(userPreferences: UserPreferences, content: @Composable () -> Unit) {
+    val colorScheme = when (userPreferences.userTheme) {
+        UserTheme.Default -> DefaultColorScheme
+        UserTheme.Mint -> MintColorScheme
+        UserTheme.DeepBlue -> DeepBlueColorScheme
+        UserTheme.Sunset -> SunsetColorScheme
+        UserTheme.Ocean -> OceanColorScheme
+        UserTheme.Forest -> ForestColorScheme
+    }
+
+    val observedUserTheme by rememberUpdatedState(newValue = userPreferences.userTheme)
+
+
+    CompositionLocalProvider(
+        LocalExtendedColors provides ExtendedColors(colorScheme),
+        LocalUserTheme provides observedUserTheme
+    ) {
+        content()
+    }
 }

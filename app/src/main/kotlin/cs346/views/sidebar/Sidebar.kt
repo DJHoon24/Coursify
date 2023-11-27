@@ -5,9 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import cs346.model.Course
 import cs346.model.Screen
 import cs346.model.User
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.PADDING_SMALL
 
 @Composable
@@ -29,11 +32,15 @@ fun Sidebar(
 ) {
     val userName: String = "${User.firstName} ${User.lastName}" //change to actual username
     val courses: MutableList<Course> = User.courses //make it fetch actual courses
+    var isPrefsDialogOpen = remember { mutableStateOf(false) }
+
+    DialogContainer(isPrefsDialogOpen)
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .width(240.dp)
-            .background(ExtendedTheme.colors.background)
+            .background(LocalExtendedColors.current.colorScheme.background)
             .padding(16.dp)
     ) {
         Row(
@@ -47,10 +54,15 @@ fun Sidebar(
                 maxLines = 1,
                 modifier = Modifier.fillMaxWidth(0.8f)
             )
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings"
-            )
+            IconButton(
+                onClick = { isPrefsDialogOpen.value = true },
+            ) {
+                Icon(
+                    Icons.Outlined.Settings,
+                    contentDescription = "Settings",
+                    tint = Color(0XFF242424),
+                )
+            }
         }
         Text(
             text = "Courses",

@@ -13,7 +13,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import cs346.controller.AuthController
 import cs346.controller.DefaultButton
+import cs346.model.User
+//import cs346.model.editLectureInfoTimeFormat
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
 import io.ktor.client.statement.*
@@ -40,7 +43,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(brush = ExtendedTheme.colors.landingBackground)
+            .background(brush = LocalExtendedColors.current.colorScheme.landingBackground)
     ) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
@@ -146,6 +149,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
                                     errorText.value = "Invalid credentials"
                                 } else {
                                     onNavigate()
+//                                    User.courses.editLectureInfoTimeFormat()
                                 }
                             }
                         } else {

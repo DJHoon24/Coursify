@@ -19,6 +19,7 @@ import cs346.views.components.ASSIGNMENTS_TABLE_ROW_TEST_TAG
 import cs346.views.components.ASSIGNMENT_DELETE_TEST_TAG
 import cs346.views.components.TABLE_ROW_HEIGHT
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import java.util.*
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -105,7 +106,7 @@ fun AssignmentsTable(data: Array<Assignment>? = null, courseId: Int) {
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
         // Header row
         stickyHeader {
-            Row(Modifier.background(ExtendedTheme.colors.primary).testTag(ASSIGNMENTS_TABLE_ROW_TEST_TAG)) {
+            Row(Modifier.background(LocalExtendedColors.current.colorScheme.primary).testTag(ASSIGNMENTS_TABLE_ROW_TEST_TAG)) {
                 headingCells.map {
                     HeadingCell(text = it.title, weight = it.weight)
                 }

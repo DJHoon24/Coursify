@@ -28,6 +28,7 @@ import cs346.views.components.MARKDOWN_EDIT_TEST_TAG
 import cs346.views.components.MARKDOWN_VIEW_TEST_TAG
 import cs346.views.components.NOTE_TITLE_TEST_TAG
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
 
@@ -46,7 +47,7 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
             modifier = Modifier
                 .fillMaxHeight(fraction = 0.2f)
                 .fillMaxWidth()
-                .background(brush = ExtendedTheme.colors.fadedBackground)
+                .background(brush = LocalExtendedColors.current.colorScheme.fadedBackground)
         ) {
             Column {
                 Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
@@ -104,7 +105,7 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(brush = ExtendedTheme.colors.fadedBackground)
+                        .background(brush = LocalExtendedColors.current.colorScheme.fadedBackground)
                 ) {
                     BasicTextField(
                         value = title.value,
@@ -142,7 +143,7 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                     modifier = Modifier
                         .testTag(MARKDOWN_EDIT_TEST_TAG)
                         .fillMaxHeight()
-                        .border(2.dp, ExtendedTheme.colors.background)
+                        .border(2.dp, LocalExtendedColors.current.colorScheme.background)
                         .fillMaxWidth(fraction = 0.5f)
                         .onPreviewKeyEvent { keyEvent ->
                             if (keyEvent.type == KeyEventType.KeyDown) {
@@ -191,7 +192,7 @@ fun MarkdownViewer(navController: NavController, note: Note? = null, courseID: I
                     .testTag(MARKDOWN_VIEW_TEST_TAG)
                     .fillMaxSize() // Take up the leftover space
                     .background(Color.White)
-                    .border(2.dp, ExtendedTheme.colors.background)
+                    .border(2.dp, LocalExtendedColors.current.colorScheme.background)
                     .padding(PADDING_MEDIUM)// Set background color
             ) {
                 RichText(

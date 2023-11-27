@@ -21,6 +21,7 @@ import cs346.model.*
 import cs346.views.components.NOTES_TABLE_ROW_TEST_TAG
 import cs346.views.components.TABLE_ROW_HEIGHT
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.dateFormat
 import cs346.views.theme.getLocalDateTime
 
@@ -64,7 +65,7 @@ fun NotesTable(data: Array<Note>? = null, navController: NavController, courseId
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
         // Header row
         stickyHeader {
-            Row(Modifier.background(ExtendedTheme.colors.primary).testTag(NOTES_TABLE_ROW_TEST_TAG)) {
+            Row(Modifier.background(LocalExtendedColors.current.colorScheme.primary).testTag(NOTES_TABLE_ROW_TEST_TAG)) {
                 headingCells.map {
                     HeadingCell(text = it.title, weight = it.weight)
                 }

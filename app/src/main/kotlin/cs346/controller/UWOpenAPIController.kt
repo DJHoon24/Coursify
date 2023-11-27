@@ -3,6 +3,7 @@ package cs346.controller
 import cs346.model.CourseCatalogue
 import cs346.model.UWOpenAPI.UWOpenAPIClassSchedule
 import cs346.model.UWOpenAPI.UWOpenAPICourse
+import cs346.model.UserPreferences
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -35,10 +36,10 @@ object UWOpenAPIController {
             val courseObjects = Json.decodeFromString<List<UWOpenAPICourse>>(stringResponse)
             CourseCatalogue.initializeCourses(courseObjects)
             return true
-        } else {
-            println("Error: ${response.status}")
-            return false
         }
+
+        println("Error: ${response.status}")
+        return false
     }
 
     suspend fun getCourseSchedule(termCode: String = FALL_2023_TERM_CODE, courseId: String): String {
@@ -53,10 +54,19 @@ object UWOpenAPIController {
             val scheduleObjects = Json.decodeFromString<List<UWOpenAPIClassSchedule>>(stringResponse)
             val lectureInfo = if (scheduleObjects[0].scheduleData?.get(0)?.classMeetingDayPatternCode !== null) {
                 val day = scheduleObjects[0].scheduleData?.get(0)?.classMeetingDayPatternCode
-                val startTime =
+
+                var startTime =
                     scheduleObjects[0].scheduleData?.get(0)?.classMeetingStartTime?.split("T")?.get(1)?.substring(0, 5)
-                val endTime =
+                if (!UserPreferences.timeFormat24H.value) {
+                    startTime = startTime?.let { UserPreferences.convertLectureInfoTo12HourFormat(it) }
+                }
+
+                var endTime =
                     scheduleObjects[0].scheduleData?.get(0)?.classMeetingEndTime?.split("T")?.get(1)?.substring(0, 5)
+                if (!UserPreferences.timeFormat24H.value) {
+                    endTime = endTime?.let { UserPreferences.convertLectureInfoTo12HourFormat(it) }
+                }
+
                 "$day $startTime - $endTime"
             } else {
                 ""

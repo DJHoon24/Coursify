@@ -1,10 +1,14 @@
 package cs346.views.components
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import cs346.controller.NavController
+import cs346.model.UserTheme
 import cs346.views.pages.CourseCardData
+import cs346.views.theme.LocalExtendedColors
+import cs346.views.theme.getExtendedColors
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -23,7 +27,11 @@ class CourseCardTest {
 
         // Set editable to false and provide the course code and schedule
         composeTestRule.setContent {
-            CourseCard(NavController("test"),  courseCardData = testData)
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                CourseCard(NavController("test"), courseCardData = testData)
+            }
         }
 
         // Assert the component displays non-editable text
@@ -41,7 +49,11 @@ class CourseCardTest {
         )
 
         composeTestRule.setContent {
-            CourseCard(NavController("test"), courseCardData = testData)
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                CourseCard(NavController("test"), courseCardData = testData)
+            }
         }
 
         // Assert the component renders editable text fields with initial text

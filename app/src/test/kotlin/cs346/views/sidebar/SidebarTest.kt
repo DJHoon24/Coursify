@@ -1,5 +1,6 @@
 package cs346.views.sidebar
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -7,7 +8,10 @@ import androidx.compose.ui.test.performClick
 import cs346.controller.NavController
 import cs346.model.Course
 import cs346.model.User
+import cs346.model.UserTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.dateFormat
+import cs346.views.theme.getExtendedColors
 import cs346.views.theme.getLocalDateTime
 import org.junit.Before
 import org.junit.Rule
@@ -46,7 +50,12 @@ class SidebarTest {
     @Test
     fun testSidebarRendersCorrectly() {
         composeTestRule.setContent {
-            Sidebar(navController = navController, onNavigate = {})
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                Sidebar(navController = navController, onNavigate = {})
+
+            }
         }
 
         composeTestRule.onNodeWithText("Test User").assertExists()
@@ -58,7 +67,12 @@ class SidebarTest {
     @Test
     fun testCourseItemClickNavigatesToCourseScreen() {
         composeTestRule.setContent {
-            Sidebar(navController = navController, onNavigate = {})
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                Sidebar(navController = navController, onNavigate = {})
+
+            }
         }
 
         composeTestRule.onNodeWithText("CS101").performClick()
@@ -69,7 +83,12 @@ class SidebarTest {
     @Test
     fun testSignOutButtonClearsUserState() {
         composeTestRule.setContent {
-            Sidebar(navController = navController, onNavigate = {})
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                Sidebar(navController = navController, onNavigate = {})
+
+            }
         }
 
         composeTestRule.onNodeWithText("Sign out").performClick()
