@@ -4,6 +4,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import java.text.SimpleDateFormat
 
 fun dateFormat(localDateTime: LocalDateTime): String {
     val month = localDateTime.month.name.take(3)
@@ -17,4 +18,17 @@ fun dateFormat(localDateTime: LocalDateTime): String {
 
 fun getLocalDateTime(): LocalDateTime {
     return Clock.System.now().toLocalDateTime(TimeZone.UTC)
+}
+
+fun convertLectureInfoTo24HourFormat(input: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("hh:mma")
+        val outputFormat = SimpleDateFormat("HH:mm")
+
+        val date = inputFormat.parse(input)
+
+        outputFormat.format(date)
+    } catch (e: Exception) {
+        input
+    }
 }

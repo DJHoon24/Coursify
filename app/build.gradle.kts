@@ -10,6 +10,8 @@ kotlin {
     jvmToolchain(17)
 }
 
+
+
 plugins {
     // Kotlin Annotation Processing Tool
     kotlin("jvm")
@@ -60,8 +62,7 @@ java {
 }
 
 tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-//    useJUnitPlatform()
+
 }
 
 compose.desktop {

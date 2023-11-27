@@ -30,12 +30,10 @@ import cs346.controller.AuthController
 import cs346.controller.DefaultButton
 import cs346.controller.NavController
 import cs346.model.*
+import cs346.model.UserPreferences.convertLectureInfo
 import cs346.views.components.tables.AssignmentsTable
 import cs346.views.components.tables.NotesTable
-import cs346.views.theme.ExtendedTheme
-import cs346.views.theme.PADDING_LARGE
-import cs346.views.theme.PADDING_MEDIUM
-import cs346.views.theme.PADDING_SMALL
+import cs346.views.theme.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -216,12 +214,12 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .background(color = ExtendedTheme.colors.pageBackground)
+            .background(color = LocalExtendedColors.current.colorScheme.pageBackground)
             .onClick { focusManager.clearFocus() }
             .verticalScroll(rememberScrollState())
     ) {
         // Course Code Container
-        Row(modifier = Modifier.fillMaxWidth().background(ExtendedTheme.colors.primary)) {
+        Row(modifier = Modifier.fillMaxWidth().background(LocalExtendedColors.current.colorScheme.primary)) {
             DefaultButton(
                 "List Page",
                 onClick = {
@@ -293,7 +291,7 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(fraction = 0.2f)
-                .background(brush = ExtendedTheme.colors.fadedBackground)
+                .background(brush = LocalExtendedColors.current.colorScheme.fadedBackground)
         ) {
             BasicTextField(
                 value = courseCode.value,
@@ -324,7 +322,7 @@ fun CourseScreen(navController: NavController, id: Int? = null) {
                 .fillMaxHeight(fraction = 0.5f),
         ) {
             DefaultTextField(
-                "Lectures: ", lectureSchedule, keyboardOptions, keyboardActions
+                "Lectures: ", mutableStateOf(convertLectureInfo(lectureSchedule.value, UserPreferences.timeFormat24H.value)), keyboardOptions, keyboardActions
             )
             DefaultTextField(
                 "Professors: ", instructorInfo, keyboardOptions, keyboardActions

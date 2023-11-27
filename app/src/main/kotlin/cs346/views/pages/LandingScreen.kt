@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import cs346.controller.DefaultButton
 import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.PADDING_MEDIUM
 
 @Composable
@@ -20,7 +21,7 @@ fun LandingScreen(onNavigate: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(brush = ExtendedTheme.colors.landingBackground)
+            .background(brush = LocalExtendedColors.current.colorScheme.landingBackground)
     ) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(

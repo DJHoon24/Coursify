@@ -1,5 +1,6 @@
 package cs346.views.pages
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -7,10 +8,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
 import cs346.controller.NavController
 import cs346.model.Note
+import cs346.model.UserTheme
 import cs346.views.components.MARKDOWN_EDIT_TEST_TAG
 import cs346.views.components.MARKDOWN_VIEW_TEST_TAG
 import cs346.views.components.NOTE_TITLE_TEST_TAG
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.dateFormat
+import cs346.views.theme.getExtendedColors
 import cs346.views.theme.getLocalDateTime
 import org.junit.Rule
 import org.junit.Test
@@ -23,16 +27,20 @@ class MarkDownNotePageTest {
     @Test
     fun presetNoteTest() {
         composeTestRule.setContent {
-            MarkdownViewer(
-                NavController("test"),
-                Note(
-                    1,
-                    "PRESET TITLE",
-                    "preset content",
-                    dateFormat(getLocalDateTime()),
-                    dateFormat(getLocalDateTime())
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                MarkdownViewer(
+                    NavController("test"),
+                    Note(
+                        1,
+                        "PRESET TITLE",
+                        "preset content",
+                        dateFormat(getLocalDateTime()),
+                        dateFormat(getLocalDateTime())
+                    )
                 )
-            )
+            }
         }
 
         val titleNode = composeTestRule.onNodeWithTag(NOTE_TITLE_TEST_TAG)
@@ -50,7 +58,11 @@ class MarkDownNotePageTest {
     @Test
     fun newNoteTest() {
         composeTestRule.setContent {
-            MarkdownViewer(NavController("test"))
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                MarkdownViewer(NavController("test"))
+            }
         }
 
         val titleNode = composeTestRule.onNodeWithTag(NOTE_TITLE_TEST_TAG)

@@ -2,6 +2,7 @@ package cs346.model
 
 import androidx.compose.runtime.mutableStateListOf
 import cs346.controller.UWOpenAPIController
+import cs346.model.UserPreferences.convertLectureInfo
 import cs346.views.theme.dateFormat
 import cs346.views.theme.getLocalDateTime
 import kotlinx.serialization.Serializable
@@ -130,6 +131,7 @@ fun MutableList<Course>.editLectureInfo(newLectureInfo: String = "", id: Int) {
         }
     }
 }
+
 
 fun MutableList<Course>.editInstructors(newInstructors: String, id: Int) {
     this.forEachIndexed { index, course ->

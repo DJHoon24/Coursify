@@ -15,9 +15,11 @@ import androidx.compose.ui.unit.dp
 import cs346.controller.NavController
 import cs346.model.Screen
 import cs346.model.User
+import cs346.model.UserPreferences
+import cs346.model.UserPreferences.convertLectureInfo
 import cs346.views.components.AddCourseButton
 import cs346.views.components.CourseCard
-import cs346.views.theme.ExtendedTheme
+import cs346.views.theme.LocalExtendedColors
 import cs346.views.theme.PADDING_MEDIUM
 import cs346.views.theme.PADDING_SMALL
 
@@ -25,6 +27,7 @@ import cs346.views.theme.PADDING_SMALL
 @Composable
 fun CourseListScreen(navController: NavController) {
     var courses by remember { mutableStateOf(User.courses) }
+
     val scrollState = rememberLazyGridState()
 
     val windowInfo = LocalWindowInfo.current
@@ -35,7 +38,7 @@ fun CourseListScreen(navController: NavController) {
     val cardWidth = windowWidth / 3 - PADDING_MEDIUM
     val cardHeight = windowHeight / 5 - PADDING_MEDIUM
 
-    Column(modifier = Modifier.fillMaxSize().background(ExtendedTheme.colors.pageBackground)) {
+    Column(modifier = Modifier.fillMaxSize().background(LocalExtendedColors.current.colorScheme.pageBackground)) {
         LazyVerticalGrid(
             state = scrollState,
             columns = GridCells.Fixed(3),
@@ -60,14 +63,10 @@ fun CourseListScreen(navController: NavController) {
                         CourseCardData(
                             id = courseCardData.id,
                             editable = mutableStateOf(
-                                if (courseCardData.courseNumber.isNotEmpty()) {
-                                    false
-                                } else {
-                                    true
-                                }
+                                courseCardData.courseNumber.isEmpty()
                             ),
                             courseCode = mutableStateOf(courseCardData.courseNumber),
-                            schedule = mutableStateOf(courseCardData.lectureInfo)
+                            schedule = mutableStateOf(convertLectureInfo(courseCardData.lectureInfo, UserPreferences.timeFormat24H.value))
                         ),
                         cardWidth = cardWidth,
                         cardHeight = cardHeight

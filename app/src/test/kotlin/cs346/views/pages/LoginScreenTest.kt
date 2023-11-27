@@ -1,7 +1,13 @@
 package cs346.views.pages
 
-import androidx.compose.ui.test.*
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import cs346.model.UserTheme
+import cs346.views.theme.LocalExtendedColors
+import cs346.views.theme.getExtendedColors
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,7 +19,11 @@ class LoginScreenTest {
     @Test
     fun emailAndPasswordFieldsExist() {
         composeTestRule.setContent {
-            LoginScreen {}
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                LoginScreen {}
+            }
         }
 
         composeTestRule.onNodeWithTag("emailField").assertExists()
@@ -25,7 +35,11 @@ class LoginScreenTest {
     @Test
     fun signInMode_Login() {
         composeTestRule.setContent {
-            LoginScreen {}
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                LoginScreen {}
+            }
         }
 
         composeTestRule.onNodeWithTag("loginButton").assertTextEquals("Login")
@@ -35,7 +49,11 @@ class LoginScreenTest {
     @Test
     fun signInMode_SignUp() {
         composeTestRule.setContent {
-            LoginScreen {}
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                LoginScreen {}
+            }
         }
 
         // Simulate switching the sign-in mode to Sign Up
@@ -52,7 +70,11 @@ class LoginScreenTest {
     @Test
     fun firstNameAndLastNameFieldsNotInLoginMode() {
         composeTestRule.setContent {
-            LoginScreen {}
+            CompositionLocalProvider(
+                LocalExtendedColors provides getExtendedColors(UserTheme.Default)
+            ) {
+                LoginScreen {}
+            }
         }
 
         composeTestRule.onNodeWithTag("firstNameField").assertDoesNotExist()

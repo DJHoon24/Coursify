@@ -13,7 +13,8 @@ import cs346.model.UserPreferences
 import cs346.views.pages.LandingScreen
 import cs346.views.pages.LoginScreen
 import cs346.views.sidebar.Sidebar
-import java.io.File
+import cs346.views.theme.LocalExtendedColors
+import cs346.views.theme.getExtendedColors
 
 enum class CurrentView {
     LandingPage,
@@ -41,17 +42,10 @@ fun App() {
 }
 
 fun main() = application {
-    // TODO: save the user preferences in db instead of local file
-    val userHome = System.getProperty("user.home")
-    val documentsDirectory = "$userHome/Documents/Coursify"
-    val directory = File(documentsDirectory)
-    if (!directory.exists()) {
-        directory.mkdirs()
-    }
-    val preferencesController = FileUserPreferencesController(File(documentsDirectory, "user-preferences.txt"))
+    val observedUserTheme by rememberUpdatedState(newValue = UserPreferences.userTheme)
     val windowState = rememberWindowState()
 
-    ManageUserPreferences(preferencesController, windowState)
+    ManageUserPreferences(windowState)
     UWOpenAPIController.callRequest {
         UWOpenAPIController.populateTermCourseData()
     }
@@ -60,14 +54,20 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication
     ) {
-        App()
+        CompositionLocalProvider(
+            LocalExtendedColors provides getExtendedColors(observedUserTheme)
+        ) {
+            App()
+        }
     }
 }
 
 
 @Composable
-fun ManageUserPreferences(controller: UserPreferencesController, windowState: WindowState) {
-    val userPreferences = remember { mutableStateOf(controller.loadPreferences()) }
+fun ManageUserPreferences(windowState: WindowState) {
+    UserPreferences.loadPreferences()
+
+    val userPreferences = remember { mutableStateOf(UserPreferences) }
     windowState.apply {
         size = DpSize(userPreferences.value.windowWidth, userPreferences.value.windowHeight)
         placement = userPreferences.value.placement
@@ -77,16 +77,14 @@ fun ManageUserPreferences(controller: UserPreferencesController, windowState: Wi
 
     DisposableEffect(windowState) {
         onDispose {
-            controller.savePreferences(
-                UserPreferences(
-                    windowWidth = windowState.size.width,
-                    windowHeight = windowState.size.height,
-                    placement = windowState.placement,
-                    isMinimized = windowState.isMinimized,
-                    positionX = windowState.position.x,
-                    positionY = windowState.position.y,
-                )
-            )
+            UserPreferences.windowWidth = windowState.size.width
+            UserPreferences.windowHeight = windowState.size.height
+            UserPreferences.placement = windowState.placement
+            UserPreferences.isMinimized = windowState.isMinimized
+            UserPreferences.positionX = windowState.position.x
+            UserPreferences.positionY = windowState.position.y
+
+            UserPreferences.savePreferences()
         }
     }
 }
