@@ -46,18 +46,20 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
 
-    // These dependencies are used by the application.
     implementation(compose.desktop.currentOs)
     implementation("com.halilibo.compose-richtext:richtext-commonmark:0.17.0")
     implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+
+    // Animated GIF Support
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(19))
+        languageVersion.set(JavaLanguageVersion.of(20))
     }
 }
 

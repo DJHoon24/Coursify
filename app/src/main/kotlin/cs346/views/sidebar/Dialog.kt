@@ -1,11 +1,12 @@
 package cs346.views.sidebar
 
-//import cs346.model.editLectureInfoTimeFormat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -18,6 +19,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import cs346.model.UserPreferences
 import cs346.model.UserTheme
+import cs346.views.components.GifComposable
 import cs346.views.theme.ExtendedTheme
 import cs346.views.theme.LocalExtendedColors
 
@@ -28,7 +30,7 @@ enum class Tabs {
 
 @Composable
 fun DialogContainer(isOpen: MutableState<Boolean>) {
-    var currentTab = mutableStateOf(Tabs.Preferences)
+    val currentTab = mutableStateOf(Tabs.Preferences)
 
     if (isOpen.value) {
         Dialog(
@@ -94,6 +96,7 @@ fun DialogContainer(isOpen: MutableState<Boolean>) {
                         modifier = Modifier
                             .fillMaxSize()
                             .background(color = LocalExtendedColors.current.colorScheme.background)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         when (currentTab.value) {
                             Tabs.Preferences -> PreferencesTabContent()
@@ -114,7 +117,7 @@ private fun PreferencesTabContent() {
         modifier = Modifier.padding(top = 64.dp, start = 24.dp),
     )
     DropdownSelect(
-        List(UserTheme.values().size) { UserTheme.values()[it].name },
+        List(UserTheme.entries.size) { UserTheme.entries[it].name },
         UserPreferences.userTheme.name,
         onChange = { option ->
             UserPreferences.userTheme = UserTheme.valueOf(option)
@@ -146,8 +149,12 @@ private fun HelpTabContent() {
     Text(
         "Add a new course by clicking the plus button on the courses list page. This will take you to a new course page where you can fill in all information. Note that after entering the course title Coursify will attempt to load the course description and schedule automatically from the UW Open API.",
         style = ExtendedTheme.typography.dialogBody,
-        modifier = Modifier.padding(start = 24.dp, bottom = 12.dp, end = 24.dp),
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     )
+    Box(modifier = Modifier.height(425.dp).fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)) {
+        GifComposable("course_help", 184)
+    }
+
 
 
     Text(
@@ -160,6 +167,9 @@ private fun HelpTabContent() {
         style = ExtendedTheme.typography.dialogBody,
         modifier = Modifier.padding(start = 24.dp, bottom = 12.dp, end = 24.dp)
     )
+    Box(modifier = Modifier.height(400.dp).fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)) {
+        GifComposable("note_help", 135)
+    }
 
     Text(
         "Adding Assignments",
@@ -171,7 +181,9 @@ private fun HelpTabContent() {
         style = ExtendedTheme.typography.dialogBody,
         modifier = Modifier.padding(start = 24.dp, bottom = 12.dp, end = 24.dp)
     )
-
+    Box(modifier = Modifier.height(400.dp).fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)) {
+        GifComposable("assignment_help", 130)
+    }
 }
 
 @Composable
