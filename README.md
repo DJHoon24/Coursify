@@ -22,10 +22,11 @@ Optional, but often helpful to have a screenshot or demo-video for new users.
 - Run the DMG or MSI to create an executable version of Coursify.
 
 ### To run pre-packaged app:
-- Go to releases folder and choose between local server and cloud server version of packaged app
-    - Local server version will require local server to be running (Mentioned below)
-    - Cloud server version will require the microservice to be running on Heroku
-- DMG(Mac) or MSI(Windows) run the respective executable and it will isntall the app.
+- Go to releases folder and choose between default cloud microservice packaged app or the backup local microservice packaged app (If cloud is down).
+  - DEFAULT: Version requires the microservice to be running on Heroku (Default up and running)
+    - If Cloud server is down or requires a restart for marking, reach out to Paul Oh (pg2oh@uwaterloo.ca).
+  - BACKUP: Version requires local server to be running (Mentioned below)
+- DMG(Mac) or MSI(Windows) run the respective executable to install the app.
 
 ### Launch Local Server:
 - Open and run Gradle coursify-project -> Tasks -> build -> build
