@@ -9,10 +9,15 @@ Imaan Gill - i29gill@uwaterloo.ca\
 Paul Oh - pg2oh@uwaterloo.ca\
 Sky Ouyang - s3ouyang@uwaterloo.ca
 
-## Screenshots/Videos
-Optional, but often helpful to have a screenshot or demo-video for new users.
+## Help Section for App
+Users can view a help section to describe user flows and how to use Coursify found after the user has logged into the application.
+- Login or sign up as a User.
+- Look to the top left of sidebar and click settings button.
+- Go to help page of dialog.
 
 ## Quick-Start Instructions
+Can be found at [Setup of Application](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Instructions-and-Setup-of-Application) or follow instructions below:
+
 - Open the repository locally
 
 ### To Build a packaged version of the app:
@@ -33,14 +38,16 @@ Optional, but often helpful to have a screenshot or demo-video for new users.
 - Open and run Gradle coursify-project -> KtorJwtAuth -> Tasks -> application -> run
 
 ## Project Documents
+
+### Project Proposal
 [Project Proposal](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Project-Proposal)
 
-## Software Releases
+### Main sections of Project Documentation
+[Main Sections](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Main-sections)
+
+### Meeting Minutes
+[Meeting Minutes](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Meeting-Minutes)
+
+### Software Releases
 [Software Release Notes](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Release-Notes)
 
-```
-cd existing_repo
-git remote add origin https://git.uwaterloo.ca/i29gill/cs346.git
-git branch -M main
-git push -uf origin main
-```
