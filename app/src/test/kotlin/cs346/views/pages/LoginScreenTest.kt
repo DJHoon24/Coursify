@@ -61,6 +61,7 @@ class LoginScreenTest {
 
         composeTestRule.onNodeWithTag("emailField").assertExists()
         composeTestRule.onNodeWithTag("passwordField").assertExists()
+        composeTestRule.onNodeWithTag("confirmPasswordField").assertExists()
         composeTestRule.onNodeWithTag("firstNameField").assertExists()
         composeTestRule.onNodeWithTag("lastNameField").assertExists()
         composeTestRule.onNodeWithTag("loginButton").assertTextEquals("Sign Up")
@@ -77,6 +78,7 @@ class LoginScreenTest {
             }
         }
 
+        composeTestRule.onNodeWithTag("confirmPasswordField").assertDoesNotExist()
         composeTestRule.onNodeWithTag("firstNameField").assertDoesNotExist()
         composeTestRule.onNodeWithTag("lastNameField").assertDoesNotExist()
     }
