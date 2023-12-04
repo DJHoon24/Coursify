@@ -26,8 +26,8 @@ enum class SignInMode {
     Login, SignUp
 }
 
-fun checkFields(emailVal: String, passwordVal: String, firstNameVal: String, lastNameVal: String): Boolean {
-    return !(emailVal == "" || passwordVal == "" || firstNameVal == "" || lastNameVal == "")
+fun checkFields(emailVal: String, passwordVal: String, confirmPasswordVal: String, firstNameVal: String, lastNameVal: String): Boolean {
+    return !(emailVal == "" || passwordVal == "" || confirmPasswordVal == "" || firstNameVal == "" || lastNameVal == "")
 }
 
 @Composable
@@ -37,6 +37,7 @@ fun LoginScreen(onNavigate: () -> Unit) {
     var errorText = remember { mutableStateOf("") }
     var email = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
+    var confirmPassword = remember { mutableStateOf("") }
     var firstName = remember { mutableStateOf("") }
     var lastName = remember { mutableStateOf("") }
 
@@ -89,6 +90,24 @@ fun LoginScreen(onNavigate: () -> Unit) {
             )
 
             if (signInMode == SignInMode.SignUp) {
+                OutlinedTextField(
+                    value = confirmPassword.value,
+                    onValueChange = { confirmPassword.value = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = Color.White,
+                        unfocusedIndicatorColor = Color.White,
+                        containerColor = Color.Transparent,
+                        cursorColor = Color.White
+                    ),
+                    label = { Text("Confirm Password", color = Color.White) },
+                    singleLine = true,
+                    modifier = Modifier
+                        .testTag("confirmPasswordField")
+                        .align(Alignment.CenterHorizontally)
+                        .padding(PADDING_SMALL),
+                    textStyle = ExtendedTheme.typography.courseBody,
+                    visualTransformation = PasswordVisualTransformation()
+                )
                 OutlinedTextField(
                     value = firstName.value,
                     onValueChange = { firstName.value = it },
@@ -153,9 +172,12 @@ fun LoginScreen(onNavigate: () -> Unit) {
                                 }
                             }
                         } else {
-                            if (!checkFields(email.value, password.value, firstName.value, lastName.value)) {
+                            if (!checkFields(email.value, password.value, confirmPassword.value, firstName.value, lastName.value)) {
                                 loginError.value = true
                                 errorText.value = "Please fill in the fields"
+                            } else if (password.value != confirmPassword.value) {
+                                loginError.value = true
+                                errorText.value = "Passwords do not match"
                             } else {
                                 AuthController.callRequest {
 
