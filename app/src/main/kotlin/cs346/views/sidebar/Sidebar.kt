@@ -8,7 +8,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -67,10 +66,10 @@ fun Sidebar(
         Text(
             text = "Courses",
             style = ExtendedTheme.typography.sidebarHeadingText,
-            modifier = Modifier.padding(top = 24.dp, bottom = 4.dp)
+            modifier = Modifier.padding(top = 12.dp, bottom = 4.dp)
         )
 
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxHeight(0.85f)) {
             items(courses.size) { index ->
                 CourseItem(courses[index], navController)
             }
