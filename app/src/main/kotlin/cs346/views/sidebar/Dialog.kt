@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.WindowState
 import cs346.model.UserPreferences
 import cs346.model.UserTheme
 import cs346.views.components.GifComposable
@@ -29,7 +30,7 @@ enum class Tabs {
 }
 
 @Composable
-fun DialogContainer(isOpen: MutableState<Boolean>) {
+fun DialogContainer(isOpen: MutableState<Boolean>, windowState: WindowState) {
     val currentTab = mutableStateOf(Tabs.Preferences)
 
     if (isOpen.value) {
@@ -99,7 +100,7 @@ fun DialogContainer(isOpen: MutableState<Boolean>) {
                             .verticalScroll(rememberScrollState())
                     ) {
                         when (currentTab.value) {
-                            Tabs.Preferences -> PreferencesTabContent()
+                            Tabs.Preferences -> PreferencesTabContent(windowState)
                             Tabs.Help -> HelpTabContent()
                         }
                     }
@@ -110,7 +111,7 @@ fun DialogContainer(isOpen: MutableState<Boolean>) {
 }
 
 @Composable
-private fun PreferencesTabContent() {
+private fun PreferencesTabContent(windowState: WindowState) {
     Text(
         "Theme",
         style = ExtendedTheme.typography.sidebarCourse,
@@ -121,7 +122,7 @@ private fun PreferencesTabContent() {
         UserPreferences.userTheme.name,
         onChange = { option ->
             UserPreferences.userTheme = UserTheme.valueOf(option)
-            UserPreferences.savePreferences()
+            UserPreferences.savePreferences(windowState)
         }
     )
     Text(
@@ -134,7 +135,7 @@ private fun PreferencesTabContent() {
         if (UserPreferences.timeFormat24H.value) "24 Hour" else "12 Hour",
         onChange = { option ->
             UserPreferences.timeFormat24H.value = option === "24 Hour"
-            UserPreferences.savePreferences()
+            UserPreferences.savePreferences(windowState)
         }
     )
 }
@@ -151,7 +152,10 @@ private fun HelpTabContent() {
         style = ExtendedTheme.typography.dialogBody,
         modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     )
-    Box(modifier = Modifier.height(425.dp).fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)) {
+    Box(
+        modifier = Modifier.height(425.dp).fillMaxWidth()
+            .padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)
+    ) {
         GifComposable("course_help", 184)
     }
 
@@ -167,7 +171,10 @@ private fun HelpTabContent() {
         style = ExtendedTheme.typography.dialogBody,
         modifier = Modifier.padding(start = 24.dp, bottom = 12.dp, end = 24.dp)
     )
-    Box(modifier = Modifier.height(400.dp).fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)) {
+    Box(
+        modifier = Modifier.height(400.dp).fillMaxWidth()
+            .padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)
+    ) {
         GifComposable("note_help", 135)
     }
 
@@ -181,7 +188,10 @@ private fun HelpTabContent() {
         style = ExtendedTheme.typography.dialogBody,
         modifier = Modifier.padding(start = 24.dp, bottom = 12.dp, end = 24.dp)
     )
-    Box(modifier = Modifier.height(400.dp).fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)) {
+    Box(
+        modifier = Modifier.height(400.dp).fillMaxWidth()
+            .padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp)
+    ) {
         GifComposable("assignment_help", 130)
     }
 }

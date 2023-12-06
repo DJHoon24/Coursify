@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.WindowState
 import cs346.controller.AuthController
 import cs346.controller.DefaultButton
 import cs346.controller.NavController
@@ -27,13 +28,14 @@ import cs346.views.theme.PADDING_SMALL
 @Composable
 fun Sidebar(
     navController: NavController,
-    onNavigate: () -> Unit
+    onNavigate: () -> Unit,
+    windowState: WindowState,
 ) {
     val userName: String = "${User.firstName} ${User.lastName}" //change to actual username
     val courses: MutableList<Course> = User.courses //make it fetch actual courses
     var isPrefsDialogOpen = remember { mutableStateOf(false) }
 
-    DialogContainer(isPrefsDialogOpen)
+    DialogContainer(isPrefsDialogOpen, windowState)
 
     Column(
         modifier = Modifier

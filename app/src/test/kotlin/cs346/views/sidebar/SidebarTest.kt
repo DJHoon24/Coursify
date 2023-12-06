@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.window.WindowState
 import cs346.controller.NavController
 import cs346.model.Course
 import cs346.model.User
@@ -53,7 +54,7 @@ class SidebarTest {
             CompositionLocalProvider(
                 LocalExtendedColors provides getExtendedColors(UserTheme.Default)
             ) {
-                Sidebar(navController = navController, onNavigate = {})
+                Sidebar(navController = navController, onNavigate = {}, windowState = WindowState())
 
             }
         }
@@ -70,7 +71,7 @@ class SidebarTest {
             CompositionLocalProvider(
                 LocalExtendedColors provides getExtendedColors(UserTheme.Default)
             ) {
-                Sidebar(navController = navController, onNavigate = {})
+                Sidebar(navController = navController, onNavigate = {}, windowState = WindowState())
 
             }
         }
@@ -86,7 +87,7 @@ class SidebarTest {
             CompositionLocalProvider(
                 LocalExtendedColors provides getExtendedColors(UserTheme.Default)
             ) {
-                Sidebar(navController = navController, onNavigate = {})
+                Sidebar(navController = navController, onNavigate = {}, windowState = WindowState())
 
             }
         }
