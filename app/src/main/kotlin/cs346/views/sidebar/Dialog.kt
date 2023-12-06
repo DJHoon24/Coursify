@@ -49,7 +49,7 @@ fun DialogContainer(isOpen: MutableState<Boolean>, windowState: WindowState) {
                     // Side menu bar
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth(0.2f),
+                            .fillMaxWidth(0.3f),
                         backgroundColor = LocalExtendedColors.current.colorScheme.pageBackground,
                         shape = RoundedCornerShape(
                             topStart = 6.dp,
@@ -118,7 +118,7 @@ private fun PreferencesTabContent(windowState: WindowState) {
         modifier = Modifier.padding(top = 64.dp, start = 24.dp),
     )
     DropdownSelect(
-        List(UserTheme.entries.size) { UserTheme.entries[it].name },
+        List(UserTheme.values().size) { UserTheme.values()[it].name },
         UserPreferences.userTheme.name,
         onChange = { option ->
             UserPreferences.userTheme = UserTheme.valueOf(option)
@@ -204,7 +204,7 @@ private fun DropdownSelect(options: List<String>, initiallySelectedOption: Strin
     Column(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth(0.3f)
+            .fillMaxWidth(0.4f)
     ) {
         // Dropdown field
         Box(
@@ -223,7 +223,8 @@ private fun DropdownSelect(options: List<String>, initiallySelectedOption: Strin
                     onValueChange = { },
                     textStyle = ExtendedTheme.typography.dropdownText,
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1f),
+                    maxLines = 1
                 )
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowDown,
