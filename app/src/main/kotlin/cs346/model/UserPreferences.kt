@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.WindowState
 import cs346.views.theme.convertLectureInfoTo24HourFormat
 import java.io.File
 import java.text.SimpleDateFormat
@@ -63,7 +64,14 @@ object UserPreferences {
         }
     }
 
-    fun savePreferences() {
+    fun savePreferences(windowState: WindowState) {
+        windowWidth = windowState.size.width
+        windowHeight = windowState.size.height
+        placement = windowState.placement
+        isMinimized = windowState.isMinimized
+        positionX = windowState.position.x
+        positionY = windowState.position.y
+
         file.writeText("${windowWidth.value},${windowHeight.value},${placement.name},${isMinimized},${positionX.value},${positionY.value},${timeFormat24H},${userTheme.name}")
     }
 

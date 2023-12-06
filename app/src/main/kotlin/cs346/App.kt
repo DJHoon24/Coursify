@@ -7,7 +7,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
-import cs346.controller.*
+import cs346.controller.CustomNavigationHost
+import cs346.controller.UWOpenAPIController
+import cs346.controller.rememberNavController
 import cs346.model.Screen
 import cs346.model.UserPreferences
 import cs346.views.pages.LandingScreen
@@ -23,7 +25,7 @@ enum class CurrentView {
 }
 
 @Composable
-fun App() {
+fun App(windowState: WindowState) {
     val navController by rememberNavController(Screen.CourseListScreen.route)
 
     var currentView by remember { mutableStateOf(CurrentView.LandingPage) }
@@ -32,7 +34,7 @@ fun App() {
         CurrentView.LoginPage -> LoginScreen { currentView = CurrentView.LoggedIn }
         CurrentView.LoggedIn -> {
             Row {
-                Sidebar(navController, { currentView = CurrentView.LandingPage })
+                Sidebar(navController, { currentView = CurrentView.LandingPage }, windowState)
                 Box(modifier = Modifier.fillMaxSize()) {
                     CustomNavigationHost(navController)
                 }
@@ -57,7 +59,8 @@ fun main() = application {
         CompositionLocalProvider(
             LocalExtendedColors provides getExtendedColors(observedUserTheme)
         ) {
-            App()
+            println("re-render")
+            App(windowState)
         }
     }
 }
@@ -84,7 +87,7 @@ fun ManageUserPreferences(windowState: WindowState) {
             UserPreferences.positionX = windowState.position.x
             UserPreferences.positionY = windowState.position.y
 
-            UserPreferences.savePreferences()
+            UserPreferences.savePreferences(windowState)
         }
     }
 }
