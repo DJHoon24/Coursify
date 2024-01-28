@@ -4,6 +4,7 @@ import cs346.model.CourseCatalogue
 import cs346.model.UWOpenAPI.UWOpenAPIClassSchedule
 import cs346.model.UWOpenAPI.UWOpenAPICourse
 import cs346.model.UserPreferences
+import io.github.cdimascio.dotenv.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -14,7 +15,9 @@ import kotlinx.serialization.json.Json
 
 object UWOpenAPIController {
     private var client: HttpClient = HttpClient(CIO)
-    private const val API_KEY = "17A589C203BC475489D5C9B2B671E4F0"
+    private val currentDirectory = System.getProperty("user.dir")
+    private val dotenv = Dotenv.configure().directory("${currentDirectory}/.env").load()
+    private val API_KEY = dotenv["UW_OPEN_API_KEY"]
     private const val FALL_2023_TERM_CODE = "1239"
 
     fun callRequest(requestFunction: suspend () -> Unit) {

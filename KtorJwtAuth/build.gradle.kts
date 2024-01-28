@@ -47,6 +47,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
     implementation("org.litote.kmongo:kmongo:$kmongoVersion")
     implementation("org.litote.kmongo:kmongo-coroutine:$kmongoVersion")

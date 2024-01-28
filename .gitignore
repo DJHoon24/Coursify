@@ -183,3 +183,4 @@ out/
 .vscode/
 
 keys/
+*.env

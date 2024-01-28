@@ -8,18 +8,20 @@ import com.team204.security.token.JwtTokenService
 import com.team204.security.token.TokenConfig
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
+import io.github.cdimascio.dotenv.*
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
-    val mongoPw = "Q2EmQyT6THkC4hrB"
-    val dbName = "team204DB"
+    val currentDirectory = System.getProperty("user.dir")
+    val dotenv = Dotenv.configure().directory("${currentDirectory}/.env").load()
+
     val db = KMongo.createClient(
-        connectionString = "mongodb+srv://team204:$mongoPw@team204.pjzs6cm.mongodb.net/$dbName?retryWrites=true&w=majority"
+        connectionString = dotenv["CONNECTION_STRING"]
     ).coroutine
-        .getDatabase(dbName)
+        .getDatabase(dotenv["DB_NAME"])
     val userDataSource = MongoUserDataSource(db)
     val tokenService = JwtTokenService()
     val tokenConfig = TokenConfig(

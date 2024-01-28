@@ -16,6 +16,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import io.github.cdimascio.dotenv.*
 
 object AuthController {
     private val client: HttpClient = HttpClient(CIO) {
@@ -27,7 +28,9 @@ object AuthController {
         }
     }
 
-    private val url = "https://team204-server-491123dd7a81.herokuapp.com"
+    private val currentDirectory = System.getProperty("user.dir")
+    private val dotenv = Dotenv.configure().directory("${currentDirectory}/.env").load()
+    private val url = dotenv["BACKEND_URL"]
     fun callRequest(requestFunction: suspend () -> Unit) {
         runBlocking {
             launch {

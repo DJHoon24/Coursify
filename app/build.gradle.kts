@@ -30,6 +30,7 @@ dependencies {
     implementation("org.jetbrains.compose.ui:ui-test-junit4:1.5.10-rc01")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
     implementation("io.kotest:kotest-assertions-core:5.5.5")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
     // Ktor
     implementation("io.ktor:ktor-client-core:2.3.5")
