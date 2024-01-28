@@ -1,4 +1,12 @@
 # Coursify
+<img width="750" alt="image" src="https://github.com/DJHoon24/Coursify/assets/55905294/db3a1995-fa18-47d7-af5d-ac45c9974d63"> 
+
+### Add Course details and assignments!
+<img width="750" alt="image" src="https://github.com/DJHoon24/Coursify/assets/55905294/eab100f3-58a0-49ae-b20c-acccde485b93">
+
+### Save Personalized Notes for each class!
+<img width="750" alt="image" src="https://github.com/DJHoon24/Coursify/assets/55905294/dad5d82b-f825-4e02-afd6-9ef16918f44f">
+
 
 ## Goal
 Create an efficient digital solution (desktop app) to allow students to take notes and track them on a per-course basis integrated with general course information such as course ratings, assignment grades, and general comments.
