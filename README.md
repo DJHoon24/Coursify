@@ -16,7 +16,7 @@ Users can view a help section to describe user flows and how to use Coursify fou
 - Go to help page of dialog.
 
 ## Quick-Start Instructions
-Can be found at [Setup of Application](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Instructions-and-Setup-of-Application) or follow instructions below:
+Can be found at [Setup of Application](https://github.com/DJHoon24/Coursify/wiki/Instructions-and-Setup-of-App) or follow instructions below:
 
 - Open the repository locally
 
@@ -39,15 +39,9 @@ Can be found at [Setup of Application](https://git.uwaterloo.ca/i29gill/cs346/-/
 
 ## Project Documents
 
-### Project Proposal
-[Project Proposal](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Project-Proposal)
-
 ### Main sections of Project Documentation
-[Main Sections](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Main-sections)
-
-### Meeting Minutes
-[Meeting Minutes](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Meeting-Minutes)
+[Main Sections](https://github.com/DJHoon24/Coursify/wiki)
 
 ### Software Releases
-[Software Release Notes](https://git.uwaterloo.ca/i29gill/cs346/-/wikis/Release-Notes)
+[Release Notes](https://github.com/DJHoon24/Coursify/wiki/Release-Notes)
 
